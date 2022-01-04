@@ -28,6 +28,7 @@ const s = 'Hello World';
 let val;
 val = s.length;
 
+
 // Change case
 val = s.toUpperCase();
 val = s.toLowerCase();
@@ -63,3 +64,8 @@ console.log(Array.isArray(fruits));
 
 // // Get index
 console.log(fruits.indexOf('oranges'));
+
+
+
+
+
