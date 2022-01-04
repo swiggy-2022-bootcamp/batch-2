@@ -20,7 +20,7 @@ let user1 = {
 };
 
 let user2 = {
-  name: "Pushpa",
+  name: "Prashant",
   role: "Faculty",
   country: "Ind",
 };
