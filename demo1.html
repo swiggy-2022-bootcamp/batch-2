@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let name = "Rahul";
+        let name1 = "Rahul";
+
+        console.log(name == name1) // == only checks for the values, It will output TRUE
+
+        let age = 15;
+        let age1 = "15";
+
+        console.log(age === age1) // === checks for the data type along with value, It will output FALSE as value is same but data type is different
+
+        let num1 = 2;
+        let num2 = 5;
+
+        console.log(num1 ** num2); // 32, 2 raised to 5 (Exponential Operator)
+
+        console.log('mango'.length < 'cherry'.length); // It will output TRUE as mango length (5) is less than cherry length (6)
+
+        // For operator precedence, refer this link:
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
+
+        // XOR Operator - Returns 1 if bits are different
+        console.log(1 ^ 0); // Return 1
+        console.log(1 ^ 1); // Return 0
+    </script>
+</body>
+</html>
