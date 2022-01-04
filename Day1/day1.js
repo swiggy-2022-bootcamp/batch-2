@@ -65,10 +65,38 @@ console.log(Array.isArray(fruits));
 console.log(fruits.indexOf('oranges'));
 
 
-
+/*
+    There are only six falsey values in JavaScript: undefined , null , NaN , 0 , "" (empty string), and false of course.
+*/
 if(!undefined){
     console.log("Undefined is a falsy value!")
 }
+if(!null){
+    console.log("Null is a falsy value!")
+}
+if(!NaN){
+    console.log("NaN is a falsy value!")
+}
+
+const empty = "";
+if(!empty){
+    console.log(`empty string is a falsy value!`)
+}
+
+const zero = 0;
+if(!zero){
+    console.log(`${zero} is a falsy value!`);
+}
+
+const falsy = false
+if(!falsy){
+    console.log(`${falsy} is a falsy value!`);
+}
+
+
+
+
+
 
 
 
