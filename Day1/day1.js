@@ -63,3 +63,13 @@ console.log(Array.isArray(fruits));
 
 // // Get index
 console.log(fruits.indexOf('oranges'));
+
+
+
+if(!undefined){
+    console.log("Undefined is a falsy value!")
+}
+
+
+
+
