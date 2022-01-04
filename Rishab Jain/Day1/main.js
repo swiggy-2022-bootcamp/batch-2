@@ -24,15 +24,15 @@ let numbers = [1, 2, 3]
 console.log(nums == numbers)  // false
 
 let userOne = {
-name:'Asabeneh',
-role:'teaching',
-country:'Finland'
+    name:'Rishab',
+    role:'Student',
+    country:'India'
 }
 
 let userTwo = {
-name:'Asabeneh',
-role:'teaching',
-country:'Finland'
+    name:'Rishab',
+    role:'Student',
+    country:'India'
 }
 
 console.log(userOne == userTwo) // false
