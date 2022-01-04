@@ -20,4 +20,3 @@ console.log(num)
 const now = new Date()
 console.log(now)
 console.log(now.getTime())
-
