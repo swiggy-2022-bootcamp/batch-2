@@ -1,0 +1,15 @@
+{
+  "name": "meeting-application",
+  "version": "1.0.0",
+  "description": "Meeting application to create and view meetings of users.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "express-validator": "^6.14.0"
+  }
+}
