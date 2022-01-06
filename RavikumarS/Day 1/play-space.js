@@ -66,9 +66,7 @@ console.log(js1.endsWith('love'))
 console.log(js1.search('love'))
 console.log(js1.repeat(10)) 
 
-
-
-
-
-
-  
+  //Day 3
+  const evenOrOdd = n => n % 2 === 0 ? console.log("Even") : console.log("Odd");
+  evenOrOdd(2) 
+  evenOrOdd(3)
