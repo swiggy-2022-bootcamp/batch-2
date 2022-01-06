@@ -1,3 +1,4 @@
+const { AsyncLocalStorage } = require('async_hooks');
 const fs = require('fs');
 const User = require('../model/User');
 
@@ -17,6 +18,16 @@ class AuthService {
         return true;
     }
 
+    isValidUser(emailId, password)
+    {
+        if(this.userDirectory.has(emailId) == false)
+            return false;
+        const actualPassword = this.userDirectory.get(emailId).getPassword;
+        if(actualPassword === password)
+            return true;
+        return false;
+    }
+
     printUsers(){
         for(const user of this.userDirectory)
             console.log(JSON.stringify(user));
@@ -33,7 +44,20 @@ class AuthService {
             console.log('complete');
         });
     }
+
+    onstartUP(){
+        var fs = require('fs');
+
+        const data = JSON.parse(fs.readFileSync("user.json"));
+        // console.log(typeof(data));
+        for(let i=0; i<data.length; i++){
+            let user = Object.assign(new User(), data[i]);
+            this.addUser(user);
+        }
+        // console.log(data)
+    }
 }
 
 const authService = new AuthService();
+authService.onstartUP();
 module.exports = { authService };
