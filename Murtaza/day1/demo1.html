@@ -1,0 +1,54 @@
+<head>
+    
+</head>
+<body>
+    <script>
+
+        let primitive1 = 1;
+        let primitive2 = 2;
+
+        let non_primitive1 = {
+            first_name: 'James',
+            last_name: 'Bond'
+        };
+
+        let non_primitive2 = {
+            first_name: 'Tony',
+            last_name: 'Stark'
+        };
+
+        let clone_non_primitive1 = non_primitive1;
+
+        // Comparision
+        console.log("Primitive comparision check: ", primitive1 == primitive2);
+        console.log("Non-primitive comparision check: ", non_primitive1 == non_primitive2);
+        console.log("Non-primitive comparision check: ", non_primitive1 == clone_non_primitive1);
+
+        // Operators
+        let num1 = 100;
+        let num2 = 200;
+
+        console.log(num1 - num2);
+        console.log(num1 + num2);
+        console.log(num1 == num2);
+        console.log(num1 <= num2);
+        console.log(num1 >= num2);
+        console.log(num1 != num2);
+        console.log("Initial values: num1= ", num1, " num2= ", num2);
+        console.log("Incrementing num1 by 1, final num1 value:", ++num1);
+        console.log("Decrementing num2 by 1 final num1 value:", --num2);
+        
+        // Ternary Operator
+        let balance = 100000;
+
+        if (balance > 10000) {
+            console.log("Feeling rich !");
+        } else {
+            console.log("I m Broke !");
+        }
+
+        // The 3 line syntax can be sweetly written using ternary operator
+        console.log(balance > 10000 ? "Feeling rich !" : "I m Broke !");
+
+    </script>
+</body>
