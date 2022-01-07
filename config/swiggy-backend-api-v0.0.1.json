@@ -1,0 +1,659 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "Swiggy Backend API",
+    "description": "Online Food Ordering Platform."
+  },
+  "host": "localhost:3200",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Endpoints"
+    },
+    {
+      "name": "Food",
+      "description": "Endpoints"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/registeruser": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for user registration.",
+        "parameters": [
+          {
+            "name": "user-details",
+            "in": "body",
+            "description": "User credentials for user register.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDtls"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/RegisterSuccessResponse"
+            },
+            "description": "User registration successful."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/Register403ErrorResponse"
+            },
+            "description": "Registration Forbidden."
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/authenticateuser": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for user login.",
+        "parameters": [
+          {
+            "name": "login-details",
+            "in": "body",
+            "description": "User credentials for user login.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserAuthDtls"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful.",
+            "schema": {
+              "$ref": "#/definitions/LoginSuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Login401ErrorResponse"
+            },
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/usrProfile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for fetching user profile.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetch User Profile successful.",
+            "schema": {
+              "$ref": "#/definitions/UserProfile"
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User Not Found.",
+            "schema": {
+              "$ref": "#/definitions/FetchUser404ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for fetching all users.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Users Found.",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for fetching particular user with id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Found.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "User Not Found.",
+            "schema": {
+              "$ref": "#/definitions/FetchUser404ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/food": {
+      "get": {
+        "tags": [
+          "Food"
+        ],
+        "description": "Endpoint for fetching all foods.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Foods Found.",
+            "schema": {
+              "$ref": "#/definitions/Foods"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Food"
+        ],
+        "description": "Endpoint for adding a new food..",
+        "parameters": [
+          {
+            "name": "food",
+            "in": "body",
+            "description": "Food details.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Food"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Food"
+            },
+            "description": "Food add successful."
+          }
+        }
+      }
+    },
+    "/food/{id}": {
+      "get": {
+        "tags": [
+          "Food"
+        ],
+        "description": "Endpoint for fetching particular food with food_id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Food ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Food Found.",
+            "schema": {
+              "$ref": "#/definitions/Food"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/FetchFood404ErrorResponse"
+            },
+            "description": "Food Not Found."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Food"
+        ],
+        "description": "Endpoint for updating a food.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "food",
+            "in": "body",
+            "description": "Food details.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Food"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Food update successful.",
+            "schema": {
+              "$ref": "#/definitions/UpdatedFood"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/FetchFood404ErrorResponse"
+            },
+            "description": "Food Not Found."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Food"
+        ],
+        "description": "Endpoint for deleting a food.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Food ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Food delete successful.",
+            "schema": {
+              "$ref": "#/definitions/FoodDeletedSuccessMessage"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/FetchFood404ErrorResponse"
+            },
+            "description": "Food Not Found."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "username": {
+          "type": "string",
+          "example": "achilles"
+        },
+        "email": {
+          "type": "string",
+          "example": "achilles98@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "nicetry"
+        },
+        "phone": {
+          "type": "number",
+          "example": 987654321
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 1
+            },
+            "house_no": {
+              "type": "number",
+              "example": 1
+            },
+            "street": {
+              "type": "string",
+              "example": "Brooklyn Avenue"
+            },
+            "city": {
+              "type": "string",
+              "example": "NY"
+            },
+            "state": {
+              "type": "string",
+              "example": "New York"
+            },
+            "zip": {
+              "type": "number",
+              "example": 11201
+            }
+          }
+        }
+      }
+    },
+    "Users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 2
+          },
+          "username": {
+            "type": "string",
+            "example": "ron"
+          },
+          "email": {
+            "type": "string",
+            "example": "ron@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "anothernicetry"
+          },
+          "phone": {
+            "type": "number",
+            "example": 987456321
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "house_no": {
+                "type": "number",
+                "example": 95
+              },
+              "street": {
+                "type": "string",
+                "example": "Second Avenue"
+              },
+              "city": {
+                "type": "string",
+                "example": "NY"
+              },
+              "state": {
+                "type": "string",
+                "example": "New York"
+              },
+              "zip": {
+                "type": "number",
+                "example": 11203
+              }
+            }
+          }
+        }
+      }
+    },
+    "UserProfile": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "achilles"
+        },
+        "email": {
+          "type": "string",
+          "example": "achilles98@gmail.com"
+        },
+        "phone": {
+          "type": "number",
+          "example": 987654321
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 1
+            },
+            "house_no": {
+              "type": "number",
+              "example": 1
+            },
+            "street": {
+              "type": "string",
+              "example": "Brooklyn Avenue"
+            },
+            "city": {
+              "type": "string",
+              "example": "NY"
+            },
+            "state": {
+              "type": "string",
+              "example": "New York"
+            },
+            "zip": {
+              "type": "number",
+              "example": 11201
+            }
+          }
+        }
+      }
+    },
+    "Food": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "food_id": {
+          "type": "number",
+          "example": 10
+        },
+        "food_name": {
+          "type": "string",
+          "example": "Chicken Barbeque Pizza"
+        },
+        "food_cost": {
+          "type": "number",
+          "example": 50
+        },
+        "food_type": {
+          "type": "string",
+          "example": "Non-Veg Pizza"
+        }
+      }
+    },
+    "UpdatedFood": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "food_id": {
+          "type": "number",
+          "example": 10
+        },
+        "food_name": {
+          "type": "string",
+          "example": "Chicken Barbeque Pizza"
+        },
+        "food_cost": {
+          "type": "number",
+          "example": 70
+        },
+        "food_type": {
+          "type": "string",
+          "example": "Non-Veg Pizza"
+        }
+      }
+    },
+    "Foods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 2
+          },
+          "food_id": {
+            "type": "number",
+            "example": 11
+          },
+          "food_name": {
+            "type": "string",
+            "example": "Chicken Special Pizza"
+          },
+          "food_cost": {
+            "type": "number",
+            "example": 60
+          },
+          "food_type": {
+            "type": "string",
+            "example": "Non-Veg Pizza"
+          }
+        }
+      }
+    },
+    "UserAuthDtls": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "achilles"
+        },
+        "password": {
+          "type": "string",
+          "example": "nicetry"
+        }
+      }
+    },
+    "LoginSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User logged in successfully!"
+        }
+      }
+    },
+    "Login401ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Sorry, invalid credentials!"
+        }
+      }
+    },
+    "RegisterSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Registered Successfully!"
+        },
+        "user": {
+          "type": "undefined"
+        }
+      }
+    },
+    "Register403ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Sorry, user can't be registered!"
+        }
+      }
+    },
+    "FetchUser404ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Sorry, user with id: 10 not found!"
+        }
+      }
+    },
+    "FoodDeletedSuccessMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Food deleted successfully!"
+        }
+      }
+    },
+    "FetchFood404ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Sorry, food with food_id: 10 not found!"
+        }
+      }
+    }
+  }
+}
