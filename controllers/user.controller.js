@@ -141,3 +141,31 @@ module.exports.getUser = (req, res) => {
         else { console.log('Error in Retriving User :' + JSON.stringify(err, undefined, 2)); }
     });
 }
+
+module.exports.deleteUser = (req, res) => {
+    // #swagger.tags = ['User']
+    // #swagger.description = 'Endpoint for deleting an user.'
+
+    // #swagger.parameters['id'] = { description: 'User ID' }
+    User.findOneAndRemove({ id: req.params.id }, (err, doc) => {
+        if (!doc) {
+            /* #swagger.responses[404] = { 
+                schema: { $ref: "#/definitions/FetchUser404ErrorResponse" },
+                description: 'User Not Found.' 
+            } */
+            res.status(404).send({
+                "message": `Sorry, user with id: ${req.params.id} not found!`
+            });
+        }
+        else if (!err) {
+            /* #swagger.responses[200] = { 
+                schema: { $ref: "#/definitions/UserDeletedSuccessMessage" },
+                description: 'User delete successful.' 
+            } */
+            res.send({
+                "message": "User deleted successfully!"
+            });
+        }
+        else { console.log('Error in User Delete:' + JSON.stringify(err, undefined, 2)); }
+    });
+}

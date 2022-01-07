@@ -186,6 +186,46 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for deleting an user.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User delete successful.",
+            "schema": {
+              "$ref": "#/definitions/UserDeletedSuccessMessage"
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User Not Found.",
+            "schema": {
+              "$ref": "#/definitions/FetchUser404ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/food": {
@@ -625,6 +665,15 @@
         "message": {
           "type": "string",
           "example": "Sorry, user with id: 10 not found!"
+        }
+      }
+    },
+    "UserDeletedSuccessMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User deleted successfully!"
         }
       }
     },

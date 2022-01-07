@@ -131,6 +131,9 @@ const doc = {
         FetchUser404ErrorResponse: {
             "message": "Sorry, user with id: 10 not found!"
         },
+        UserDeletedSuccessMessage: {
+            "message": "User deleted successfully!"
+        },
         FoodDeletedSuccessMessage: {
             "message": "Food deleted successfully!"
         },
