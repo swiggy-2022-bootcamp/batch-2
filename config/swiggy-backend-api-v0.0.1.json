@@ -27,7 +27,7 @@
     "application/json"
   ],
   "paths": {
-    "/registeruser": {
+    "/register": {
       "post": {
         "tags": [
           "User"
@@ -66,7 +66,7 @@
         }
       }
     },
-    "/authenticateuser": {
+    "/authenticate": {
       "post": {
         "tags": [
           "User"
@@ -255,14 +255,11 @@
               "$ref": "#/definitions/Food"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "404": {
+            "description": "Food Not Found.",
             "schema": {
               "$ref": "#/definitions/FetchFood404ErrorResponse"
-            },
-            "description": "Food Not Found."
+            }
           }
         }
       },
@@ -295,14 +292,11 @@
               "$ref": "#/definitions/UpdatedFood"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "404": {
+            "description": "Food Not Found.",
             "schema": {
               "$ref": "#/definitions/FetchFood404ErrorResponse"
-            },
-            "description": "Food Not Found."
+            }
           }
         }
       },
@@ -327,14 +321,11 @@
               "$ref": "#/definitions/FoodDeletedSuccessMessage"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "404": {
+            "description": "Food Not Found.",
             "schema": {
               "$ref": "#/definitions/FetchFood404ErrorResponse"
-            },
-            "description": "Food Not Found."
+            }
           }
         }
       }
@@ -651,7 +642,7 @@
       "properties": {
         "message": {
           "type": "string",
-          "example": "Sorry, food with food_id: 10 not found!"
+          "example": "Sorry, Food with Food ID: 10 not found!"
         }
       }
     }
