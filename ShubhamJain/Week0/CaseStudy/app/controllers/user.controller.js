@@ -1,12 +1,22 @@
 const db = require("../models")
 const User = db.users;
+var logger = require('../config/winston');
+const bodyParser = require('body-parser');
 
 //signup user
 exports.createUser = (req,res) => {
     const user = new User({
         email:req.body.email,
-        password:req.body.password
+        password:req.body.password,
+        address: {}
     })
+    user.address.set("houseNo", req.body.address.houseNo);
+    user.address.set("street", req.body.address.street);
+    user.address.set("city", req.body.address.city);
+    user.address.set("state", req.body.address.state);
+    user.address.set("zip", req.body.address.zip);
+
+    logger.info("New user is : ", user);
 
     user.save(user).then(
         data => {

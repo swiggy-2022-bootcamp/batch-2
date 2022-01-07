@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const logger = require('./app/config/winston');
+const bodyParser = require('body-parser');
 
 var corsOptions = {
     origin:"*"
@@ -8,15 +10,17 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/models")
+
 db.mongoose.connect(db.url,{
     useNewUrlParser:true,
     useUnifiedTopology:true
 }).then( () => {
-    console.log("connected to db");
+    logger.info("connected to db");
 }).catch(err => {
-    console.log("cannot connect to db",err)
+    logger.error("cannot connect to db",err)
     process.exit()
 })
 
@@ -28,5 +32,5 @@ require("./app/routes/user.routes")(app);
 
 const PORT = 8080;
 app.listen(PORT,() => {
-    console.log(`server running on port: ${PORT}`);
+    logger.info(`server running on port: ${PORT}`);
 });

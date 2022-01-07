@@ -1,4 +1,5 @@
 const dbConfig = require("../config/db.config")
+var logger = require('../config/winston');
 
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
