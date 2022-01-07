@@ -1,0 +1,10 @@
+1. fork the repo
+2. copy the https command
+3. git clone <paste the above command>
+4. cd batch-2
+5. git checkout -b <branchname>
+6. git add .
+6. git commit -m "commit message"
+7. git push --set-upstream origin <branchname>
+8. go to gitub and click on "compare and pull"
+9. raise the PR

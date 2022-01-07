@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let nums = [1, 2, 3]
+        let numbers = [1, 2, 3]
+
+        console.log(nums == numbers)  // false
+
+        let userOne = {
+            name: 'Mradul',
+            role: 'Student',
+            country: 'India'
+        }
+
+        let userTwo = {
+            name: 'Mradul',
+            role: 'Student',
+            country: 'India'
+        }
+
+        console.log(userOne)
+        console.log(userOne == userTwo) // false
+
+        // Declaring different variables of different data types
+        let space = ' '
+        let firstName = 'Mradul'
+        let lastName = 'Rathore'
+        let country = 'India'
+        let city = 'Indore'
+        let language = 'JavaScript'
+        let job = 'Student'
+        let age = 21
+
+
+        let fullName = firstName + space + lastName
+        let personInfoOne = fullName + '. I am ' + age + '. I live in ' + country; // ES5 string addition
+        let personInfoTwo = `I am ${fullName}. I am ${age}. I live in ${country}.` //ES6 - String interpolation method
+
+        console.log(personInfoOne)
+        console.log(personInfoTwo)
+
+        console.log(firstName.length)
+        console.log(firstName.indexOf('d'))
+
+    </script>
+
+</body>
+
+</html>
