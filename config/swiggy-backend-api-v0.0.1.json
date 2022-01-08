@@ -45,23 +45,17 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "201": {
+            "description": "User registration successful.",
             "schema": {
               "$ref": "#/definitions/RegisterSuccessResponse"
-            },
-            "description": "User registration successful."
+            }
           },
-          "403": {
+          "400": {
+            "description": "Registration Forbidden.",
             "schema": {
-              "$ref": "#/definitions/Register403ErrorResponse"
-            },
-            "description": "Registration Forbidden."
-          },
-          "422": {
-            "description": "Unprocessable Entity"
+              "$ref": "#/definitions/Register400ErrorResponse"
+            }
           }
         }
       }
@@ -650,12 +644,12 @@
         }
       }
     },
-    "Register403ErrorResponse": {
+    "Register400ErrorResponse": {
       "type": "object",
       "properties": {
         "message": {
           "type": "string",
-          "example": "Sorry, user can't be registered!"
+          "example": "Username already registered!"
         }
       }
     },

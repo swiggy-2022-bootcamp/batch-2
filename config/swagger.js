@@ -125,8 +125,8 @@ const doc = {
             "message": "User Registered Successfully!",
             "user": this.User
         },
-        Register403ErrorResponse: {
-            "message": "Sorry, user can't be registered!"
+        Register400ErrorResponse: {
+            "message": "Username already registered!"
         },
         FetchUser404ErrorResponse: {
             "message": "Sorry, user with id: 10 not found!"

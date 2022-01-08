@@ -4,6 +4,30 @@ const _ = require('lodash');
 
 const User = mongoose.model('User');
 
+module.exports.validateUser = (req, res, next) => {
+    /* #swagger.responses[400] = { 
+        schema: { $ref: "#/definitions/Register400ErrorResponse" },
+        description: 'Registration Forbidden.' 
+    } */
+    User.findOne({ username: req.body.username }, (err, us1) => {
+        if (us1)
+            return res.status(400).send({ "message": 'Username already registered!' });
+        else {
+            User.findOne({ email: req.body.email }, (err, us2) => {
+                if (us2)
+                    return res.status(400).send({ "message": 'Email already registered!' });
+                else {
+                    User.findOne({ phone: req.body.phone }, (err, us3) => {
+                        if (us3)
+                            return res.status(400).send({ "message": 'Phone number already registered!' });
+                        next();
+                    });
+                }
+            });
+        }
+    });
+}
+
 module.exports.registeruser = (req, res, next) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for user registration.'
@@ -15,12 +39,14 @@ module.exports.registeruser = (req, res, next) => {
         type: 'object',
         schema: { $ref: "#/definitions/UserDtls" }
     } */
-    var user = new User();
-    user.username = req.body.username;
-    user.email = req.body.email;
-    user.password = req.body.password;
-    user.phone = req.body.phone;
-    user.address = req.body.address;
+
+    var user = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        phone: req.body.phone,
+        address: req.body.address
+    });
     //console.log(user);
     user.save((err, doc) => {
         if (!err) {
@@ -28,19 +54,14 @@ module.exports.registeruser = (req, res, next) => {
                 schema: { $ref: "#/definitions/RegisterSuccessResponse" },
                 description: 'User registration successful.' 
             } */
-            res.send(doc);
+            res.status(201).send({
+                "message": "User Registered Successfully!",
+                "user": doc
+            });
         }
         else {
-            /* #swagger.responses[403] = { 
-                schema: { $ref: "#/definitions/Register403ErrorResponse" },
-                description: 'Registration Forbidden.' 
-            } */
-            if (err.code == 11000)
-                res.status(422).send(['Duplicate email address found.']);
-            else
-                return next(err);
+            return next(err);
         }
-
     });
 }
 

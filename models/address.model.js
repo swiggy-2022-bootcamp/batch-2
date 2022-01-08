@@ -7,19 +7,23 @@ var addressSchema = new mongoose.Schema({
         unique: true
     },
     house_no: {
-        type: Number
+        type: Number,
+        required: 'House No. can\'t be empty!'
     },
     street: {
-        type: String
+        type: String,
+        required: 'Street can\'t be empty!'
     },
     city: {
         type: String
     },
     state: {
-        type: String
+        type: String,
+        required: 'State can\'t be empty!'
     },
     zip: {
-        type: Number
+        type: Number,
+        required: 'Zip code can\'t be empty!'
     }
 });
 

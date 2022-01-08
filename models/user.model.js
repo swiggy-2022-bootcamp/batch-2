@@ -12,28 +12,28 @@ var userSchema = new mongoose.Schema({
     },
     username: {
         type: String,
-        required: 'Full name can\'t be empty',
+        required: 'Full name can\'t be empty!',
         unique: true
     },
     email: {
         type: String,
-        required: 'Email can\'t be empty',
+        required: 'Email can\'t be empty!',
         unique: true
     },
     password: {
         type: String,
         required: 'Password can\'t be empty',
-        minlength: [6, 'Password must be atleast 4 character long']
+        minlength: [6, 'Password must be atleast 6 characters long!']
     },
     phone: {
         type: String,
         required: 'Phone No. can\'t be empty',
-        length: [10, 'Phone No. must be strictly of 10 digits'],
+        length: [10, 'Phone No. must be strictly of 10 digits!'],
         unique: true
     },
     address: {
         type: Address,
-        required: 'Address can\'t be empty'
+        required: 'Address can\'t be empty!'
     }
 });
 
