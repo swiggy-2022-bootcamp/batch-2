@@ -13,10 +13,10 @@ passport.use('local',
                         return done(err);
                     // unknown user
                     else if (!user)
-                        return done(null, false, { message: 'User Name is not registered' });
+                        return done(null, false, { message: 'User Name is not registered!' });
                     // wrong password
                     else if (!user.verifyPassword(password))
-                        return done(null, false, { message: 'Wrong password.' });
+                        return done(null, false, { message: 'Wrong password!' });
                     // authentication succeeded
                     else
                         return done(null, user);

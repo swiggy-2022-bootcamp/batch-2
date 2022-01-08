@@ -34,10 +34,10 @@ module.exports.registeruser = (req, res, next) => {
 
     /* #swagger.parameters['user-details'] = {
         in: 'body',
-        description: 'User credentials for user register.',
+        description: 'User credentials for user registration.',
         required: true,
         type: 'object',
-        schema: { $ref: "#/definitions/UserDtls" }
+        schema: { $ref: "#/definitions/User" }
     } */
 
     var user = new User({
@@ -77,18 +77,20 @@ module.exports.authenticateuser = (req, res, next) => {
         schema: { $ref: "#/definitions/UserAuthDtls" }
     } */
     passport.authenticate('local', (err, user, info) => {
-
         if (err) return res.status(400).json(err);
         /* #swagger.responses[200] = { 
             schema: { $ref: "#/definitions/LoginSuccessResponse" },
             description: 'Login successful.' 
         } */
-        else if (user) return res.status(200).json({ "token": user.generateJwt() });
+        else if (user) return res.status(200).json({
+            "message": "User logged in successfully!",
+            "token": user.generateJwt()
+        });
         /* #swagger.responses[401] = { 
             schema: { $ref: "#/definitions/Login401ErrorResponse" },
             description: 'Unauthorized.' 
         } */
-        else return res.status(404).json(info);
+        else return res.status(401).json(info);
     })(req, res);
 }
 
@@ -160,6 +162,46 @@ module.exports.getUser = (req, res) => {
             res.send(doc);
         }
         else { console.log('Error in Retriving User :' + JSON.stringify(err, undefined, 2)); }
+    });
+}
+
+module.exports.updateUser = (req, res) => {
+    // #swagger.tags = ['User']
+    // #swagger.description = 'Endpoint for updating an user.'
+
+    /* #swagger.parameters['user-details'] = {
+            in: 'body',
+            description: 'User details.',
+            required: true,
+            type: 'object',
+            schema: { $ref: "#/definitions/User" }
+    } */
+
+    var user = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        phone: req.body.phone,
+        address: req.body.address
+    });
+    User.findOneAndUpdate({ id: req.params.id }, { $set: user }, { new: true }, (err, doc) => {
+        if (!doc) {
+            /* #swagger.responses[404] = { 
+                schema: { $ref: "#/definitions/FetchUser404ErrorResponse" },
+                description: 'User Not Found.' 
+            } */
+            res.status(404).send({
+                "message": `Sorry, user with id: ${req.params.id} not found!`
+            });
+        }
+        else if (!err) {
+            /* #swagger.responses[200] = { 
+                schema: { $ref: "#/definitions/UpdatedUser" },
+                description: 'User update successful.' 
+            } */
+            res.send(doc);
+        }
+        else { console.log('Error in User Update :' + JSON.stringify(err, undefined, 2)); }
     });
 }
 

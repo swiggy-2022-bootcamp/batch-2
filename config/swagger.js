@@ -116,10 +116,11 @@ const doc = {
             "password": "nicetry"
         },
         LoginSuccessResponse: {
-            "message": "User logged in successfully!"
+            "message": "User logged in successfully!",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWQ4NjFiNzNkN2UwMzYzZDlmNGY0YjkiLCJpYXQiOjE2NDE1NzA3OTMsImV4cCI6MTY0MTU3MTM5M30.NbPF0xEtsYSvYopE9nD5FDMbqmCqoi_ZO4NhLj2yN2E"
         },
         Login401ErrorResponse: {
-            "message": "Sorry, invalid credentials!"
+            "message": "User Name is not registered!"
         },
         RegisterSuccessResponse: {
             "message": "User Registered Successfully!",
