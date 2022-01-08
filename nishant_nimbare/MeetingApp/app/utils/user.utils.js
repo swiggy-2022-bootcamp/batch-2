@@ -1,0 +1,1 @@
+exports.encrypt = input => input;
