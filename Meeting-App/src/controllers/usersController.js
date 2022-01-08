@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { 
     createUserService,
     getUserByEmailService
@@ -21,23 +22,23 @@ const createUserController = async (req, res) => {
             const hashedPassword = await bcrypt.hash(user.password, salt);
             user.password = hashedPassword;
         } catch (e) {
-            return res.status(500).json({
+            res.status(500).json({
                 errorMessage: e.message
             });
         }
 
         try {
             const result = await createUserService(user);
-            return res.status(200).json({
+            res.status(201).json({
                 successMessage: `User Created Successfully. User ID: ${result.id}`
             });
         } catch (e) {
-            return res.status(400).json({
+            res.status(400).json({
                 errorMessage: `Something went wrong. ${e.message}`,
             })
         }
     } else {
-        return res.status(200).json({
+        res.status(400).json({
             errorMessage: `User with email as ${user.email} already exists.`
         });
     }   
@@ -54,16 +55,23 @@ const loginUserController = async (req, res) => {
     if(userData != null){
         const isPasswordCorrect = await bcrypt.compare(user.password, userData.password);
         if(isPasswordCorrect){
-            return res.status(200).json({
-                successMessage: `Hurray!! Login Successful.`
+            const userSign = {
+                id: userData.id,
+                email: userData.email,
+                name: userData.name
+            }
+            const accessToken = jwt.sign(userSign, process.env.ACCESS_TOKEN_SECRET);
+            res.json({
+                successMessage: 'Logged in successfully',
+                accessToken
             });
         } else {
-            return res.status(200).json({
+            res.json({
                 errorMessage: `Incorrect Password.`
             });
         }
     } else {
-        return res.status(200).json({
+        res.json({
             errorMessage: `User with email as ${user.email} doesn't exists.`
         });
     }
