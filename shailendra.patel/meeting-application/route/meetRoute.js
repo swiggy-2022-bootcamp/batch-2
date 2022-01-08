@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const { check } = require('express-validator');
-const {createMeeting, getMeetingForUser, getMeetingDetail } = require('../controller/meetingController')
+const {createMeeting, getMeetingForUser, getMeetingDetail, dropFromMeeting } = require('../controller/meetingController')
 const { authenticateToken } = require('../controller/authController')
 
 router.post("/meeting", [
@@ -17,5 +17,7 @@ router.post("/meeting", [
 router.get("/user/meetings", authenticateToken, getMeetingForUser);
 
 router.get("/user/meetings/:meetingId", authenticateToken, getMeetingDetail);
+
+router.delete("/user/:userId/meetings/:meetingId", authenticateToken, dropFromMeeting);
 
 module.exports = router;

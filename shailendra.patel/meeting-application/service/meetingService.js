@@ -53,6 +53,17 @@ class MeetingService{
         return meetings;
     }
 
+    dropFromMeeting(meetId, userId)
+    {
+        if(this.meetDirectory.has(meetId) === false){
+            return {err: `No Meeting with id ${meetId}`}
+        }
+        const meeting = this.meetDirectory.get(meetId);
+        meeting.participants = meeting.participants.replace(userId, '');
+        this.userMeeting.get(userId).delete(meetId);
+        return {"msg": `User ${userId} dropped from meeting`};
+    }
+
     onstartUP(){
         var fs = require('fs');
 
