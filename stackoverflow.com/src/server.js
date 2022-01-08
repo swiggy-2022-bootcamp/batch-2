@@ -10,7 +10,6 @@ import answerRouter from "./resources/answer/answer.router.js";
 const app = express();
 app.disable("x-powered-by");
 app.use(express.json({ extended: false }));
-app.use(morgan("dev"));
 
 app.post("/signup", signup);
 app.post("/signin", signin);

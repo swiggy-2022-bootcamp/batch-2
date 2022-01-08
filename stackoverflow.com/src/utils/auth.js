@@ -51,7 +51,7 @@ export const signup = async (req, res) => {
 export const signin = async (req, res) => {
   const methodName = "#signin";
   if (!req.body.email || !req.body.password) {
-    logger.error(`${methodName} Error encountered while signing up the user as both the mandatory fields email and password are not provided.`);
+    logger.error(`${methodName} Error encountered while signing in the user as both the mandatory fields email and password are not provided.`);
     return res.status(400).send({ message: "Email and Password are required" });
   }
   logger.info(`${methodName} Request recieved for signing up the user: ${JSON.stringify(req.body)}`);
