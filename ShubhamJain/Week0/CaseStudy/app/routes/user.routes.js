@@ -5,11 +5,11 @@ module.exports = app => {
     var router = require("express").Router();
 
     logger.info("inside user routes");
-    router.post("/api/register",users.createUser);
-    router.get("/get_all_users",users.findAllUsers);
-    router.get("/get_user_by_id/:id",users.fundUserById);
-    router.put("/update_user_by_id/:id",users.updateUserById);
-    router.delete("/delete_user_by_id/:id",users.deleteUserById);
+    router.post("/register",users.createUser);
+    router.get("/users",users.findAllUsers);
+    router.get("/users/:id",users.findUserById);
+    router.put("/users",users.updateUserById);
+    router.delete("/users/:id",users.deleteUserById);
 
-    app.use("/users",router)
+    app.use("/api",router)
 }

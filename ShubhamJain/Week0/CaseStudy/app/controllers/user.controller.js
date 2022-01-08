@@ -8,6 +8,7 @@ exports.createUser = (req,res) => {
     const user = new User({
         email:req.body.email,
         password:req.body.password,
+        username:req.body.username,
         address: {}
     })
     user.address.set("houseNo", req.body.address.houseNo);
@@ -20,7 +21,7 @@ exports.createUser = (req,res) => {
 
     user.save(user).then(
         data => {
-            res.send(data);
+            res.status(201).send(data);
         }
     ).catch(err => {
         res.status(500).send({
@@ -42,7 +43,7 @@ exports.findAllUsers = (req,res) => {
     })
 }
 //fecth user by id
-exports.fundUserById = (req,res) => {
+exports.findUserById = (req,res) => {
     const id = req.params.id;
     User.findById(id).then(
         data => {
@@ -53,24 +54,24 @@ exports.fundUserById = (req,res) => {
         }
     ).catch(err => {
         res.status(500).send({
-            message:err.message ||"error while retrieving the user with id " + id
+            message: `Sorry user with Id: [${id}] not found.`
         })
     })
 }
 
 exports.updateUserById = (req,res) => {
-    const id = req.params.id;
+    const id = req.body._id;
 
-    User.findByIdAndUpdate(id,req.body,{useFindAndModify:false}).then(
+    User.findByIdAndUpdate(id,req.body,{useFindAndModify:false, new:true}).then(
         data => {
             if(!data)
             res.status(404).send({message:"User cannot be updated with Id " + id});
           else
-            res.send({message:"User updated successfully"});
+            res.send(data);
         }
     ).catch(err => {
         res.status(500).send({
-            message:err.message ||"error Updating the user with id " + id
+            message: `Sorry user with Id: [${id}] not found.`
         })
     })
 }
@@ -80,13 +81,13 @@ exports.deleteUserById = (req,res) => {
     User.findByIdAndRemove(id,{useFindAndModify:false}).then(
         data => {
             if(!data)
-            res.status(404).send({message:"User cannot be deleted with Id " + id});
+            res.status(404).send({message:`User cannot be deleted with Id:[${id}]`});
           else
-            res.send({message:"User deleted successfully"});
+            res.send({message:"User deleted successfully."});
         }
     ).catch(err => {
         res.status(500).send({
-            message:err.message ||"error deleting the user with id " + id
+            message: `Sorry user with Id: [${id}] not found.`
         })
     })
     
