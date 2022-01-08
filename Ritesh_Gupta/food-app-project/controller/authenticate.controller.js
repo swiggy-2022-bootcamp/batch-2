@@ -1,6 +1,10 @@
 const query = require('../db/query');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+
 const dbName = "swiggy_bootcamp.users";
+const JWT_SECRECT_KEY = process.env.JWT_SECRECT_KEY;
 
 
 
@@ -49,8 +53,13 @@ const authenticateUser = async (req, res) => {
         const isPasswordCorrect = await bcrypt.compare(password, hash);
 
         if (isPasswordCorrect){
+
+            const payload = {userid : userid}
+            const token = await jwt.sign(payload, JWT_SECRECT_KEY, { expiresIn: '10d' })
+            
             res.status(200).json({
-                message: "User logged in successful"
+                message: "User logged in successful",
+                token : token
             })
 
         } else{
@@ -62,9 +71,9 @@ const authenticateUser = async (req, res) => {
 
     }
     catch(err){
-        console.log("Error validating user", err.sqlMessage);
+        console.log("Error validating user", err);
         res.status(403).json({
-            error : err.sqlMessage
+            error : err
         })
     }
 

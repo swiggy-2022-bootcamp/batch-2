@@ -1,8 +1,7 @@
 const query = require('../db/query');
-const dbName = "swiggy_bootcamp.users";
 const bcrypt = require('bcryptjs');
 
-
+const dbName = "swiggy_bootcamp.users";
 
 // middleware to validate inputs
 const validateInputs = (req, res, next) => {
@@ -72,7 +71,7 @@ const generatePasswordHash = async (req, res, next) => {
 
 const registerUser = async (req, res) => {
     const userDetails = req.body;
-    // console.log(userDetails);
+    console.log(userDetails);
 
     const sql = `INSERT INTO swiggy_bootcamp.users VALUES ('${userDetails.userid}', '${userDetails.username}', '${userDetails.email}', '${userDetails.password}', ${userDetails.address.houseno}, '${userDetails.address.street}', '${userDetails.address.city}', '${userDetails.address.state}', '${userDetails.address.zip}');`;
 

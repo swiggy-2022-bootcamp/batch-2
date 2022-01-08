@@ -70,6 +70,7 @@ const getAllFood = async (req, res) => {
     }
 }
 
+// Additional feature
 const getFoodByType = async (req, res) => {
     const foodType = req.params.foodType;
     console.log(req.params)

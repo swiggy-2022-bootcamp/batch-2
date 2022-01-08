@@ -1,5 +1,9 @@
 const query = require('../db/query');
+const bcrypt = require('bcryptjs');
+
 const dbName = "swiggy_bootcamp.users";
+
+
 
 const getAllUsers = async (req, res) => {
     const sql = `SELECT * FROM ${dbName}`;
@@ -51,6 +55,10 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
     const userDetails = req.body;
     console.log(userDetails);
+
+    const saltRounds = 10;
+    const hash = await bcrypt.hash(userDetails.password, saltRounds);
+    userDetails.password = hash;
 
     const sql = `UPDATE ${dbName} SET username = '${userDetails.username}', email = '${userDetails.email}', password = '${userDetails.password}', houseno = ${userDetails.address.houseno}, street = '${userDetails.address.street}', city = '${userDetails.address.state}', zip = ${userDetails.address.zip} WHERE userid = '${userDetails.userid}' `;
 
