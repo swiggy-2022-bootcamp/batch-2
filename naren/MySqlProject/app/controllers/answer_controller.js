@@ -182,4 +182,38 @@ const upvoteAnswer = (req,res) =>
     })  
 }
 
-module.exports ={postAnswer,updateAnswer,upvoteAnswer}
+const getPrivilegedUsers = (req,res) =>
+{
+    const queryString = 'select userName,Count(*) as Points from UserPoints Group by userName order by Points desc;';
+    sql.query(queryString,(err,result) => 
+    {
+        if(err)
+        {
+            console.log("error: ",err)
+            res.status(404).send({ message: 'This is an error!'});
+        }
+        else
+        {
+            res.status(200).send(JSON.stringify(result));
+        }
+    });   
+}
+const getVoteCountOfAnswers = (req,res) =>
+{
+    const queryString = 'select Votes.answerId,Answers.content,Count(*) as VoteCount from Votes,Answers where Votes.answerId = Answers.answerId Group by Votes.answerId order by VoteCount desc;';
+    sql.query(queryString,(err,result) => 
+    {
+        if(err)
+        {
+            console.log("error: ",err)
+            res.status(404).send({ message: 'This is an error!'});
+        }
+        else
+        {
+            res.status(200).send(JSON.stringify(result));
+        }
+    });   
+}
+
+
+module.exports ={postAnswer,updateAnswer,upvoteAnswer,getPrivilegedUsers,getVoteCountOfAnswers}
