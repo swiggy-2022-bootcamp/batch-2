@@ -32,3 +32,30 @@ exports.createFoodItem = (req, res) => {
         }
     )
 }
+
+exports.findFoodItemById = (req, res) => {
+    const id = req.params.id;
+
+    Food.findById(id).then(
+        data => {
+            res.status(200).send(data);
+        }
+    ).catch(err=>{
+        res.status(500).send({message: `Sorry Food Item with Id: [${id}] not found.`});
+    })
+
+}
+
+exports.deleteFoodItemById = (req, res) => {
+    const id = req.params.id;
+    Food.findByIdAndRemove(id,{useFindAndModify:false}).then(
+        data =>{
+            if(!data)
+                res.status(404).send();
+            else 
+                res.send({message: `Deleted Food Item with Id:[${id}] Successfully.`});
+        }
+    ).catch(err=>{
+        res.status(500).send({message: err.message || `Sorry user with Id:[${id}] not found.`})
+    })
+}
