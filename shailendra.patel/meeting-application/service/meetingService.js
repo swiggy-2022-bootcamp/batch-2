@@ -1,4 +1,5 @@
 const Meeting = require('../model/Meeting')
+const fs = require('fs');
 
 class MeetingService{
 
@@ -25,6 +26,18 @@ class MeetingService{
         }
         // console.log(this.meetDirectory.get(meetId));
         return this.meetDirectory.get(meetId);
+    }
+
+    writeUsersToJSONFile() {
+        const obj = [];
+
+        for(const user of this.meetDirectory.values())
+            obj.push(user);
+
+        fs.writeFile ("./data/meetingService.json", JSON.stringify(obj), function(err) {
+            if (err) throw err;
+            console.log('complete writing meeting service data to json file.');
+        });
     }
 }
 const meetingService = new MeetingService();

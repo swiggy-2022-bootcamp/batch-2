@@ -7,7 +7,7 @@ class AuthService {
     }
 
     addUser(user = new User()){
-        if(this.userDirectory.has(user.getUserId)){
+        if(this.validateUser(user.getUserId)){
             console.log(`User already registered with email ${user.getUserId}`);
             return false;
         }
@@ -27,6 +27,12 @@ class AuthService {
         return false;
     }
 
+    validateUser(emailId){
+        if(this.userDirectory.has(emailId))
+            return true;
+        return false;
+    }
+
     printUsers(){
         for(const user of this.userDirectory)
             console.log(JSON.stringify(user));
@@ -40,7 +46,7 @@ class AuthService {
 
         fs.writeFile ("./data/user.json", JSON.stringify(obj), function(err) {
             if (err) throw err;
-            console.log('complete');
+            console.log('completed writing user data to json file.');
         });
     }
 

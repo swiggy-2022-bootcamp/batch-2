@@ -17,13 +17,14 @@ exports.authenticateToken = (req, res, next) => {
     if (token == null) 
         return res.status(401).json({error: "Missing Auth Header"});
     
-    jwt.verify(token, tokenSecret, (err, userId) => {
+    jwt.verify(token, tokenSecret, (err, user) => {
         // console.log(err)
         if (err) return res.status(403).json({
             msg: "Unauthorized, Invalid token",
             error: err
         });
-        req.userId = userId
+        req.body.userId = user.userId
+        // console.log(req.userId);
         next()
         });
 }
