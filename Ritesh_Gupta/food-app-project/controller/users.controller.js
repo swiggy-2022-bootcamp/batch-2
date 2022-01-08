@@ -13,7 +13,7 @@ const getAllUsers = async (req, res) => {
     } catch(err){
         console.log(err)
         res.status(403).json({
-            users : err.sqlMessage
+            message : err.sqlMessage
         })
     }
 

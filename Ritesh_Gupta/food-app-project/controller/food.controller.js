@@ -5,7 +5,7 @@ const dbName = "swiggy_bootcamp.food";
 const insertFoodDetails = async (req, res) => {
     const foodDetails = req.body;
 
-    const sql = `INSERT INTO ${dbName} VALUES ('${foodDetails.foodid}', '${foodDetails.foodName}', ${foodDetails.foodCost}, '${foodDetails.foodType}', '${foodDetails.foodRating}' ) `;
+    const sql = `INSERT INTO ${dbName} VALUES ('${foodDetails.foodid}', '${foodDetails.foodName}', ${foodDetails.foodCost}, '${foodDetails.foodType}' ) `;
 
     try{
         await query(sql);
@@ -35,7 +35,7 @@ const getFoodById = async (req, res) => {
         const result = await query(sql);
         if (result.length > 0){
             res.status(200).json({
-                users : result
+                FoodDetail : result
             })
         } else {
             res.status(403).json({
@@ -52,5 +52,49 @@ const getFoodById = async (req, res) => {
     }
 }
 
+// Additional feature
+const getAllFood = async (req, res) => {
+    const sql = `SELECT * FROM ${dbName}`;
+    try{
+        const result = await query(sql);
+        
+        res.status(200).json({
+            foodDetails : result
+        })
 
-module.exports = {getFoodById, insertFoodDetails}
+    } catch(err){
+        console.log(err)
+        res.status(403).json({
+            message : err.sqlMessage
+        })
+    }
+}
+
+const getFoodByType = async (req, res) => {
+    const foodType = req.params.foodType;
+    console.log(req.params)
+    console.log(foodType);
+
+    const sql = `SELECT * FROM ${dbName} WHERE foodType = '${foodType}' `;
+    try{
+        const result = await query(sql);
+        if (result.length > 0){
+            res.status(200).json({
+                FoodDetails : result
+            })
+        } else {
+            res.status(403).json({
+                message : `Sorry food with foodType : ${foodType} not found`
+            })
+        }
+        
+
+    } catch(err){
+        console.log(err)
+        res.status(403).json({
+            error : err.sqlMessage
+        })
+    }
+}
+
+module.exports = {getFoodById, insertFoodDetails, getAllFood, getFoodByType}
