@@ -101,5 +101,85 @@ const updateAnswer = (req,res) =>
     })
 }
 
+const upvoteAnswer = (req,res) =>
+{
+    const userData=
+    {       
+        userName : req.body.userName,
+        password : req.body.password
+    }
+    const upvoteData =
+    {
+        userName : req.body.userName,
+        answerId : req.params.id
+    }
+    
+    const authenticateQueryString = 'SELECT * FROM UserDetails where userName = ? and password =?;';
+    sql.query(authenticateQueryString,[userData.userName,userData.password],(err,result) => 
+    {
+        if(err ||result.length == 0 )
+        {
+            console.log("Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN");
+            res.status(401).send({ message: "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"});
+        }
+        else
+        {
+            // now lets find the user who posted the answer
+            // and make sure current user doesnt match with that
+            const queryString = 'SELECT userName FROM Answers where answerId = ?;';
+            sql.query(queryString,upvoteData.answerId,(err,result)=>
+            {
+                if(err ||result.length == 0 )
+                {
+                    console.log("error: INVALID ANSWER ID ")
+                    res.status(404).send({ message: 'This is an error! INVALID ANSWER ID'});
+                }
+                else
+                {
+                    const userWhoPostedThisAnswer = result[0].userName;
+                    if (userData.userName == userWhoPostedThisAnswer)
+                    {
+                        console.log("ERROR: User trying to UPVOTE HIS OWN ANSWER.");
+                        res.status(403).send({ message: "ERROR: User trying to UPVOTE HIS OWN ANSWER."});
+                    }
+                    else
+                    {
+                        //lets insert the upvote into upvotes table
+                        const queryString2 = 'insert into Votes SET ?;';
+                        sql.query(queryString2,upvoteData,(err,result)=>
+                        {
+                            if(err)
+                            {
+                                console.log("ERROR: User trying to UPVOTE this ANSWER more than ONCE");
+                                res.status(403).send({ message: "ERROR: User trying to UPVOTE this ANSWER more than ONCE"});
+                            }
+                            else
+                            {
+                                //console.log("We have successfully upvoted the answer")
+                                // now lets increment points for the user who posted this answer
+                                const queryString3 = 'insert into UserPoints(userName) values(?);';
+                                sql.query(queryString3,userWhoPostedThisAnswer,(err,result)=>
+                                {
+                                    if(err )
+                                    {
+                                        console.log("Error:",err)
+                                        res.status(400).send({ message: 'This is an error!'});
+                                    }
+                                    else
+                                    {
+                                        console.log("We have successfully upvoted the answer")
+                                        res.status(200).send({message:"WE HAVE SUCCESSFULLY UPVOTED the answer"});
+                                    }
+                                });
+                            }
+                        })
+                    }   
 
-module.exports ={postAnswer,updateAnswer}
+                }
+            
+            })
+        }  
+    })  
+}
+
+module.exports ={postAnswer,updateAnswer,upvoteAnswer}

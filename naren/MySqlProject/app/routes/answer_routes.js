@@ -6,6 +6,7 @@ module.exports = app =>
     //router.get("/test",questions.testquestion);
     router.post("/addAnswer",answers.postAnswer);
     router.put("/updateAnswer",answers.updateAnswer);
+    router.post("/upvoteAnswer/:id",answers.upvoteAnswer);
  
     app.use("/answers",router)
 }
