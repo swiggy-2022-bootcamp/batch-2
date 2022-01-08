@@ -111,4 +111,9 @@ const postQuestion = (req,res) =>
     });
 }
 
-module.exports ={getAllAnswersForQuestion,postQuestion}
+
+const getAllQuestionsAndAnswers = (req,res) =>
+{
+
+}
+module.exports ={getAllAnswersForQuestion,postQuestion,getAllQuestionsAndAnswers}
