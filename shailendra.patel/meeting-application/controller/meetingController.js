@@ -54,3 +54,21 @@ exports.getMeetingForUser = (req, res) => {
         meeting_details: meetingService.getAllMeetingForUser(userId)
     });
 }
+
+exports.getMeetingDetail = (req, res) => {
+    const userId = req.body.userId;
+    const meetId = req.params['meetingId'];
+    
+    if(authService.validateUser(userId) === false)
+    {
+        return res.status(400).json({
+            error: `Invalid user ${participants[i]}`
+        })
+    }
+
+    return res.status(200).json({
+        userId: `${userId}`,
+        meeting_details: meetingService.getMeetingDetails(meetId)
+    })
+
+}

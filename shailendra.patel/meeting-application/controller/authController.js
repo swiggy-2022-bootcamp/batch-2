@@ -24,7 +24,7 @@ exports.authenticateToken = (req, res, next) => {
             error: err
         });
         req.body.userId = user.userId
-        // console.log(req.userId);
+        // console.log(req.body.userId);
         next()
         });
 }

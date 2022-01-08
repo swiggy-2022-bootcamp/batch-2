@@ -1,6 +1,5 @@
 const Meeting = require('../model/Meeting')
 const fs = require('fs');
-const { throws } = require('assert');
 
 class MeetingService{
 
@@ -26,8 +25,8 @@ class MeetingService{
     getMeetingDetails(meetId)
     {
         if(this.meetDirectory.has(meetId) === false){
-            console.log(`No Meeting with id ${meet.id}`);
-            return {}
+            console.log(`No Meeting with id ${meetId}`);
+            return {err: `No Meeting with id ${meetId}`}
         }
         // console.log(this.meetDirectory.get(meetId));
         return this.meetDirectory.get(meetId);
