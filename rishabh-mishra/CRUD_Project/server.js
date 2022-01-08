@@ -3,15 +3,18 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const serverConfig = require("./app/config/server.config");
+const Routes = require("./app/routes/index");
+const db = require("./app/models");
 
-var corsOptions = {
+// Config
+const corsOptions = {
   origin: "*",
 };
-
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const db = require("./app/models");
+// Database Connection
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
@@ -25,11 +28,14 @@ db.mongoose
     process.exit();
   });
 
+// Test Route
 app.get("/test", (req, res) => {
   res.json({ message: "welcome to NodeJS App" });
 });
 
-require("./app/routes/user.routes")(app);
+// Config Routes
+const routes = new Routes(app);
+routes.configRoutes();
 
 const PORT = serverConfig.port;
 app.listen(PORT, () => {
