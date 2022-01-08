@@ -1,4 +1,4 @@
-To spin up MYSQL server as a container
+To spin up MYSQL server as a container (what i ended up using for setting up Mysql on my laptop)
 
 ```docker run -p 3306:3306 --name nodejs-mysql -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=user_db -d mysql:5.7```
 
