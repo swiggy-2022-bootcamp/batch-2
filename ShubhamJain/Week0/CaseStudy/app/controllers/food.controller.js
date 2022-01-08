@@ -59,3 +59,14 @@ exports.deleteFoodItemById = (req, res) => {
         res.status(500).send({message: err.message || `Sorry user with Id:[${id}] not found.`})
     })
 }
+
+exports.updateFoodItemById = (req, res) => {
+    const id = req.body._id;
+    Food.findByIdAndUpdate(id, req.body, {useFindAndModify:false, new:true}).then(
+        data =>{
+            res.send(data);
+        }
+    ).catch(err=>{
+        res.status(500).send({message: `Cannot find and update the Food Item with Id:[${id}]`})
+    })
+}

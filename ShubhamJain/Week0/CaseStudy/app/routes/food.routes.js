@@ -6,6 +6,7 @@ module.exports = app => {
     router.get('/food/:id', foods.findFoodItemById);
     router.post('/food', foods.createFoodItem);
     router.delete('/food/:id', foods.deleteFoodItemById);
+    router.put('/food', foods.updateFoodItemById);
 
     app.use('/api', router);
 }
