@@ -16,7 +16,7 @@ const authRoutes = require("./route/authRoute");
 app.use(bodyParser.json());
 
 //use my routes
-app.use("/", authRoutes);
+app.use("/user", authRoutes);
 
 const server = app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

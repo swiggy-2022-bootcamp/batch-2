@@ -39,7 +39,7 @@ class AuthService {
         for(const user of this.userDirectory.values())
             obj.push(user);
 
-        fs.writeFile ("user.json", JSON.stringify(obj), function(err) {
+        fs.writeFile ("./data/user.json", JSON.stringify(obj), function(err) {
             if (err) throw err;
             console.log('complete');
         });
@@ -48,7 +48,7 @@ class AuthService {
     onstartUP(){
         var fs = require('fs');
 
-        const data = JSON.parse(fs.readFileSync("user.json"));
+        const data = JSON.parse(fs.readFileSync("./data/user.json"));
         // console.log(typeof(data));
         for(let i=0; i<data.length; i++){
             let user = Object.assign(new User(), data[i]);
