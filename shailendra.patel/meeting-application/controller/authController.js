@@ -19,16 +19,13 @@ exports.authenticateToken = (req, res, next) => {
     
     jwt.verify(token, tokenSecret, (err, userId) => {
         // console.log(err)
-    
         if (err) return res.status(403).json({
             msg: "Unauthorized, Invalid token",
             error: err
         });
-    
         req.userId = userId
-    
         next()
-        })
+        });
 }
 
 exports.signup = (req,res) => {
