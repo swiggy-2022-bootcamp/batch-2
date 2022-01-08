@@ -8,11 +8,13 @@
     "start:demo": "cross-env NODE_ENV=demo node app.js"
   },
   "dependencies": {
+    "body-parser": "^1.19.1",
     "config": "^3.3.6",
     "cookie-parser": "~1.4.4",
     "cross-env": "^7.0.3",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "mongoose": "^6.1.5",
     "morgan": "~1.9.1",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"

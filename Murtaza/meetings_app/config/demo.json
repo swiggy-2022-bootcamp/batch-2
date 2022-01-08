@@ -3,8 +3,8 @@
         "host": "localhost",
         "port": 8080,
         "db": {
-            "url":"",
-            "password":""
+            "username":"murtaza-ipp",
+            "password":"meetingsApp123"
         }    
     }
 }

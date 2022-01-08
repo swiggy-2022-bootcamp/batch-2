@@ -4,9 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const config = require('config');
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -25,8 +24,20 @@ const swaggerOptions = {
     },
     apis: ['.routes/*.js']
 }
-
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+
+const uri = `mongodb+srv://${config.get('app.db.username')}:${config.get('app.db.password')}@cluster0.juzyy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log('MongoDB Connected')
+})
+.catch(err => console.log(err))
 
 var app = express();
 
@@ -36,6 +47,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use(bodyParser.raw());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
