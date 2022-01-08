@@ -31,10 +31,6 @@ UserSchema.methods.isPasswordValid = function(password) {
     return this.hash == hash;
 };
 
-UserSchema.methods.sayHello = () => {
-    console.log("hiii");
-}
-
 UserSchema.methods.generateJWT = function() {
     var today = new Date();
     var exp = new Date(today);
@@ -46,6 +42,10 @@ UserSchema.methods.generateJWT = function() {
         exp: parseInt(exp.getTime() / 1000),
     }, config.get('app.secret'));
 };
+
+UserSchema.methods.decodeJWT = function(token) {
+    return jwt.decode(token);
+}
 
 UserSchema.methods.toJSON = function(){
     return {

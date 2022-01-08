@@ -1,4 +1,4 @@
-const UserModel = require('../../infrastructure/models/User');
+const UserModel = require('../../models/User');
 
 const createUserIfNotExists = async userDomainEntity => {
 
@@ -37,14 +37,22 @@ const authenticateUser = async (username, password) => {
 }
 
 const findUserByUsername = async (username) => {
-    const user = await UserModel.findOne({username: username});
-    if (user)
-        return user;
-    else
-        throw err;
+    return await UserModel.findOne({username: username});
 } 
+
+const findUserByUserId = async (userId) => {
+    let result;
+    await UserModel.findOne({id: userId}).then(user => {
+        delete user.hash;
+        delete user.salt;
+        result = {data: user, message: "User fetched succesfully"};
+    }).catch(err => result = {message: `No user details found for user id: ${userId}`});
+
+    return result;
+}
 
 module.exports = {
     createUserIfNotExists: createUserIfNotExists,
-    authenticateUser: authenticateUser
+    authenticateUser: authenticateUser,
+    findUserByUserId: findUserByUserId
 }
