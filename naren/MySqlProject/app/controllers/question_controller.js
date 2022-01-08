@@ -111,9 +111,57 @@ const postQuestion = (req,res) =>
     });
 }
 
+//GET API for all questions and answers
 
 const getAllQuestionsAndAnswers = (req,res) =>
 {
+    // display object made for displaying the result
+    const displayObject = {};
 
+    const queryString = 'select * from Questions order by questionId;';
+    sql.query(queryString,(err,result) => 
+    {
+        if(err)
+        {
+            console.log("error: ",err)
+            res.status(404).send({ message: 'This is an error!'});
+        }
+        else
+        {
+            result = JSON.parse(JSON.stringify(result));
+            for (var index =0;index<result.length;index++)
+            {
+                var questionBody = {}
+                questionBody.question = result[index].content;
+                questionBody.answers=[];
+                var questionId = String(result[index].questionId);
+                // building the question part of the object
+                displayObject[questionId]=questionBody;
+            }
+            const queryString2 = 'select * from Answers order by answerId;';
+            sql.query(queryString2,(err,result) => 
+            {
+                if(err)
+                {
+                    console.log("error: ",err)
+                    res.status(404).send({ message: 'This is an error!'});
+                }
+                else
+                {
+                    result = JSON.parse(JSON.stringify(result));
+                    for (var index =0;index<result.length;index++)
+                    {
+                        var questionId = String(result[index].questionId)
+                        var answerContent = result[index].content;
+                        // collecting all answers for each question
+                        displayObject[questionId].answers.push(answerContent)
+                    }
+                    // collected all questions and answers within display object
+                    console.log(displayObject);
+                    res.status(200).send(JSON.stringify(displayObject));
+                }    
+            });
+        }
+    })
 }
 module.exports ={getAllAnswersForQuestion,postQuestion,getAllQuestionsAndAnswers}
