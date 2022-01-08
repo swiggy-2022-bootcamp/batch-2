@@ -1,5 +1,6 @@
 require('dotenv').config({ path: __dirname + '/.env' });
 require('./src/config/dbConn');
+require('./src/config/sequelizeConn');
 
 const express = require('express');
 const app = express();
