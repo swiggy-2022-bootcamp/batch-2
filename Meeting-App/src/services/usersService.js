@@ -9,7 +9,7 @@ const createUserService = async (user) => {
         const result = await User.create(user);
         return result;
     } catch (e) {
-        throw Error('Unable to create a User');
+        throw Error(e.message);
     } 
 }
 
@@ -25,7 +25,7 @@ const getUserByEmailService = async (email) => {
         });
         return user;
     } catch (e) {
-        throw Error('Unable to get a User')
+        throw Error(e.message);
     }
 }
 
