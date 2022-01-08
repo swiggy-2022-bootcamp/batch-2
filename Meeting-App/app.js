@@ -5,13 +5,12 @@ require('./src/config/sequelizeConn');
 const express = require('express');
 const app = express();
 
+const userRoutes = require('./src/routes/usersRoute');
+
 const PORT = process.env.PORT;
 
 app.use(express.json());
-
-app.get('/', (req, res) => {
-    res.send('Welcome to Meeting Application');
-});
+app.use('/users', userRoutes);
 
 app.listen(PORT, () => {
   	console.log(`Meeting App Running on Port: ${PORT} (http://localhost:${PORT})`);
