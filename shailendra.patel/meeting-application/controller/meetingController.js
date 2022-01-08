@@ -41,9 +41,16 @@ exports.createMeeting = (req, res) => {
     const newMeeting = new Meeting(meetId, new Date(dateOfMeeting), startTime, endTime, description, invitees);
     
     //store meeting in db
-    meetingService.addMeeting(newMeeting);
-    
+    meetingService.createMeeting(newMeeting);
     return res.status(201).json({
         meetingDetails: newMeeting
+    });
+}
+
+exports.getMeetingForUser = (req, res) => {
+    const userId = req.body.userId;
+    return res.status(200).json({
+        userId: `${userId}`,
+        meeting_details: meetingService.getAllMeetingForUser(userId)
     });
 }

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const { check } = require('express-validator');
-const {createMeeting} = require('../controller/meetingController')
+const {createMeeting, getMeetingForUser} = require('../controller/meetingController')
 const { authenticateToken } = require('../controller/authController')
 
 router.post("/meeting", [
@@ -13,5 +13,7 @@ router.post("/meeting", [
     check("description", "Description should not be empty").isLength({min:1}),
     check("participants", "Participants should not be empty").isLength({min:1})
 ],createMeeting);
+
+router.get("/user/meetings", authenticateToken, getMeetingForUser);
 
 module.exports = router;
