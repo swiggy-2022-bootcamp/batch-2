@@ -1,0 +1,4 @@
+undefined [info]: #signup Request recieved for signing up the user: [object Object]
+undefined [info]: #newToken Request recieved for generating new json web token having payload section [object Object].
+undefined [info]: #signup Request recieved for signing up the user: {"email":"Loyce.Swaniawski93@gmail.com","password":"D{X}7]t~X#6sNK$8","firstName":"Cristian","secondName":"Stokes","developerProfile":{"company":"Cruickshank - Olson","githubId":"http://sophia.biz","mobileNumber":"484-689-1069"}}
+undefined [info]: #newToken Request recieved for generating new json web token having payload section {"id":"61da167c32ea67e2f98675e4"}.
