@@ -5,6 +5,7 @@
         "db": {
             "username":"murtaza-ipp",
             "password":"meetingsApp123"
-        }    
+        },
+        "secret": "gringotts"    
     }
 }
