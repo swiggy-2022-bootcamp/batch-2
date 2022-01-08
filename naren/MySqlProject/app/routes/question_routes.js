@@ -3,6 +3,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.get("/test",questions.testquestion);
+    router.post("/addquestion",questions.postQuestion);
  
     
 
