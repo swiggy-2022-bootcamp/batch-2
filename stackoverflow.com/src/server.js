@@ -9,6 +9,12 @@ app.use(express.json({ extended: false }));
 app.use(morgan("dev"));
 
 
+app.post("/signup", signup);
+app.post("/signin", signin);
+
+app.use("/api", protect);
+
+
 
 export const start = async () => {
     try {
