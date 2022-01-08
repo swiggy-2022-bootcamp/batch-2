@@ -14,7 +14,7 @@ app.get("/test",(req,res) => {
     res.json({message:"welcome to NodeJS App"})
 });
 
-require("./app/routes/user.routes")(app);
+require("./app/routes/user_routes")(app);
 
 const PORT = 8080;
 app.listen(PORT,() => {

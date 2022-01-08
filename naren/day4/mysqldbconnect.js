@@ -6,12 +6,12 @@ var connect1 = mysql.createConnection(
     {
         host:"localhost",
         user:"root",
-        password:"something"
+        password:"espf105!"
     }
 );
 
 connect1.connect(function(err)
 {
     if(err) throw err;
-    console.log("connected");
+    console.log("connected successfully");
 });
