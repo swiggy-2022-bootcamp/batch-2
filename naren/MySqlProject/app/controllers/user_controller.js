@@ -1,7 +1,5 @@
 const sql = require("./db.js")
 
-
-
 // LOGIN
 
 const loginUser = (req,res) =>
