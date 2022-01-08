@@ -60,6 +60,7 @@ const createUser = (req,res) =>
 }
 
 // list all users
+
 const listAllUsers = (req,res) =>
 {
     sql.query("Select * from UserDetails",(err,result) => 
@@ -77,6 +78,7 @@ const listAllUsers = (req,res) =>
        
     });
 }
+
 module.exports = {createUser,listAllUsers}
 
 
