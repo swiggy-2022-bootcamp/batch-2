@@ -15,3 +15,49 @@ export const verifyToken = (token) =>
       resolve(payload);
     });
   });
+
+export const signup = async (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).send({ message: "Email and Password are required" });
+  }
+
+  try {
+    const user = await User.create(req.body);
+    const token = newToken(user);
+    return res
+      .status(201)
+      .send({ email: user._doc.email, access_token: token });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).end();
+  }
+};
+
+export const signin = async (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).send({ message: "Email and Password are required" });
+  }
+
+  const invalid = { message: "Sorry invalid credentials" };
+
+  try {
+    const user = await User.findOne({ email: req.body.email })
+      .select("email password")
+      .exec();
+
+    if (!user) {
+      return res.status(401).send(invalid);
+    }
+
+    const match = await user.checkPassword(req.body.password);
+
+    if (!match) {
+      return res.status(401).send(invalid);
+    }
+
+    const token = newToken(user);
+    return res.status(201).send({ token });
+  } catch (e) {
+    res.status(500).end();
+  }
+};
