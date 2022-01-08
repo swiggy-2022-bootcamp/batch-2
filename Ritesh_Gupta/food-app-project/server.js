@@ -12,9 +12,12 @@ app.use(express.json());
 
 // Routes
 const registerRoute = require('./routes/register');
+const authenticateRoute = require('./routes/authenticate');
 
 
 app.use('/api/register', registerRoute);
+app.use('/api/authenticate', authenticateRoute);
+
 
 app.listen(port, () => {
     console.log("Connection successful port : ", port);
