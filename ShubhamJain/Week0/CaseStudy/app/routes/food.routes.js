@@ -3,5 +3,6 @@ module.exports = app => {
     var router = require('express').Router();
 
     router.get('/food', foods.findAllFoods);
+    router.post('/food', foods.createFoodItem);
     app.use('/api', router);
 }

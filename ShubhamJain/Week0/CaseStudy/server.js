@@ -29,6 +29,7 @@ app.get("/test",(req,res) => {
 });
 
 require("./app/routes/user.routes")(app);
+require("./app/routes/food.routes")(app);
 
 const PORT = 8080;
 app.listen(PORT,() => {
