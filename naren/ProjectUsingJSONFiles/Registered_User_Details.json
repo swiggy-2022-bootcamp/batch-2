@@ -1,0 +1,62 @@
+{
+  "user1": {
+    "name": "mahesh",
+    "userName": "naren1@gmail.com",
+    "password": "password1"
+  },
+  "user2": {
+    "name": "suresh",
+    "userName": "naren2@gmail.com",
+    "password": "password2"
+  },
+  "user3": {
+    "name": "ramesh",
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+  },
+  "user4": {
+    "name": "suresh",
+    "userName": "naren4@gmail.com",
+    "password": "password4"
+  },
+  "newusernaren5@gmail.com": {
+    "name": "cristiano",
+    "userName": "naren5@gmail.com",
+    "password": "password5"
+  },
+  "newusernaren6@gmail.com": {
+    "name": "ronaldo",
+    "userName": "naren6@gmail.com",
+    "password": "password6"
+  },
+  "newusernaren7@gmail.com": {
+    "name": "varun",
+    "userName": "naren7@gmail.com",
+    "password": "password7"
+  },
+  "newusernaren8@gmail.com": {
+    "name": "varun2",
+    "userName": "naren8@gmail.com",
+    "password": "password8"
+  },
+  "newusernaren9@gmail.com": {
+    "name": "bharath",
+    "userName": "naren9@gmail.com",
+    "password": "password9"
+  },
+  "newusernaren10@gmail.com": {
+    "name": "cavani",
+    "userName": "naren10@gmail.com",
+    "password": "password10"
+  },
+  "newuser_naren11@gmail.com": {
+    "name": "greenwood",
+    "userName": "naren11@gmail.com",
+    "password": "password11"
+  },
+  "newuser_naren12@gmail.com": {
+    "name": "lukaku",
+    "userName": "naren12@gmail.com",
+    "password": "password12"
+  }
+}
