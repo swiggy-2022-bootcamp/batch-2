@@ -37,10 +37,10 @@
           {
             "name": "user-details",
             "in": "body",
-            "description": "User credentials for user register.",
+            "description": "User credentials for user registration.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/UserDtls"
+              "$ref": "#/definitions/User"
             }
           }
         ],
@@ -88,13 +88,10 @@
             "description": "Bad Request"
           },
           "401": {
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Login401ErrorResponse"
-            },
-            "description": "Unauthorized."
-          },
-          "404": {
-            "description": "Not Found"
+            }
           }
         }
       }
@@ -119,17 +116,17 @@
               "$ref": "#/definitions/UserProfile"
             }
           },
-          "403": {
-            "description": "Forbidden"
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "User Not Found.",
             "schema": {
               "$ref": "#/definitions/FetchUser404ErrorResponse"
             }
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -181,6 +178,54 @@
           }
         }
       },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for updating an user.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "user-details",
+            "in": "body",
+            "description": "User details.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User update successful.",
+            "schema": {
+              "$ref": "#/definitions/UpdatedUser"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User Not Found.",
+            "schema": {
+              "$ref": "#/definitions/FetchUser404ErrorResponse"
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "User"
@@ -207,17 +252,17 @@
               "$ref": "#/definitions/UserDeletedSuccessMessage"
             }
           },
-          "403": {
-            "description": "Forbidden"
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "User Not Found.",
             "schema": {
               "$ref": "#/definitions/FetchUser404ErrorResponse"
             }
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -620,6 +665,10 @@
         "message": {
           "type": "string",
           "example": "User logged in successfully!"
+        },
+        "token": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWQ4NjFiNzNkN2UwMzYzZDlmNGY0YjkiLCJpYXQiOjE2NDE1NzA3OTMsImV4cCI6MTY0MTU3MTM5M30.NbPF0xEtsYSvYopE9nD5FDMbqmCqoi_ZO4NhLj2yN2E"
         }
       }
     },
@@ -628,7 +677,7 @@
       "properties": {
         "message": {
           "type": "string",
-          "example": "Sorry, invalid credentials!"
+          "example": "User Name is not registered!"
         }
       }
     },

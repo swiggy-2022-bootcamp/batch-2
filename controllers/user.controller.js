@@ -177,25 +177,25 @@ module.exports.updateUser = (req, res) => {
             schema: { $ref: "#/definitions/User" }
     } */
 
-    var user = new User({
+    var user = {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
         phone: req.body.phone,
         address: req.body.address
-    });
-    User.findOneAndUpdate({ id: req.params.id }, { $set: user }, { new: true }, (err, doc) => {
+    };
+    User.findOneAndUpdate({ _id: req._id }, { $set: user }, { new: true }, (err, doc) => {
         if (!doc) {
             /* #swagger.responses[404] = { 
                 schema: { $ref: "#/definitions/FetchUser404ErrorResponse" },
                 description: 'User Not Found.' 
             } */
             res.status(404).send({
-                "message": `Sorry, user with id: ${req.params.id} not found!`
+                "message": `Sorry, user with id: ${req._id} not found!`
             });
         }
         else if (!err) {
-            /* #swagger.responses[200] = { 
+            /* #swagger.responses[200] = {
                 schema: { $ref: "#/definitions/UpdatedUser" },
                 description: 'User update successful.' 
             } */
