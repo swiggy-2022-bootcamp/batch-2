@@ -216,4 +216,69 @@ const getVoteCountOfAnswers = (req,res) =>
 }
 
 
-module.exports ={postAnswer,updateAnswer,upvoteAnswer,getPrivilegedUsers,getVoteCountOfAnswers}
+// API TO DELETE ANSWER
+
+const deleteAnswer = (req,res) =>
+{
+    const userData =
+    {       
+        userName : req.body.userName,
+        password : req.body.password
+    }
+    const answerId = req.params.id
+
+    const authenticateQueryString = 'SELECT * FROM UserDetails where userName = ? and password =?;';
+    sql.query(authenticateQueryString,[userData.userName,userData.password],(err,result) => 
+    {
+        if(err ||result.length == 0 )
+        {
+            console.log("Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN");
+            res.status(401).send({ message: "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"});
+        }
+        else
+        {
+            const queryString = 'SELECT * FROM Answers where answerId = ? and userName =?;';
+    
+            sql.query(queryString,[answerId,userData.userName],(err,result) => 
+            {
+                if(err || result.length ==0)
+                {
+                    console.log("error: INVALID ANSWER ID OR USER has not posted this answer ")
+                    res.status(404).send({ message: 'This is an error! INVALID ANSWER ID OR USER has not posted this answer'});
+            
+                }
+                else
+                {   // first have to remove from votes table. since it has foreign key referencing answers table;
+                    const deleteQueryString = 'delete from Votes where answerId =?;';
+                    sql.query(deleteQueryString,answerId,(err,result)=>
+                    {
+                        if(err)
+                        {
+                            console.log("error: ",err)
+                            res.status(400).send({ message: 'This is an error!'});
+                        }
+                        else
+                        {
+                            const deleteQueryString2 = 'delete from Answers where answerId =?;';
+                            sql.query(deleteQueryString2,answerId,(err,result)=>
+                            {
+                                if(err)
+                                {
+                                    console.log("error: ",err)
+                                    res.status(400).send({ message: 'This is an error!'});
+                                }
+                                else
+                                {
+                                    console.log("SUCCESSFULLY DELETED ANSWER")
+                                    res.status(200).send({ message: "SUCCESFULLY DELETED ANSWER"});
+                                }
+                            })
+                        }
+                    })    
+                }
+            });   
+        }
+    })
+}   
+
+module.exports ={postAnswer,updateAnswer,upvoteAnswer,getPrivilegedUsers,getVoteCountOfAnswers,deleteAnswer}
