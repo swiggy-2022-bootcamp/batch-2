@@ -7,10 +7,11 @@ const customLogFormat = winston.format.printf(({ level, message, timestamp }) =>
 
 export const logger = winston.createLogger({
   level: 'info',
-  format: customLogFormat,
+  format: winston.format.combine(
+    winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+    customLogFormat
+  ),
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: './logs/combined.log' }),
     new winston.transports.Console()
   ],
 });
