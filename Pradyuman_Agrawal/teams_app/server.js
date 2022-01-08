@@ -9,13 +9,13 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions));
-app.use(express.json())
+app.use(express.json());
 
 app.get("/test",(req,res) => {
     res.json({message:"welcome to NodeJS App"})
 });
 
-require("./app/routes/user.routes")(app);
+require("./routes/users")(app);
 
 const PORT = process.env.PORT||3000
 app.listen(PORT,() => {
