@@ -1,9 +1,51 @@
 const sql = require("./db.js")
 
 
-const testquestion = (req,res) =>
+const getAllAnswersForQuestion = (req,res) =>
 {
-    res.json({message:"we can start writing question controller"})
+    
+    const displayObject =
+    {
+        "Question" : "",
+        "Answers" : []
+    }
+    
+    const questionId = req.params.id;
+    const queryString = 'select content from Questions where questionId = ?'
+    
+    sql.query(queryString,questionId,(err,result) => 
+    {
+        if((err) || result.length == 0)
+        {
+            console.log("error: INVALID QUESTION ID ")
+            res.status(404).send({ message: 'This is an error! INVALID QUESTION ID'});
+        }
+        else
+        {
+            displayObject.Question = result[0].content;
+            const queryString2 = 'select content from Answers where questionId = ? order by answerId;'
+            sql.query(queryString2,questionId,(err,result) => 
+            {
+                if(err)
+                {
+                    console.log("error: ",err)
+                    res.status(404).send({ message: 'This is an error!'});
+                }
+                else
+                {
+                    result = JSON.parse(JSON.stringify(result));
+
+                    for (var index =0;index<result.length;index++)
+                    {
+                        displayObject.Answers.push(result[index].content);
+                    }
+                    console.log(JSON.stringify(displayObject));
+                    res.status(200).send(JSON.stringify(displayObject));
+                }       
+       
+            });
+        }
+    });
 }
 
 
@@ -38,4 +80,4 @@ const postQuestion = (req,res) =>
     })
 }
 
-module.exports ={testquestion,postQuestion}
+module.exports ={getAllAnswersForQuestion,postQuestion}
