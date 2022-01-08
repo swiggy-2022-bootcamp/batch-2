@@ -24,6 +24,8 @@ const Question = mongoose.model('Question', {
                 type: String,
                 required: true,
             }
-        }
+        },
     ],
 });
+
+module.exports = Question;
