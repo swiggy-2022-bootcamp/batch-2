@@ -19,7 +19,7 @@ const postQuestion = (req,res) =>
     const userData =
     {
         userName : req.body.user_Details.userName,
-        password : req.body.password
+        password : req.body.user_Details.password
     }
     // lets do the authentication part later
     const queryString = 'INSERT INTO Questions SET ?;';
