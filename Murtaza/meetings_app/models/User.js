@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     emailAddress: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true},
     username: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true},
     bio: {type: String, required: false},
-    meetings: {type: Array, required: false},
+    meetings: [{type: Number, default: []}],
     teams: {type: Array, required: false},
     hash: String,
     salt: String
@@ -62,5 +62,5 @@ UserSchema.methods.toJSON = function(){
     };
 };
 
-const userModel = mongoose.model('User', UserSchema);
-module.exports = userModel;
+const UserModel = mongoose.model('User', UserSchema);
+module.exports = UserModel;

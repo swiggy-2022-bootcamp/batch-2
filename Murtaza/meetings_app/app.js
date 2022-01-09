@@ -6,8 +6,6 @@ const config = require('config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const logger = require('./config/logger');
-
-const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 
@@ -51,7 +49,7 @@ app.use(bodyParser.raw());
 app.use(logger.express);
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 
 app.listen(config.get('app.port'), function() {
     console.log(`App listening on ${config.get('app.port')}`);

@@ -1,4 +1,4 @@
-const UserModel = require('../../models/User');
+const UserModel = require('../models/User');
 
 const createUserIfNotExists = async userDomainEntity => {
 

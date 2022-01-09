@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
 const meetingsRouter = require('./meetings');
-const userService = require('../../domain/services/userService');
+const userService = require('../../services/userService');
 const logger = require('../../config/logger');
 const util = require('../util');
 const auth = require('../auth');
 
-router.use('/:userId/meetings', meetingsRouter);
+router.use('/meetings', meetingsRouter);
 
-router.get('/:userId', auth, async (req, res) => {
-  let result = await userService.findUserByUserId(req.params.userId);  
+router.get('/', auth, async (req, res) => {
+  let result = await userService.findUserByUserId(res.locals.userId);  
   if (result.data) {
     res.status(200);
     res.json({status: 200, data: result.data, message: result.message});

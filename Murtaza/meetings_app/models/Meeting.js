@@ -1,14 +1,19 @@
 const mongoose = require('mongoose');
 const UserModel = require('./User.js');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const UserSchema = new mongoose.Schema({
-    id: {type: Number, required: false},
+const MeetingSchema = new mongoose.Schema({
+    meetingId: {type: Number, required: false},
     description: {type: String, required: true},
-    users: {type: Array(UserModel), required: true}
+    startTime: {type: Date, required: true},
+    endTime: {type: Date, required: true},
+    users: [{type: mongoose.Schema.Types.ObjectId,ref:'User'}]
 },
 {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+    timestamps: true
 })
 
-const userModel = mongoose.model('Users', UserSchema);
-module.exports = userModel;
+MeetingSchema.plugin(AutoIncrement, {inc_field: 'meetingId'});
+
+const MeetingModel = mongoose.model('Meeting', MeetingSchema);
+module.exports = MeetingModel;

@@ -7,10 +7,11 @@ module.exports = (req, res, next) => {
     if (token == undefined) 
         throw new Error("Auth token missing");
 
-    const isUserRequestAuthenticated = jwt.verify(token, config.get('app.secret'));
-
-    if (isUserRequestAuthenticated)
+    const authenticatedUser = jwt.verify(token, config.get('app.secret'));
+    console.log(authenticatedUser);
+    if (authenticatedUser) {
+        res.locals.userId = authenticatedUser.id;
         next();
-    else
+    } else
         throw new Error("Invalid auth token");
 }
