@@ -38,7 +38,6 @@ exports.getQuestionById = async (req, res) => {
     }
 };
 
-
 exports.removeQuestion = async (req, res, next) => {
     try {
         await req.question.remove();
