@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # swiggy-backend-api
  Backend APIs for an online Food Ordering Platform.
 
@@ -50,3 +51,6 @@ We need to solve the given problem by developing a web application, that should 
 * <strong>utils</strong>: This module contains all the app util implementations.
 
 ### Developed by [Ranajoy Hajra](mailto:ranajoyhajra@gmail.com), a software developer by profession and web app development connoiseur by heart!
+=======
+# batch-2
+>>>>>>> 9e415dacc8d26b0beb82ee8cd7fa882a40ee5c65
