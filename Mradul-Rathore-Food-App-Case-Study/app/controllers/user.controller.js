@@ -91,3 +91,14 @@ exports.authenticate = async (req, res) => {
     }
 }
 
+//fetch all users
+exports.fetchAllUsers = (req, res) => {
+    User.find().then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "error while retrieving the users."
+        })
+    })
+}
+
