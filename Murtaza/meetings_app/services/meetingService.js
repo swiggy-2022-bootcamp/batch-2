@@ -11,7 +11,8 @@ const createMeeting = async (creatorUserId, startTime, endTime, description, par
     const creator = await UserModel.findOne({id: creatorUserId});
     meeting.participants.push(creator);
 
-    await addParticipantsToMeeting(participantEmailAddresses, meeting);
+    if (participantEmailAddresses.length > 0)
+        await addParticipantsToMeeting(participantEmailAddresses, meeting);
     
     let response;
     await meeting.save().then((newMeeting)=>{
@@ -35,7 +36,7 @@ const updateParticipantsWithMeetingId = async (participants, meetingIdToBeAdded)
 const removeMeetingIdFromParticipants = async (participants, meetingIdToBeRemoved) => {
     for await (let participant of participants) {
         participant.meetings = participant.meetings.filter((meetingId) => meetingId != meetingIdToBeRemoved);
-        await participant.save();
+        await participant.updateOne();
     }
 }
 
@@ -56,6 +57,7 @@ const removeParticipantsFromMeeting = async (participantEmailAddressesToBeRemove
         
     let removedParticipants = exisingMeetingParticipants
         .filter((participant) => (participant.emailAddress in participantEmailAddressesToBeRemoved));
+    console.log(removedParticipants);
     await removeMeetingIdFromParticipants(removedParticipants, meetingWithParticipantInfo.meetingId);
 }
 
@@ -89,19 +91,18 @@ const findMeetingByMeetingId = async(userId, meetingId) => {
     return {status: 200, data: meetingInfo, message: "Meeting Details fetched succesfully"};
 }
 
-const updateMeeting = async (userId, meetingId, startTime, endTime, description, addParticipantEmailAddresses, removeParticipantEmailAddresses) => {
+const updateMeeting = async (userId,
+                            meetingId,
+                            startTime,
+                            endTime,
+                            description) => {
 
-    let user = UserModel.findOne({id: userId});
+    let user = await UserModel.findOne({id: userId});
     let isMeetingIdValid = user.meetings.includes(meetingId);
     let meetingWithParticipantInfo = {};
 
     if (isMeetingIdValid) {
-        meetingWithParticipantInfo = await MeetingModel.findOne({meetingId: meetingId}).populate({
-            path: 'participants',
-            transform: function(doc) {
-                return doc.emailAddress;
-            }
-        });
+        meetingWithParticipantInfo = await MeetingModel.findOne({meetingId: meetingId}).populate('participants');
 
         if (startTime && endTime) {
             meetingWithParticipantInfo.setMeetingTime(startTime, endTime);
@@ -115,12 +116,11 @@ const updateMeeting = async (userId, meetingId, startTime, endTime, description,
             meetingWithParticipantInfo.description = description;
         }
 
-        if (addParticipantEmailAddresses) {
-            await addParticipantsToMeeting(addParticipantEmailAddresses, meetingWithParticipantInfo);        
-            await updateParticipantsWithMeetingId(meetingWithParticipantInfo.participants, meetingWithParticipantInfo.meetingId);
-        }
-        if (removeParticipantEmailAddresses)
-            await removeParticipantsFromMeeting(removeParticipantEmailAddresses, meetingWithParticipantInfo);
+        let data = await meetingWithParticipantInfo.save();
+        
+        return {data: data, message: "Meeting updated successfully"};
+    } else {
+        return {message: "Invalid Meeting id"};
     }
 }
 
@@ -153,11 +153,40 @@ const searchMeeting = async (userId, description, fromStartTime, toEndTime) => {
     }
 }
 
+const dropMeeting = async (userId, meetingIdToBeRemoved) => {
+    let user = await UserModel.findOne({id: userId});
+    if (user.meetings.includes(meetingIdToBeRemoved)) {
+        let updatedMeetingIds = [];
+        for (let meetingId of user.meetings) {
+            if (meetingId != meetingIdToBeRemoved)
+                updatedMeetingIds.push(meetingId);
+        }
+
+        user.meetings = [];
+        user.meetings.push(...updatedMeetingIds);
+        user = await user.save();
+
+        let meetingWithParticipantIds = await MeetingModel.findOne({meetingId: meetingIdToBeRemoved}, {participants: 1}).populate('participants');
+        let updatedParticipants = [];
+
+        for await(let participant of meetingWithParticipantIds.participants) {
+            if (participant.id != userId)
+                updatedParticipants.push(participant);
+        }
+
+        meetingWithParticipantIds.participants = [];
+        meetingWithParticipantIds.participants.push(...updatedParticipants);
+        await meetingWithParticipantIds.save();
+    }
+}
+
 module.exports = {
     createMeeting: createMeeting,
     findAllMeetingsForUser: findAllMeetingsForUser,
     findMeetingByMeetingId: findMeetingByMeetingId,
-    searchMeeting: searchMeeting
+    searchMeeting: searchMeeting,
+    updateMeeting: updateMeeting,
+    dropMeeting: dropMeeting
 }
 
 

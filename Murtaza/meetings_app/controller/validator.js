@@ -37,7 +37,8 @@ const validateCreateMeetingRequest = async (req, res, next) => {
     let requestPayload = req.body;
     if(("startTime" in requestPayload) 
         && ("endTime" in requestPayload)
-        && ("participantEmailAddresses" in requestPayload)
+        && ("participants" in requestPayload)
+        && ("add" in requestPayload.participants)
         && ("description" in requestPayload)) {
             next();
     } else {
@@ -55,42 +56,34 @@ const validateFindMeetingRequest = async (req, res, next) => {
     }
 }
 
-const validateUpdateMeetingRequest = async (req, res, next) => {
-    validateMeetingTimeInfo(req, res);
-    validateAddParticipantRequest(req, res);
-    validateRemoveParticipantRequest(req, res);
-    next();
-}   
-
 const validateMeetingTimeInfo = (req, res, next) => {
     let startTime = req.body.startTime;
     let endTime = req.body.endTime;
     if (startTime && endTime) {
+        if (startTime > endTime) {
+            res.status(400).json({message: "start date cannot be after the end date"});
+            return res.end();
+        }
+        
         if (startTime < Date.now()) {
             res.status(400).json({message: "cannot schedule a meeting in the past"});
             return res.end();
         }
-        if (startTime >= endTime) {
-            res.status(400).json({message: "start date cannot be after the end date"});
-            return res.end();
-        }
+        
         next();
     }
 }
 
 const validateAddParticipantRequest = async (req, res, next) => {
-    let addParticipantEmailAddresses;
+    let addParticipantEmailAddresses = req.body.participants.add;
     let existingParticipantEmailAddresses = [];
     if (req.params.meetingId) {
         existingParticipantEmailAddresses = await MeetingModel.findOne({meetingId: req.params.meetingId}, {participants:1})
             .populate({
                 path: 'participants',
                 transform: (doc) => doc.emailAddress
-            });
-        addParticipantEmailAddresses = req.body.addParticipantEmailAddresses;
-    } else {
-        addParticipantEmailAddresses = req.body.participantEmailAddresses;
-    }
+            }); 
+    } 
 
     let invalidEmailAddresses = [];
     for await(participantEmailAddress of addParticipantEmailAddresses) {
@@ -109,30 +102,6 @@ const validateAddParticipantRequest = async (req, res, next) => {
         return res.end();
     }
     next();
-}
-
-const validateRemoveParticipantRequest = async (req, res, next) => {
-    let existingParticipantEmailAddresses = await MeetingModel.findOne({meetingId: req.params.meetingId}, {participants:1})
-        .populate({
-            path: 'participants',
-            transform: (doc) => doc.emailAddress
-        });
-    
-    let removeParticipantEmailAddresses = req.body.removeParticipantEmailAddresses;
-
-    if (removeParticipantEmailAddresses) {
-        let invalidEmailAddresses = [];
-        removeParticipantEmailAddresses.array.forEach(participantEmailAddress => {
-            if (!(participantEmailAddress in existingParticipantEmailAddresses)) {
-                invalidEmailAddresses.push(participantEmailAddress);
-            }
-        });
-        if (invalidEmailAddresses.length > 0) {
-            res.json({data: invalidEmailAddresses, message: "Cannot remove Email Address which are not a participant for this meeting"}).status(400);
-            return res.end();
-        }
-        next();
-    }
 }
 
 const validateSearchQuery = (req, res, next) => {
@@ -156,7 +125,6 @@ module.exports = {
     validateCreateMeetingRequest: validateCreateMeetingRequest,
     validateFindMeetingRequest: validateFindMeetingRequest,
     validateAddParticipantRequest: validateAddParticipantRequest,
-    validateRemoveParticipantRequest: validateRemoveParticipantRequest,
     validateMeetingTimeInfo: validateMeetingTimeInfo,
     validateSearchQuery: validateSearchQuery
 }
