@@ -46,7 +46,7 @@ We currently facilitate 12 kinds of requests.
 8) Make the requests on POSTMAN. Please refer to the TestCases.txt for example requests.
 
 # ASSUMPTIONS 
-1)User can answer a particular question only ONCE. IF HE Wants to change his answer, he can update his previous answer to that question USING A PUT REQUEST.
+1) User can answer a particular question only ONCE. IF HE Wants to change his answer, he can update his previous answer to that question USING A PUT REQUEST.
 2) POINTS collected by a user based on upvotes, ONLY INCREASES. Even he deletes his answer, the points collected based on his upvotes for that answer earlier will remain and wont decrease.
 3) AN ANSWER CAN be upvoted only ONCE by a particular user, EVEN IF the answer is updated the user who posted the answer.
 4) Cannot update a question’s content. Please post a new question.
@@ -56,12 +56,10 @@ We currently facilitate 12 kinds of requests.
 
 # EXTENSIONS
 The application can easily be extended to serve
-1)Delete question. , so all its answers also gets deleted.
-2)Get all particular users questions - read query- select
-Based on username
-3) Get all particular users answers - read query - select
-Based on username
-4)Display MOST upvoted answer for a question Based on question Id
+1) Delete question. , so all its answers also gets deleted.
+2) Get all particular users questions - read query- select Based on username
+3) Get all particular users answers - read query - select Based on username
+4) Display MOST upvoted answer for a question Based on question Id
 5) VOTE QUESTIONS- same logic as vote answers
 
 # OUTSIDE THE SCOPE OF THE PROJECT
