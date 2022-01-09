@@ -1,0 +1,420 @@
+ALL THE JSON BODY CONTENT SHOULD BE PUT In raw:JSON body of POSTMAN CLIENT.
+
+*******************************************************
+USE CASE 1 OF CASE STUDY: LOGIN INTO APPLICATION
+
+TEST CASE 1
+REQUEST TYPE: POST
+http://localhost:8080/users/login
+{
+    "userName": "naren3@gmail.com",
+    "password": "password4"
+}
+RESPONSE:
+STATUS : 401
+{
+    "message": "Password incorect.Please try again"
+}
+
+TEST CASE 2
+REQUEST TYPE: POST
+http://localhost:8080/users/login
+{
+    "userName": "naren27@gmail.com",
+    "password": "password4"
+}
+RESPONSE:
+STATUS : 403
+{
+    "message": "Username NOT YET registered.Please register first"
+}
+
+TEST CASE 3
+REQUEST TYPE: POST
+http://localhost:8080/users/login
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS : 200
+{
+    "message": "SUCCESSFULY LOGGED IN"
+}
+
+*******************************************************
+USE CASE 2 OF CASE STUDY: CREATE A NEW USER
+
+TEST CASE 1
+REQUEST TYPE: POST
+http://localhost:8080/users/registerUser
+{
+"registrationName": "naren8",
+"userName": "naren8@gmail.com",
+"password": "password8"
+}
+RESPONSE:
+STATUS : 403
+{
+    "message": "Username already registered. Please choose another"
+}
+
+TEST CASE 2
+REQUEST TYPE: POST
+http://localhost:8080/users/registerUser
+{
+"registrationName": "naren9",
+"userName": "naren9@gmail.com",
+"password": "password9"
+}
+RESPONSE:
+STATUS : 201
+{
+    "message": "User created Successfully"
+}
+
+*******************************************************
+USE CASE 3 OF CASE STUDY : POSTING A NEW QUESTION
+
+TEST CASE 1
+REQUEST TYPE: POST
+http://localhost:8080/questions/addQuestion
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password4"},
+    "question": "how do i install node js?"
+}
+RESPONSE:
+STATUS : 201
+{
+    "message": "Question posted Successfully with ID 111"
+}
+
+TEST CASE 2
+REQUEST TYPE: POST
+http://localhost:8080/questions/addQuestion
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password4"},
+    "question": "how do i install node js?"
+}
+RESPONSE:
+STATUS : 401
+{
+    "message": "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"
+}
+
+*******************************************************
+USE CASE 4 OF CASE STUDY -Part 1 : POSTING A ANSWER
+
+TEST CASE 1
+REQUEST TYPE: POST
+http://localhost:8080/answers/addAnswer
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password4"},
+    "question": {"questionId": 101, "answer" :" firefox is better than chrome"}
+}
+RESPONSE:
+STATUS : 201
+{
+    "message": "Answer for posted Successfully with ID 516"
+}
+
+TEST CASE 2
+REQUEST TYPE: POST
+http://localhost:8080/answers/addAnswer
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password5"},
+    "question": {"questionId": 101, "answer" :" firefox is better than chrome"}
+}
+RESPONSE:
+STATUS : 401
+{
+    "message": "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"
+}
+
+TEST CASE 3
+REQUEST TYPE: POST
+http://localhost:8080/answers/addAnswer
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password4"},
+    "question": {"questionId": 5666, "answer" :" firefox is better than chrome. I HAVE PROVIDED INVALID QUESTION ID"}
+}
+RESPONSE:
+STATUS : 400
+{
+    "message": "Error: Check for valid QUESTION ID OR If user has already answered this question before. then try a PUT REQUEST TO update the answer"
+}
+
+TEST CASE 4
+REQUEST TYPE: POST
+http://localhost:8080/answers/addAnswer
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password4"},
+    "question": {"questionId": 100, "answer" :" notepad++ is better than vscode")
+}
+RESPONSE:
+STATUS : 400
+{
+    "message": "Error: Check for valid QUESTION ID OR If user has already answered this question before. then try a PUT REQUEST TO update the answer"
+}
+
+*******************************************************
+USE CASE 4 OF CASE STUDY -Part 2 : UPDATING AN ANSWER
+
+TEST CASE 1
+REQUEST TYPE: PUT
+http://localhost:8080/answers/updateAnswer
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password4"},
+    "question": {"questionId": 100, "answer" :"UPDATED i think xcode is better "}
+}
+RESPONSE:
+STATUS : 200
+{
+    "message": "Answer for question updated SUCCESSFULLY"
+}
+
+TEST CASE 2
+REQUEST TYPE: PUT
+http://localhost:8080/answers/updateAnswer
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password5"},
+    "question": {"questionId": 100, "answer" :"UPDATED i think xcode is better "}
+}
+RESPONSE:
+STATUS : 401
+{
+    "message": "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"
+}
+
+TEST CASE 3
+REQUEST TYPE: PUT
+http://localhost:8080/answers/updateAnswer
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password4"},
+    "question": {"questionId": 106, "answer" :"trying to update an answer i have not posted "}
+}
+RESPONSE:
+STATUS : 400
+{
+    "message": "Invalid question Id or User has NOT YET answered this question. please raise a POST REQUEST to add answer"
+}
+
+TEST CASE 4
+REQUEST TYPE: PUT
+http://localhost:8080/answers/updateAnswer
+{
+    "user_Details":{"userName": "naren4@gmail.com","password": "password4"},
+    "question": {"questionId": 5666, "answer" :"trying to update an answer with invalid question id "}
+}
+RESPONSE:
+STATUS : 400
+{
+    "message": "Invalid question Id or User has NOT YET answered this question. please raise a POST REQUEST to add answer"
+}
+
+*******************************************************
+USE CASE 5 OF CASE STUDY - Part 1 : GET ALL ANSWERS FOR A GIVEN QUESTION
+For this use case, provide question Id as part of endpoint URL.
+
+TEST CASE 1
+REQUEST TYPE: POST
+http://localhost:8080/questions/getAllAnswersForQuestion/100
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS : 200
+{
+    "Question": "which is better? - vscode or notepad++ or xcode",
+    "Answers": [
+        "i think sublime is better ",
+        "xcode is best. but you can try notepadd++ as well",
+        "i also think xcode is better "
+    ]
+}
+
+TEST CASE 2
+REQUEST TYPE: POST
+http://localhost:8080/questions/getAllAnswersForQuestion/5666
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS : 400
+{
+    "message": "This is an error! INVALID QUESTION ID"
+}
+
+TEST CASE 3
+REQUEST TYPE: POST
+http://localhost:8080/questions/getAllAnswersForQuestion/100
+{
+    "userName": "naren3@gmail.com",
+    "password": "password4"
+}
+RESPONSE:
+STATUS : 401
+{
+    "message": "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"
+}
+
+*******************************************************
+USE CASE 5 OF CASE STUDY - Part 2 : GETTING ALL QUESTIONS AND ITS CORRESPONDING ANSWERS
+
+TEST CASE 1
+REQUEST TYPE: GET
+http://localhost:8080/questions/getAllQuestionsAndAnswers
+
+RESPONSE:
+STATUS : 200
+{
+    "100": {
+        "question": "which is better? - vscode or notepad++ or xcode",
+        "answers": [
+            "UPDATED i think sublime is better ",
+            "xcode is best. but you can try notepadd++ as well",
+            "UPDATED i think xcode is better "
+        ]
+    },
+    "101": {
+        "question": "which is better? - chrome or firefox or safari",
+        "answers": [
+            "UPDATED i also think firefox is better 2",
+            " firefox is better than chrome"
+        ]
+    },
+    "102": {
+        "question": "how to install brew on macos?",
+        "answers": []
+    },
+    "103": {
+        "question": "how to install linux?",
+        "answers": []
+    },
+    "104": {
+        "question": "can we have two primary keys mysql?",
+        "answers": [
+            "yes you can have two primary keys in sql",
+            "primary key(column1,column2)"
+        ]
+    }
+}
+
+*******************************************************
+EXTRA USE CASE : UPVOTING AN ANSWER
+For this use case, provide answer Id as part of endpoint URL.
+
+TEST CASE 1
+REQUEST TYPE: POST
+http://localhost:8080/answers/upvoteAnswer/510
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS: 201
+{
+    "message": "We have SUCCESSFULLY UPVOTED the answer"
+}
+
+TEST CASE 2
+REQUEST TYPE: POST
+http://localhost:8080/answers/upvoteAnswer/500
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS: 403
+{
+    "message": "ERROR: User trying to UPVOTE this ANSWER more than ONCE"
+}
+
+TEST CASE 3
+REQUEST TYPE: POST
+http://localhost:8080/answers/upvoteAnswer/504
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS: 403
+{
+    "message": "ERROR: User trying to UPVOTE HIS OWN ANSWER."
+}
+
+*******************************************************
+EXTRA USE CASE : DELETING AN ANSWER
+
+TEST CASE 1
+REQUEST TYPE: DELETE
+http://localhost:8080/answers/deleteAnswer/519
+{
+    "userName": "naren4@gmail.com",
+    "password": "password4"
+}
+RESPONSE:
+STATUS: 200
+{
+    "message": "SUCCESFULLY DELETED answer"
+}
+
+TEST CASE 2
+REQUEST TYPE: DELETE
+http://localhost:8080/answers/deleteAnswer/505
+{
+    "userName": "naren4@gmail.com",
+    "password": "password4"
+}
+RESPONSE:
+STATUS: 200
+{
+    "message": "Error: INVALID ANSWER ID OR USER has not posted this answer"
+}
+
+*******************************************************
+EXTRA USE CASE :  DISPLAY POINTS OF USERS
+TEST CASE 1
+REQUEST TYPE: GET
+http://localhost:8080/answers/getPrivilegedUsers
+
+RESPONSE:
+STATUS : 200
+[
+    {
+        "userName": "naren5@gmail.com",
+        "Points": 5
+    },
+    {
+        "userName": "naren4@gmail.com",
+        "Points": 3
+    }
+]
+
+*******************************************************
+EXTRA USE CASE :  DISPLAY UPVOTE COUNT OF ANSWERS
+TEST CASE 1
+REQUEST TYPE: GET
+http://localhost:8080/answers/upvoteCount
+RESPONSE:
+STATUS : 200
+[
+    {
+        "answerId": 500,
+        "content": "UPDATED i think sublime is better ",
+        "VoteCount": 3
+    },
+    {
+        "answerId": 501,
+        "content": "UPDATED i also think firefox is better 2",
+        "VoteCount": 2
+    },
+    {
+        "answerId": 510,
+        "content": "UPDATED i think xcode is better ",
+        "VoteCount": 1
+    }
+]
+

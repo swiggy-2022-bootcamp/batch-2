@@ -1,0 +1,32 @@
+# This file has the create table queries for the database.
+# The schema has been designed for serving the Stack Overflow Project 
+case study.
+
+LOGIN TO MYSQL SERVER with your user credentials. 
+If you are using terminal, 
+execute mysql -u root -p
+then enter password.
+
+okay Now you are logged into MYSQL SERVER
+
+CREATE DATABASE <DataBaseName>;
+USE <DataBaseName>;
+CREATE TABLE UserDetails(registrationName varchar(255) NOT NULL,userName varchar(255) NOT NULL,password varchar(255) NOT NULL, PRIMARY KEY(userName));
+CREATE TABLE Questions(questionId int NOT NULL AUTO_INCREMENT, userName varchar(255) NOT NULL, content varchar(500) NOT NULL, PRIMARY KEY (questionId));
+CREATE TABLE Answers(answerId int NOT NULL AUTO_INCREMENT,questionId int NOT NULL, userName varchar(255) NOT NULL,content varchar(500) NOT NULL, PRIMARY KEY(answerId), FOREIGN KEY (questionId) REFERENCES Questions(questionId), FOREIGN KEY(userName) REFERENCES UserDetails(userName), CONSTRAINT UC_Answers UNIQUE(questionId,userName));
+CREATE TABLE UserPoints(dummyId int NOT NULL AUTO_INCREMENT,userName varchar(255) NOT NULL,PRIMARY KEY(dummyId), FOREIGN KEY(userName) REFERENCES UserDetails(userName));
+CREATE TABLE Votes(answerId int NOT NULL,userName varchar(255) NOT NULL,PRIMARY KEY(answerId,userName), FOREIGN KEY (answerId) REFERENCES Answers(answerId), FOREIGN KEY (userName) REFERENCES UserDetails(userName));
+
+After executing the above 5 queries, confirm that all tables are created by
+SHOW TABLES;
+
+#optional
+ALTER TABLE Questions AUTO_INCREMENT=100;
+ALTER TABLE Answers AUTO_INCREMENT=500;
+The above two statements will start question ids from 100 and answer ids from 500.
+So that it is easier for the user to differentiate!!
+
+NOW OPEN db_config.js and Update database name in DB:"<DataBaseName>"
+
+okay now you are good to go to POSTMAN to make requests!!!!
+

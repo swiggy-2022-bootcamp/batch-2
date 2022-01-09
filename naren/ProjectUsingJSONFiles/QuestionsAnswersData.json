@@ -1,0 +1,94 @@
+{
+  "102": {
+    "QuestionPosted": {
+      "userName": "naren4@gmail.com",
+      "content": "how do i use stackoverflow"
+    },
+    "AnswersPosted": [
+      {
+        "username": "naren3@gmail.com",
+        "answer": "ask your friend 1"
+      },
+      {
+        "username": "naren4@gmail.com",
+        "answer": "ask your friend 2"
+      },
+      {
+        "username": "naren5@gmail.com",
+        "answer": "updated answer first time"
+      },
+      {
+        "username": "naren7@gmail.com",
+        "answer": "updated new answer"
+      }
+    ]
+  },
+  "103": {
+    "QuestionPosted": {
+      "userName": "naren3@gmail.com",
+      "content": "how do i use numpy array"
+    },
+    "AnswersPosted": [
+      {
+        "username": "naren4@gmail.com",
+        "answer": "UPDATED checck pandas dataframe. it is better "
+      }
+    ]
+  },
+  "104": {
+    "QuestionPosted": {
+      "userName": "naren3@gmail.com",
+      "content": "how do i load multiple files with one require statement?"
+    },
+    "AnswersPosted": [
+      {
+        "username": "naren5@gmail.com",
+        "answer": "the UPDATED answer is hello3"
+      }
+    ]
+  },
+  "105": {
+    "QuestionPosted": {
+      "userName": "naren5@gmail.com",
+      "content": "question 7"
+    },
+    "AnswersPosted": []
+  },
+  "108": {
+    "QuestionPosted": {
+      "userName": "naren5@gmail.com",
+      "content": "which is better? - chrome,firefox or safari?"
+    },
+    "AnswersPosted": [
+      {
+        "username": "naren7@gmail.com",
+        "answer": "chrome is best"
+      },
+      {
+        "username": "naren8@gmail.com",
+        "answer": "firefox is best"
+      }
+    ]
+  },
+  "109": {
+    "QuestionPosted": {
+      "userName": "naren4@gmail.com",
+      "content": "which is better? - vscode or notepad++"
+    },
+    "AnswersPosted": []
+  },
+  "110": {
+    "QuestionPosted": {
+      "userName": "naren1@gmail.com",
+      "content": "how do i compare two files in vscode"
+    },
+    "AnswersPosted": []
+  },
+  "111": {
+    "QuestionPosted": {
+      "userName": "naren1@gmail.com",
+      "content": "my 2nd question today how do i compare two files in vscode"
+    },
+    "AnswersPosted": []
+  }
+}
