@@ -3,13 +3,16 @@ import express from "express";
 
 const router = express.Router();
 
-// api/question : create
+// api/question : create and findQuesion
 router.route("/")
 .post(questionController.createOuestion)
+.get(questionController.findQuestion);
 
-// api/question/:id : update question by id
+// api/question/:id : find/update/delete question by id
 router
   .route("/:id")
+  .get(questionController.findQuestionById)
   .put(questionController.updateQuestion)
+  .delete(questionController.deleteQuestion);
 
 export default router;

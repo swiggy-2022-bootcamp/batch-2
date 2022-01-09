@@ -41,9 +41,68 @@ export const updateOne = model => async(req, res) => {
 }
 
 /**
+ * getOne : find question from dB by Id
+ */
+export const getOne = model => async (req, res) => {
+  try {
+    const document = await model.findById(req.params.id)
+    .select("-updatedAt, -__v")
+    .exec();
+
+    if (!document) {
+      return res.status(400).send({message: `No Question found with given id: ${req.params.id}`});
+    }
+    res.status(200).send({ data: document });
+  } catch (err) {
+    res.status(400).end();
+  }
+};
+
+/**
+ * getMany : get all the questions from DB created by user based on userID
+ */
+export const getMany = model => async (req, res) => {
+  try{
+    const documents = await model.find({createdBy: req.user._id})
+      .select("-updatedAt, -__v")
+      .lean()
+      .exec()
+
+      res.status(200).json({ message: `All question asked by: ${req.user.name}`, data: documents})
+  }catch(err){
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
+/**
+ * deleteOne: delete question based on userId and QuestionId
+ */
+export const deleteOne = model => async (req, res) => {
+  try{
+    const removed = await model.findOneAndRemove({
+      createdBy: req.user._id,
+      _id: req.params.id
+    })
+    .select("-updatedAt, -__v");
+
+    if(!removed){
+      return res.status(400).end();
+    }
+    return res.status(200).json({ message: "Question deleted Successfully", data: removed})
+  }catch(err){
+    res.status(400).end()
+  }
+}
+
+/**
  * list of operation 
  */
 export const crudOperationList = model => ({
   createOuestion: createOne(model),
-  updateQuestion: updateOne(model)
+  findQuestionById: getOne(model),
+  findQuestion: getMany(model),
+  updateQuestion: updateOne(model),
+  deleteQuestion: deleteOne(model)
 });
+
