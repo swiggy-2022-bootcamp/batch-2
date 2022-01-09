@@ -8,6 +8,9 @@ const { validateTime } = require("../utils");
 const validateRequest = require("../middlewares/validateRequest");
 const auth = require("../middlewares/auth");
 
+// @route    POST /meeting
+// @desc     Create a meeting
+// @access   Private
 router.post(
 	"/meeting",
 	auth,
@@ -47,6 +50,9 @@ router.post(
 	}
 );
 
+// @route    GET /meeting/:id
+// @desc     Get meeting by ID
+// @access   Private
 router.get("/meeting/:id", auth, async (req, res) => {
 	const meetingId = req.params.id;
 
@@ -64,6 +70,9 @@ router.get("/meeting/:id", auth, async (req, res) => {
 	}
 });
 
+// @route    GET /user/meetings
+// @desc     Get all the meetings of a user
+// @access   Private
 router.get("/user/meetings", auth, async (req, res) => {
 	try {
 		const user = await User.findOne({ where: { id: req.user.id } });
@@ -81,6 +90,9 @@ router.get("/user/meetings", auth, async (req, res) => {
 	}
 });
 
+// @route    DELETE /user/meetings/:id
+// @desc     Remove user from a meeting
+// @access   Private
 router.delete("/user/meetings/:id", auth, async (req, res) => {
 	try {
 		const user = await User.findOne({ where: { id: req.user.id } });
