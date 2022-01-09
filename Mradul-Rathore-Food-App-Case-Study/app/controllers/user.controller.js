@@ -102,3 +102,20 @@ exports.fetchAllUsers = (req, res) => {
     })
 }
 
+//fetch user by id
+exports.fetchUserById = (req, res) => {
+    const id = req.params.id;
+    User.findById(id).then(
+        data => {
+            if (!data)
+                res.status(404).send({ message: "Sorry user With " + id + " not found" });
+            else
+                res.send(data);
+        }
+    ).catch(err => {
+        res.status(500).send({
+            message: err.message || "error while retrieving the user with id " + id
+        })
+    })
+}
+
