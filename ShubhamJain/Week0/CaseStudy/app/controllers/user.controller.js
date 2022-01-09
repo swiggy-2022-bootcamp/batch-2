@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 //signup user
 exports.createUser = async (req,res) => {
-
+    logger.info("Creating new user...");
     var hashedPassword;
     try {
         hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -45,7 +45,7 @@ exports.createUser = async (req,res) => {
 
 //fetch all users
 exports.findAllUsers = (req,res) => {
-    console.log("inside finall users!!!")
+    console.log("Fetching all users...")
     User.find().then(data => {
         res.send(data);
     }).catch(err => {
@@ -58,6 +58,8 @@ exports.findAllUsers = (req,res) => {
 //fetch user by id
 exports.findUserById = (req,res) => {
     const id = req.params.id;
+    logger.info(`fetching user with id ${id}`);
+
     User.findById(id).then(
         data => {
             if(!data)
@@ -74,7 +76,8 @@ exports.findUserById = (req,res) => {
 
 exports.updateUserById = (req,res) => {
     const id = newreq.body._id;
-    logger.info(`updating user with Id: ${JSON.stringify(req.body)} `)
+    logger.info(`updating user with Id: ${id}`);
+
     User.findByIdAndUpdate(id,req.body,{useFindAndModify:false, new:true}).then(
         data => {
             if(!data)
@@ -91,6 +94,7 @@ exports.updateUserById = (req,res) => {
 
 exports.deleteUserById = (req,res) => {
     const id = req.params.id;
+    logger.info(`Deleting user with id ${id}`)
     User.findByIdAndRemove(id,{useFindAndModify:false}).then(
         data => {
             if(!data)

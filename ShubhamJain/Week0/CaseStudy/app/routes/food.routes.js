@@ -5,12 +5,12 @@ module.exports = app => {
     var router = require('express').Router();
 
 
-    logger.info("inside logger routes");
+    logger.info("inside food routes");
     router.get('/food', foods.findAllFoods);
     router.get('/food/:id', foods.findFoodItemById);
     router.post('/food', foods.createFoodItem);
     router.delete('/food/:id', foods.deleteFoodItemById);
     router.put('/food', foods.updateFoodItemById);
-
+    
     app.use('/api', router);
 }

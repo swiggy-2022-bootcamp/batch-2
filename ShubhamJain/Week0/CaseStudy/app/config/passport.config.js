@@ -6,7 +6,7 @@ const User = db.users;
 
 function initialize(passport) {
   const authenticateUser = async (email, password, done) => {
-    console.log("afdjsdlfkajdsl;fkj");
+    console.log(`Authenticating user with Email ${email}`);
     const user = await User.findOne({email:email});
     console.log("user is:", user);
     if (user == null) {

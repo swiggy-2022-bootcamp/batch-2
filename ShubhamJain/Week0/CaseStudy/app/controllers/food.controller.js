@@ -4,8 +4,10 @@ var logger = require('../config/winston');
 const bodyParser = require('body-parser');
 
 exports.findAllFoods = (req, res) =>{
+    logger.info("Fetching all foods...");
     Food.find().then(
         data => {
+            logger.info("All foods fetched sucessfully!");
             res.send(data);
         }
     ).catch(err=>{
@@ -16,6 +18,7 @@ exports.findAllFoods = (req, res) =>{
 }
 
 exports.createFoodItem = (req, res) => {
+    logger.info("Creating new food item...");
     const food = new Food({
         foodId: req.body.foodId,
         foodName: req.body.foodName,
@@ -23,6 +26,7 @@ exports.createFoodItem = (req, res) => {
         foodType: req.body.foodType
     })
     food.save(food).then(data=>{
+        logger.info(`New Food Item with id: ${data._id} created succesfully!`)
         res.status(201).send(data);
     }).catch(
         err=>{
@@ -34,7 +38,10 @@ exports.createFoodItem = (req, res) => {
 }
 
 exports.findFoodItemById = (req, res) => {
+
     const id = req.params.id;
+    logger.info(`Fetching food item ${id}`)
+
 
     Food.findById(id).then(
         data => {
@@ -48,6 +55,8 @@ exports.findFoodItemById = (req, res) => {
 
 exports.deleteFoodItemById = (req, res) => {
     const id = req.params.id;
+    logger.info(`Deleting food item ${id}`)
+
     Food.findByIdAndRemove(id,{useFindAndModify:false}).then(
         data =>{
             if(!data)
@@ -62,6 +71,8 @@ exports.deleteFoodItemById = (req, res) => {
 
 exports.updateFoodItemById = (req, res) => {
     const id = req.body._id;
+    logger.info(`Updating food item ${req.params.id}`)
+    
     Food.findByIdAndUpdate(id, req.body, {useFindAndModify:false, new:true}).then(
         data =>{
             res.send(data);
