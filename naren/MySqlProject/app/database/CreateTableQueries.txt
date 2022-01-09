@@ -20,6 +20,12 @@ CREATE TABLE Votes(answerId int NOT NULL,userName varchar(255) NOT NULL,PRIMARY 
 After executing the above 5 queries, confirm that all tables are created by
 SHOW TABLES;
 
+#optional
+ALTER TABLE Questions AUTO_INCREMENT=100;
+ALTER TABLE Answers AUTO_INCREMENT=500;
+The above two statements will start question ids from 100 and answer ids from 500.
+So that it is easier for the user to differentiate!!
+
 NOW OPEN db_config.js and Update database name in DB:"<DataBaseName>"
 
 okay now you are good to go to POSTMAN to make requests!!!!

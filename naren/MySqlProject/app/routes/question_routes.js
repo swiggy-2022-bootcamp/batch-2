@@ -2,7 +2,7 @@
 
 module.exports = app => 
 {
-    const questions = require("../controllers/Question_Controller.js");
+    const questions = require("../controllers/question_controller.js");
     const router = require("express").Router();
     
     router.post("/getAllAnswersForQuestion/:id",questions.getAllAnswersForQuestion);
