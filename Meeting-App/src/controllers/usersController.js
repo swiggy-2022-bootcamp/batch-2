@@ -12,6 +12,7 @@ const createUserController = async (req, res) => {
         password: req.body.password
     }
 
+    // If user already exists with the same email, then throw an error
     const userData = await getUserByEmailController(user.email);
 
     if(userData === null){
@@ -19,26 +20,26 @@ const createUserController = async (req, res) => {
         // Encrypting Password before sending it to DB
         try {
             const salt = await bcrypt.genSalt();
-            const hashedPassword = await bcrypt.hash(user.password, salt);
+            const hashedPassword = await bcrypt(user.password, salt);
             user.password = hashedPassword;
         } catch (e) {
-            res.status(500).json({
-                errorMessage: e.message
+            return res.status(500).json({
+                errorMessage: `Something went wrong. ${e.message}`,
             });
         }
 
         try {
             const result = await createUserService(user);
-            res.status(201).json({
+            return res.status(201).json({
                 successMessage: `User Created Successfully. User ID: ${result.id}`
             });
         } catch (e) {
-            res.status(400).json({
+            return res.status(400).json({
                 errorMessage: `Something went wrong. ${e.message}`,
             })
         }
     } else {
-        res.status(400).json({
+        return res.status(400).json({
             errorMessage: `User with email as ${user.email} already exists.`
         });
     }   
@@ -61,17 +62,17 @@ const loginUserController = async (req, res) => {
                 name: userData.name
             }
             const accessToken = jwt.sign(userSign, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-            res.json({
+            return res.json({
                 successMessage: 'Logged in successfully',
                 accessToken
             });
         } else {
-            res.json({
+            return res.json({
                 errorMessage: `Incorrect Password.`
             });
         }
     } else {
-        res.json({
+        return res.json({
             errorMessage: `User with email as ${user.email} doesn't exists.`
         });
     }

@@ -24,11 +24,11 @@ const createMeetingController = async (req, res) => {
 
     try {
         const result = await createMeetingService(meeting);
-        res.status(201).json({
+        return res.status(201).json({
             successMessage: `Meeting Created Successfully. Meeting ID: ${result.id}`
         });
     } catch (e) {
-        res.status(400).json({
+        return res.status(400).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -36,15 +36,32 @@ const createMeetingController = async (req, res) => {
 
 const viewMeetingsController = async (req, res) => {
     const email = req.user.email;
+    const time = req.params.time;
 
     try {
         const result = await viewMeetingsService(email);
-        res.status(201).json({
+
+        const filteredMeetings = result.filter((meeting) => {
+            const todayMomentVal = moment().format('YYYY-MM-DD');
+            const meetingDateMomentVal = meeting.date;
+            if(time == 'past'){
+                return moment(meetingDateMomentVal).isBefore(todayMomentVal);
+            } else if (time == 'today') {
+                return moment(meetingDateMomentVal).isSame(todayMomentVal);
+            } else if (time == 'future') {
+                return moment(meetingDateMomentVal).isAfter(todayMomentVal);
+            } else {
+                return moment(meetingDateMomentVal).isSameOrAfter(todayMomentVal);
+            }
+            
+        });
+
+        return res.status(201).json({
             successMessage: `Meetings fetched successfully`,
-            data: result
+            data: filteredMeetings
         });
     } catch (e) {
-        res.status(400).json({
+        return res.status(400).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -73,7 +90,7 @@ const searchMeetingsController = async (req, res) => {
         }
         
     } catch (e) {
-        res.status(400).json({
+        return res.status(400).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -97,7 +114,7 @@ const leaveMeetingsController = async (req, res) => {
             })
             meeting[0].attendees = attendees.toString();
             
-            let result = await leaveMeetingService(meeting[0]);
+            await leaveMeetingService(meeting[0]);
             return res.status(200).json({
                 successMessage: 'Left Meeting Successfully'
             })
@@ -108,7 +125,7 @@ const leaveMeetingsController = async (req, res) => {
         }
         
     } catch (e) {
-        res.status(400).json({
+        return res.status(400).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
