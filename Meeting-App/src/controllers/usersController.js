@@ -60,7 +60,7 @@ const loginUserController = async (req, res) => {
                 email: userData.email,
                 name: userData.name
             }
-            const accessToken = jwt.sign(userSign, process.env.ACCESS_TOKEN_SECRET);
+            const accessToken = jwt.sign(userSign, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
             res.json({
                 successMessage: 'Logged in successfully',
                 accessToken

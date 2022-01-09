@@ -5,16 +5,12 @@ const authenticateToken = (req, res, next) => {
     const bearerToken = authHeader && authHeader.split(' ')[1];
 
     if(bearerToken == null){
-        return res.sendStatus(401).json({
-            errorMessage: 'Please provide a Bearer Token'
-        });
+        return res.sendStatus(401);
     }
 
     jwt.verify(bearerToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if(err) {
-            return res.sendStatus(403).json({
-                errorMessage: 'Invalid Token'
-            });
+            return res.sendStatus(403);
         }
         req.user = user;
         next();
