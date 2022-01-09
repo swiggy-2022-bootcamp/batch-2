@@ -42,17 +42,20 @@ const findUserByUsername = async (username) => {
 
 const findUserByUserId = async (userId) => {
     let result;
-    await UserModel.findOne({id: userId}).then(user => {
-        delete user.hash;
-        delete user.salt;
+    await UserModel.findOne({id: userId}, {hash: 0, salt: 0}).then(user => {
         result = {data: user, message: "User fetched succesfully"};
     }).catch(err => result = {message: `No user details found for user id: ${userId}`});
 
     return result;
 }
 
+const findUserByEmailAddress = async (emailAddress) => {
+    return await UserModel.findOne({emailAddress: emailAddress});
+}
+
 module.exports = {
     createUserIfNotExists: createUserIfNotExists,
     authenticateUser: authenticateUser,
-    findUserByUserId: findUserByUserId
+    findUserByUserId: findUserByUserId,
+    findUserByEmailAddress: findUserByEmailAddress
 }

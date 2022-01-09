@@ -21,11 +21,18 @@ router.get('/', auth, async (req, res, next) => {
     res.json({message: result.message}).status(result.status);
 });
 
-router.post('/', auth, requestValidator.validateCreateMeetingRequest, async (req, res) => {
-  let creatorUserId = res.locals.userId;
-  let {startTime, endTime, participantEmailAddresses, description} = req.body;
-  const result = await meetingService.createMeeting(creatorUserId, startTime, endTime, description, participantEmailAddresses);
-  res.json({data: result.data, message: result.message}).status(result.status);
+router.post('/', auth,
+  requestValidator.validateCreateMeetingRequest,
+  requestValidator.validateMeetingTimeInfo,
+  requestValidator.validateAddParticipantRequest, async (req, res) => {
+    let creatorUserId = res.locals.userId;
+    let {startTime, endTime, participantEmailAddresses, description} = req.body;
+    const result = await meetingService.createMeeting(creatorUserId, startTime, endTime, description, participantEmailAddresses);
+    res.json({data: result.data, message: result.message}).status(result.status);
+});
+
+router.patch('/:meetingId', auth, async(req, res) => {
+
 });
 
 router.get('/search', (req, res)=>{

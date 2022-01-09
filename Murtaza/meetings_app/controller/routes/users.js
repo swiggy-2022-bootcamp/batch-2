@@ -10,7 +10,6 @@ router.use('/meetings', meetingsRouter);
 
 router.get('/', auth, async (req, res) => {
   let result = await userService.findUserByUserId(res.locals.userId);  
-  console.log(result);
   if (result.data) {
     res.status(200);
     res.json({status: 200, data: result.data, message: result.message});

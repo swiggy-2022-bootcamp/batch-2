@@ -1,22 +1,18 @@
 const MeetingModel = require('../models/Meeting');
 const UserModel = require('../models/User');
+const userService = require('./userService');
 
 //TODO: implement transactional context
 const createMeeting = async (creatorUserId, startTime, endTime, description, participantEmailAddresses) => {
     const meeting = new MeetingModel();
     meeting.description = description;
-    meeting.startTime = startTime;
-    meeting.endTime = endTime;
+    meeting.setMeetingTime(startTime, endTime);
 
     const creator = await UserModel.findOne({id: creatorUserId});
     meeting.participants.push(creator);
 
-    for await (let participantEmailAddress of participantEmailAddresses) {
-        const participant = await UserModel.findOne({emailAddress: participantEmailAddress});
-        meeting.participants.push(participant);
-    }
+    await addParticipantsToMeeting(participantEmailAddresses, meeting);
     
-    //iterate over meetings and save info in all users.
     let response;
     await meeting.save().then((newMeeting)=>{
         response = {status: 200, data: newMeeting, message: "Meeting created succesfully"};
@@ -24,12 +20,43 @@ const createMeeting = async (creatorUserId, startTime, endTime, description, par
         throw err;
     }); 
 
-    for await (let participant of response.data.participants) {
-        participant.meetings.push(response.data.meetingId);
-        await participant.save();
-    }
+    await updateParticipantsWithMeetingId(response.data.participants, response.data.meetingId);
 
     return response;
+}
+
+const updateParticipantsWithMeetingId = async (participants, meetingIdToBeAdded) => {
+    for await (let participant of participants) {
+        participant.meetings.push(meetingIdToBeAdded);
+        await participant.save();
+    }
+}
+
+const removeMeetingIdFromParticipants = async (participants, meetingIdToBeRemoved) => {
+    for await (let participant of participants) {
+        participant.meetings = participant.meetings.filter((meetingId) => meetingId != meetingIdToBeRemoved);
+        await participant.save();
+    }
+}
+
+const addParticipantsToMeeting = async (participantEmailAddresses, meetingWithParticipantInfo) => {
+    for await (let participantEmailAddress of participantEmailAddresses) {
+        const participant = await UserModel.findOne({emailAddress: participantEmailAddress});
+        meetingWithParticipantInfo.participants.push(participant);
+    }
+}
+
+const removeParticipantsFromMeeting = async (participantEmailAddressesToBeRemoved, meetingWithParticipantInfo) => {
+    let exisingMeetingParticipants = meetingWithParticipantInfo.participants;
+    
+    let updatedMeetingParticipants = exisingMeetingParticipants
+        .filter((participant) => !(participant.emailAddress in participantEmailAddressesToBeRemoved));
+    meetingWithParticipantInfo.participants = [];
+    meetingWithParticipantInfo.participants.push(...updatedMeetingParticipants);
+        
+    let removedParticipants = exisingMeetingParticipants
+        .filter((participant) => (participant.emailAddress in participantEmailAddressesToBeRemoved));
+    await removeMeetingIdFromParticipants(removedParticipants, meetingWithParticipantInfo.meetingId);
 }
 
 const findAllMeetingsForUser = async (userId) => {
@@ -54,14 +81,47 @@ const findMeetingByMeetingId = async(userId, meetingId) => {
     if (isMeetingIdValid) {
         meetingInfo = await MeetingModel.findOne({meetingId: meetingId}).populate({
             path: 'participants',
-            transform: function(doc) {
-                return doc.emailAddress;
-            }
+            transform: (doc) => doc.emailAddress
         });
     } else {
         return {status: 200, message: `No Meetings with id: ${meetingId} found for user: ${user.emailAddress}`};
     }
     return {status: 200, data: meetingInfo, message: "Meeting Details fetched succesfully"};
+}
+
+const updateMeeting = async (userId, meetingId, startTime, endTime, description, addParticipantEmailAddresses, removeParticipantEmailAddresses) => {
+
+    let user = UserModel.findOne({id: userId});
+    let isMeetingIdValid = user.meetings.includes(meetingId);
+    let meetingWithParticipantInfo = {};
+
+    if (isMeetingIdValid) {
+        meetingWithParticipantInfo = await MeetingModel.findOne({meetingId: meetingId}).populate({
+            path: 'participants',
+            transform: function(doc) {
+                return doc.emailAddress;
+            }
+        });
+
+        if (startTime && endTime) {
+            meetingWithParticipantInfo.setMeetingTime(startTime, endTime);
+        } else if (startTime) {
+            meetingWithParticipantInfo.setMeetingTime(startTime, meetingWithParticipantInfo.endTime);
+        } else if (endTime) {
+            meetingWithParticipantInfo.setMeetingTime(meetingWithParticipantInfo.startTime, endTime);
+        }
+
+        if (description) {
+            meetingWithParticipantInfo.description = description;
+        }
+
+        if (addParticipantEmailAddresses) {
+            await addParticipantsToMeeting(addParticipantEmailAddresses, meetingWithParticipantInfo);        
+            await updateParticipantsWithMeetingId(meetingWithParticipantInfo.participants, meetingWithParticipantInfo.meetingId);
+        }
+        if (removeParticipantEmailAddresses)
+            await removeParticipantsFromMeeting(removeParticipantEmailAddresses, meetingWithParticipantInfo);
+    }
 }
 
 module.exports = {
