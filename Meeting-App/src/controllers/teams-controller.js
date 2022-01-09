@@ -143,7 +143,33 @@ const removeMemberFromTeamController = async (req, res) => {
 }
 
 const leavingTeamController = async (req, res) => {
+    const teamId = req.params.teamId;
 
+    try {
+        const team = await getTeamById(teamId, req.user.email);
+        if(team.length > 0) {
+            const teamMembers = team[0].members.split(",");
+
+            const updatedTeamMembers = teamMembers.filter((member) => {
+                return member != req.user.email
+            });
+
+            team[0].members = updatedTeamMembers.toString();
+
+            await updateTeamMembers(team[0]);
+            return res.status(200).json({
+                successMessage: `Left the Team Successfully`
+            })
+        } else {
+            return res.status(404).json({
+                errorMessage: `Team Not Found!!!`
+            })
+        }
+    } catch (e) {
+        return res.status(500).json({
+            errorMessage: `Something went wrong. ${e.message}`
+        })
+    }
 }
 
 const addingTeamToMeetingController = async (req, res) => {
