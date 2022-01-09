@@ -41,7 +41,7 @@ router.post(
 
 			res.status(201).json({
 				message: "Meeting successfully created",
-				"registration-name": meeting.id,
+				"meeting-id": meeting.id,
 			});
 		} catch (error) {
 			console.error(error.message);
