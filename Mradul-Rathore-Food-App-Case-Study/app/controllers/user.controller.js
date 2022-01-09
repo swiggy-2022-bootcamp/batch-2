@@ -119,3 +119,21 @@ exports.fetchUserById = (req, res) => {
     })
 }
 
+//update user by id
+exports.updateUserById = (req, res) => {
+    const id = req.body.id;
+
+    User.findOneAndUpdate({ _id: id }, req.body).then(function (user) {
+        User.findOne({ _id: id }).then(function (user) {
+            if (!user)
+                res.status(404).send({ message: "Sorry user with " + id + " not found" });
+            else
+                res.status(200).json(user);
+        })
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "error updating the user with id " + id
+        })
+    })
+}
+
