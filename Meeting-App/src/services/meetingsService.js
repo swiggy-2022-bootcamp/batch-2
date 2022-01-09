@@ -30,7 +30,22 @@ const viewMeetingsService = async (email) => {
     }
 }
 
+const leaveMeetingService = async (meeting) => {
+    await Meeting.sync();
+
+    try {
+        const result = await Meeting.update(
+            { attendees: meeting.attendees },
+            { where: { id: meeting.id } },
+        );
+        return result;
+    } catch (e) {
+        throw Error(e.message);
+    }
+}
+
 module.exports = {
     createMeetingService,
-    viewMeetingsService
+    viewMeetingsService,
+    leaveMeetingService
 }
