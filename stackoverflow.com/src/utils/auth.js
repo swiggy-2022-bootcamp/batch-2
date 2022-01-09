@@ -3,29 +3,21 @@ import User from "../resources/user/user.model.js";
 import jwt from "jsonwebtoken";
 import { logger } from "./logger.js";
 
-export const newToken = (user) => {
+export const newToken = user => {
   const methodName = "#newToken";
   logger.info(`${methodName} Request recieved for generating new json web token having payload section ${JSON.stringify({id: user.id})}.`);
   return jwt.sign({ id: user.id }, config.secrets.jwt, {
-    expiresIn: config.secrets.jwtExp,
+    expiresIn: config.secrets.jwtExp
   });
 };
 
-export const verifyToken = (token) => {
-  const methodName = "#verifyToken";
-  logger.info(`${methodName} Request recieved for verifying the json web token.`);
+export const verifyToken = token =>
   new Promise((resolve, reject) => {
     jwt.verify(token, config.secrets.jwt, (err, payload) => {
-      if (err) {
-        logger.error(
-          `${methodName} Encountered some error while verifying the json web token.`
-        );
-        return reject(err);
-      }
+      if (err) return reject(err);
       resolve(payload);
     });
   });
-};
 
 export const signup = async (req, res) => {
   const methodName = "#signup";
@@ -33,15 +25,11 @@ export const signup = async (req, res) => {
     logger.error(`${methodName} Error encountered while signing up the user as both the mandatory fields email and password are not provided.`);
     return res.status(400).send({ message: "Email and Password are required" });
   }
-
   logger.info(`${methodName} Request recieved for signing up the user: ${JSON.stringify(req.body)}`);
-
   try {
     const user = await User.create(req.body);
     const token = newToken(user);
-    return res
-      .status(201)
-      .send({ email: user._doc.email, access_token: token });
+    return res.status(201).send({ email: user._doc.email ,access_token: token });
   } catch (e) {
     logger.error(`${methodName} Error encountered while signing up the user with email address: ${JSON.stringify(req.body.email)}`);
     return res.status(500).end();
@@ -56,6 +44,7 @@ export const signin = async (req, res) => {
   }
   logger.info(`${methodName} Request recieved for signing up the user: ${JSON.stringify(req.body)}`);
   const invalid = { message: "Sorry invalid credentials" };
+
   try {
     const user = await User.findOne({ email: req.body.email })
       .select("email password")
@@ -67,9 +56,11 @@ export const signin = async (req, res) => {
     }
 
     const match = await user.checkPassword(req.body.password);
+
     if (!match) {
       return res.status(401).send(invalid);
     }
+
     const token = newToken(user);
     return res.status(201).send({ token });
   } catch (e) {

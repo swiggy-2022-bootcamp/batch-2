@@ -1,4 +1,4 @@
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 
 export const getOne = (model) => async (req, res) => {
     const methodName = `#getOne`
