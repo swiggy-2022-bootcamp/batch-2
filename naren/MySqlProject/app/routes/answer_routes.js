@@ -2,7 +2,7 @@
 
 module.exports = app => 
 {
-    const answers = require("../controllers/test_answer_controller.js");
+    const answers = require("../controllers/Answer_Controller.js");
     const router = require("express").Router();
     
     router.put("/updateAnswer", answers.updateAnswer);

@@ -1,5 +1,6 @@
-// FOR QUERYING THE DATABASE
-const sql = require("./db.js")
+// Establishing DataBase connection
+const db = require("../database/db.js")
+const dbConnection= db.getDbConnection()
 
 /*
 
@@ -7,9 +8,13 @@ const sql = require("./db.js")
 
 */
 
-// USE CASE 1 OF CASE STUDY
-// LOGIN INTO APPLICATION
+// QUERY STRINGS FOR THIS CONTROLLER
+const getUserQueryString = "SELECT * FROM UserDetails WHERE userName = ?;";
+const insertUserQueryString = "INSERT into UserDetails SET ? ;";
+const getAllUsersQueryString = "SELECT * from UserDetails;";
+
 /*
+USE CASE 1 OF CASE STUDY: LOGIN INTO APPLICATION
 
 Function : loginUser
 
@@ -32,53 +37,41 @@ Response of the API with HTTP STATUS codes:
 500: "Internal Server Error "
 
 */
-const loginUser = (req,res) =>
+
+const loginUser = async (req,res) =>
 {
     const userData=
     {       
         userName : req.body.userName,
         password : req.body.password
-    }
-    const queryString = 'SELECT * FROM UserDetails where userName = ?;';
-    sql.query(queryString,userData.userName,(err,result) => 
+    };
+
+    try
     {
-        if(err)
+        var userDetail = await dbConnection.query(getUserQueryString, userData.userName); 
+        userDetail = JSON.parse(JSON.stringify(userDetail));
+        if (userDetail.length == 1)
         {
-            console.log("error: ",err)
-            res.status(500).send({ message: 'This is an internal server error!'});
-        }
-        else
-        {
-            result = JSON.parse(JSON.stringify(result));
-            
-            if (result.length == 1)
+            if (userDetail[0].password == userData.password)
             {
-                // user name exists, now check if password exists
-                if (result[0].password == userData.password)
-                {
-                    console.log("SUCCESSFULY LOGGED IN");
-                    res.status(200).send({ message: "SUCCESSFULY LOGGED IN"});
-                }
-                else
-                {
-                    console.log("Password incorect.Please try again");
-                    res.status(401).send({ message: "Password incorect.Please try again"});
-                }
-        
+                res.status(200).send({message: "SUCCESSFULY LOGGED IN"});
             }
             else
             {
-                console.log("Username NOT YET registered.Please register first");
-                res.status(403).send({ message: 'Username NOT YET registered.Please register first'});
-            }       
+                res.status(401).send({message: "Password incorect.Please try again"});
+            }
+            return;
         }
-    });   
+        res.status(403).send({message: "Username NOT YET registered.Please register first"});
+    }
+    catch (err)
+    {
+        res.status(500).send({message: "This is an internal server error!"});
+    }
 }
 
-
-// USE CASE 2 OF CASE STUDY
-// CREATE A NEW USER
 /*
+USE CASE 2 OF CASE STUDY: CREATE A NEW USER
 
 Function : creatUser
 
@@ -101,57 +94,35 @@ Response of the API with HTTP STATUS codes:
 500: "Internal Server Error "
 
 */
-const createUser = (req,res) => 
+
+const createUser = async (req,res) =>
 {
-    const userData=
+    const userData =
     {       
         registrationName: req.body.registrationName,
         userName : req.body.userName,
         password : req.body.password
-    }
-    const queryString = 'SELECT * FROM UserDetails where userName = ?;';
-    sql.query(queryString,userData.userName,(err,result) => 
+    };
+
+    try
     {
-        if(err)
+        var userDetail = await dbConnection.query(getUserQueryString, userData.userName); 
+        if (userDetail.length == 1)
         {
-            console.log("error: ",err)
-            res.status(500).send({ message: 'This is an internal server error!'});
+            res.status(403).send({message: "Username already registered. Please choose another"});
+            return;
         }
-        else
-        {
-            result = JSON.parse(JSON.stringify(result));
-            //console.log(result.length);
-            if (result.length == 1)
-            {
-                console.log("Username already registered.Please choose another");
-                res.status(403).send({ message: 'Username already registered.Please choose another'});
-        
-            }
-            else
-            {
-                console.log("adding the new user");
-                const queryString2 = 'INSERT into UserDetails SET ? ; '
-                sql.query(queryString2,userData,(err, result) =>
-                {
-                    if (err) 
-                    {
-                        console.log("error: ",err)
-                        res.status(500).send({ message: 'This is an internal server error!'});
-                    }
-                    else
-                    {
-                        console.log("User created Successfully");
-                        res.status(201).send({message:"User created Successfully for user "+userData.registrationName+" with email "+ userData.userName });
-                    }
-                });
-            }   
-        }   
-    });  
+        await dbConnection.query(insertUserQueryString, userData); 
+        res.status(201).send({message: "User created Successfully"});
+    }
+    catch (err)
+    {
+        res.status(500).send({message: "This is an internal server error!"});
+    }    
 }
 
-// EXTRA USE CASE
-// DISPLAY ALL USERS , FROM ADMIN SIDE.
 /*
+EXTRA USE CASE : DISPLAY ALL USERS , FROM ADMIN SIDE.
 
 Function : listAllUsers
 
@@ -171,28 +142,18 @@ Response of the API with HTTP STATUS codes:
 
 */
 
-const listAllUsers = (req,res) =>
-{
-    sql.query("Select * from UserDetails",(err,result) => 
+const listAllUsers = async (req,res) =>
+{ 
+    try
     {
-        if(err)
-        {
-            console.log("error: ",err)
-            res.status(500).send({ message: 'This is an internal server error!'});
-        }
-        else
-        {
-            //console.log(JSON.stringify(result));
-            res.status(200).send(JSON.stringify(result));
-        }       
-       
-    });
+        var userDetails = await dbConnection.query(getAllUsersQueryString);
+        res.status(200).send(JSON.stringify(userDetails)); 
+    }
+    catch (err)
+    {
+        res.status(500).send({message: "This is an internal server error!"});
+    }    
 }
 
-
-// export all these functions.
-module.exports = {createUser,listAllUsers,loginUser}
-
-
-
-
+// Export the functions
+module.exports = {createUser,loginUser,listAllUsers}
