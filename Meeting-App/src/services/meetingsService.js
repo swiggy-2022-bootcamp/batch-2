@@ -21,7 +21,8 @@ const viewMeetingsService = async (email) => {
                 attendees: {
                     [Op.like]: `%${email}%`
                 }
-            }
+            },
+            raw: true
         });
         return result;
     } catch (e) {

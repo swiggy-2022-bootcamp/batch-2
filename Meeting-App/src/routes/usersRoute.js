@@ -14,11 +14,4 @@ routes.post('/login', (req, res) => {
     loginUserController(req, res);
 });
 
-routes.get('/testRoute', authenticateToken, (req, res) => {
-    res.json({
-        message: 'Test Protected Route',
-        user: req.user
-    });
-});
-
 module.exports = routes;

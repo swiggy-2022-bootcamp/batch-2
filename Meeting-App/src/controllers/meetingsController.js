@@ -1,7 +1,8 @@
 const moment = require('moment');
 const {
     createMeetingService,
-    viewMeetingsService
+    viewMeetingsService,
+    searchMeetingsService
 } = require('../services/meetingsService');
 
 const createMeetingController = async (req, res) => {
@@ -49,7 +50,37 @@ const viewMeetingsController = async (req, res) => {
     }
 }
 
+const searchMeetingsController = async (req, res) => {
+    const email = req.user.email;
+    const meetingId = req.params.meetingId;
+
+    try {
+        let result = await viewMeetingsService(email);
+
+        result = result.filter((meeting) => {
+            return meeting.id == meetingId;
+        });
+
+        if(result.length > 0) {
+            return res.status(201).json({
+                successMessage: `Meetings fetched successfully`,
+                data: result
+            });
+        } else {
+            return res.status(400).json({
+                errorMessage: `Meeting with ID: ${meetingId} doesn't exists.`
+            })
+        }
+        
+    } catch (e) {
+        res.status(400).json({
+            errorMessage: `Something went wrong. ${e.message}`,
+        })
+    }
+}
+
 module.exports = {
     createMeetingController,
-    viewMeetingsController
+    viewMeetingsController,
+    searchMeetingsController
 }
