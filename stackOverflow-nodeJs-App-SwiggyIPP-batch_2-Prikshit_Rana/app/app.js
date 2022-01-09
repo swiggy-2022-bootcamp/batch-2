@@ -5,6 +5,8 @@ import morgan from "morgan";
 import { register, login, protect } from "./utils/auth.js";
 import connectDb from "./utils/db.js";
 import apiUserRouter from "./routes/user.router.js"
+import apiQuestionRouter from "./routes/question.router.js"
+import apiAnswerRouter from "./routes/answer.router.js"
 
 //reading environment variables
 dotenv.config();
@@ -22,6 +24,7 @@ app.post("/login", login);
 app.use("/api", protect);
 app.use('/api/user', apiUserRouter)
 app.use('/api/question', apiQuestionRouter)
+app.use('/api/answer', apiAnswerRouter)
 
 /**
  * start() : connect to database and start server
@@ -39,3 +42,4 @@ export const start = async () => {
 
 // staring server
 start();
+
