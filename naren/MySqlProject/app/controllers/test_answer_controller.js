@@ -19,6 +19,8 @@ const insertUserPointsQueryString = "INSERT INTO UserPoints(userName) VALUES(?);
 const deleteVotesQueryString = "DELETE FROM Votes WHERE answerId = ?;";
 const deleteAnswerQueryString = "DELETE FROM Answers WHERE answerId = ?;";
 const getAnswerDetailsQueryString = "SELECT * FROM Answers WHERE answerId = ? AND userName = ?;";
+const getUserPointsQueryString = "SELECT userName,Count(*) as Points FROM UserPoints GROUP BY userName ORDER BY Points DESC;";
+const getVoteCountQueryString = "SELECT Votes.answerId, Answers.content, Count(*) as VoteCount FROM Votes, Answers WHERE Votes.answerId = Answers.answerId GROUP BY Votes.answerId ORDER BY VoteCount DESC;";
 
 /*
 USE CASE 4 OF CASE STUDY -Part 1 : POSTING A ANSWER
@@ -144,7 +146,7 @@ const updateAnswer = async (req,res) =>
         var questionUserDetails = await dbConnection.query(getAnswerQueryString, [answersData.userName, answersData.questionId]);
         if (questionUserDetails == 0)
         {
-            res.status(400).send({ message: "Invalid question Id or User has NOT YET answered this question. please raise a POST REQUEST to add answer"});  
+            res.status(400).send({message: "Invalid question Id or User has NOT YET answered this question. please raise a POST REQUEST to add answer"});  
             return;
         }
         await dbConnection.query(updateAnswerQueryString,[answersData.content, answersData.userName, answersData.questionId]);
@@ -219,14 +221,13 @@ const upvoteAnswer = async (req,res) =>
             res.status(403).send({message: "ERROR: User trying to UPVOTE HIS OWN ANSWER."});
             return;
         }
-       
         try
         {
             await dbConnection.query(insertUpvoteQueryString, upvoteData);
         } 
         catch
         {
-            res.status(403).send({ message: "ERROR: User trying to UPVOTE this ANSWER more than ONCE"});
+            res.status(403).send({message: "ERROR: User trying to UPVOTE this ANSWER more than ONCE"});
             return;
         }  
          // Now lets increment points for the user who posted this answer         
@@ -294,7 +295,7 @@ const deleteAnswer = async (req,res) =>
         }
         await dbConnection.query(deleteVotesQueryString, answerId);
         await dbConnection.query(deleteAnswerQueryString, answerId);
-        res.status(200).send({ message: "SUCCESFULLY DELETED answer"});
+        res.status(200).send({message: "SUCCESFULLY DELETED answer"});
     }
     catch (err)
     {
@@ -302,6 +303,72 @@ const deleteAnswer = async (req,res) =>
     } 
 }     
 
+/*
+EXTRA USE CASE : DISPLAY POINTS OF USERS
+
+Function : getPrivilegedUsers
+
+API TYPE : GET REQUEST
+
+Description : 
+It serves the GET request made from the client for 
+displaying the points of the users who's answers have 
+been upvoted by other users. Each upvote gives one point.
+I have not added points> some amount to give privelege.
+It's just a simple having Count(*) > in the query.
+It displays points of the users sorted in DESC.
+
+Input parameters : NONE
+
+Response of the API with HTTP STATUS codes:
+200: "The points of users listed in JSON FORMAT")
+500: "Internal Server Error "
+
+*/
+const getPrivilegedUsers = async (req,res) =>
+{
+    try
+    {
+        var userPoints = await dbConnection.query(getUserPointsQueryString);
+        res.status(200).send(JSON.stringify(userPoints));
+    }
+    catch (err)
+    {
+        res.status(500).send({message: "This is an internal server error!"});
+    } 
+}
+
+/*
+EXTRA USE CASE : DISPLAY UPVOTE COUNT OF ANSWERS
+
+Function : getUpvoteCountOfAnswers
+
+API TYPE : GET REQUEST
+
+Description : 
+It serves the GET request made from the client for 
+displaying the votes of all the answers that have been
+upvoted before. It displays answers sorted in DESC based on vote count.
+
+Input parameters : NONE
+
+Response of the API with HTTP STATUS codes:
+200: "The answer and its vote count listed in JSON FORMAT")
+500: "Internal Server Error "
+
+*/
+const getUpvoteCountOfAnswers = async (req,res) =>
+{
+    try
+    {
+        var upvoteCount = await dbConnection.query(getVoteCountQueryString);
+        res.status(200).send(JSON.stringify(upvoteCount));
+    }
+    catch (err)
+    {
+        res.status(500).send({message: "This is an internal server error!"});
+    } 
+}
 
 // export all these functions.
-module.exports ={updateAnswer,postAnswer,upvoteAnswer,deleteAnswer}
+module.exports ={updateAnswer,postAnswer,upvoteAnswer,deleteAnswer,getUpvoteCountOfAnswers,getPrivilegedUsers}
