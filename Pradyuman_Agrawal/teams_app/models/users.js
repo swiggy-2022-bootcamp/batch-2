@@ -26,7 +26,7 @@ User.getAllUser = (cb) => {
             return;
         }
         console.log("All users info sent");
-        cb(null,{user:res});
+        cb(null,{users:res});
     });
 };
 
@@ -38,20 +38,24 @@ User.findUserById = (userId,cb) => {
             return;
         }
         console.log("User found with userId",userId);
-        cb(null,{user:res});
+        cb(null,{user:res[0]});
     });
 };
 
-User.findUserByEmailId = async (email,cb) => {
+User.findUserByEmailId = (email,cb) => {
     pool.query("Select * from users where email = ?",email,(err,res) => {
         if(err){
             console.log("error: ",err);
             cb(err,null);
             return;
         }
-        if(res.length)
+        if(res.length){
             console.log("user found with email",email);
-        cb(null,{user:res});
+            cb(null,{user:res[0]});
+        }
+        else{
+            cb(null,{user:[]});
+        }
     });
 };
 

@@ -1,4 +1,5 @@
 const User = require("../models/users.js")
+const bcrypt = require("bcryptjs")
 
 //signup user
 const create = async (req,res) => {
@@ -12,7 +13,7 @@ const create = async (req,res) => {
     }
 
     //check if user exists with same emailId
-    User.findUserByEmailId(email, (err, data) => {
+    User.findUserByEmailId(email, async (err, data) => {
         if (err){
             res.status(500).send({
                 message: "internal error"
@@ -20,12 +21,14 @@ const create = async (req,res) => {
         }
         else if(data.user.length){
             res.status(400).send(`Sorry user with email ${email} already exists, Trying logging instead`);
-    
         }
-        else{
+        else{        
+            //encrpyt user password
+            encryptedPassword =await bcrypt.hash(password,10)
+
             const user = new User({
                 email:req.body.email,
-                password:req.body.password,
+                password:encryptedPassword,
                 name:req.body.name
             })
             User.create(user,(err,data) =>{
