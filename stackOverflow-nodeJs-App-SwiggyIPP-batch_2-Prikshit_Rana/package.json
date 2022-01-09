@@ -1,6 +1,6 @@
 {
   "name": "stackoverflow.com",
-  "version": "0.0.1",
+  "version": "0.0.1-dev-b254f78",
   "description": "The application serves as a platform for users to ask and answer questions.",
   "main": "app.js",
   "scripts": {
@@ -20,7 +20,6 @@
     "mongodb": "^4.3.0",
     "mongoose": "^6.1.5",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.15",
     "prettier": "^1.9.1",
     "prettier-eslint": "^8.2.2",
     "run": "^1.4.0",
