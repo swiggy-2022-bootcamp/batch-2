@@ -1,0 +1,425 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Swiggy Case Study Capsule - FOOD API SUITE",
+      "contact": {
+          "name": "RaviKumar S"
+      },
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8081/api",
+        "variables": {}
+      }
+    ],
+    "paths": {
+      "/food": {
+        "post": {
+          "tags": [
+            "Food"
+          ],
+          "summary": "Add new food",
+          "operationId": "Addnewfood",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddnewfoodRequest"
+                },
+                "example": {
+                  "foodId": 1,
+                  "foodName": "Biryani",
+                  "foodCost": 150,
+                  "foodType": "Indian"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "Food added successfully",
+              "headers": {}
+            },
+            "400":{
+                "description": "Duplicate food id"
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/food/{foodID}": {
+        "get": {
+          "tags": [
+            "Food"
+          ],
+          "summary": "Get food by ID",
+          "operationId": "GetfoodbyID",
+          "parameters": [{
+                "in": "path",
+                "name": "foodID",
+                "type": "integer",
+                "required": true,
+                "description": "Numeric ID of the food to get"
+            }],
+          "responses": {
+            "201": {
+              "description": "Food with id fetched successfully",
+              "headers": {}
+            },
+            "404": {
+                "description": "Food with given id not found",
+                "headers": {}
+              }
+          },
+          "deprecated": false
+        }
+      },
+      "/users/register": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Register users",
+          "operationId": "RegisterUser",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterUserRequest"
+                },
+                "example": {
+                  "userName": "ravi1",
+                  "email": "ravi@gmail.com",
+                  "password": "password",
+                  "address": {
+                    "houseno": 1,
+                    "street": "String",
+                    "city": "String",
+                    "state": "String",
+                    "zip": 678978
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "400": {
+              "description": "Username already taken or Fields userId, userName, email, password are compulsary",
+              "headers": {}
+            },
+            "201": {
+                "description": "User created successfully",
+                "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/users/authenticate": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Authenticate User",
+          "operationId": "AuthenticateUser",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticateUserRequest"
+                },
+                "example": {
+                  "userName": "ravi",
+                  "password": "null"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "403": {
+              "description": "invalid credentials",
+              "headers": {}
+            },
+            "200": {
+                "description": "User logged in successful",
+                "headers": {}
+              }
+
+          },
+          "deprecated": false
+        }
+      },
+      "/users": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Get all registered Users",
+          "operationId": "GetallregisteredUsers",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Successfull fetch",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        },
+        "put": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Update User",
+          "operationId": "UpdateUser",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserRequest"
+                },
+                "example": {
+                  "userId": 10,
+                  "userName": "mama",
+                  "email": "ravi@gmail.com",
+                  "password": "password",
+                  "address": {
+                    "houseno": 1,
+                    "street": "String",
+                    "city": "String",
+                    "state": "String",
+                    "zip": 678978
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "User updated successfully",
+              "headers": {}
+            },
+            "400": {
+                "description": "Username already taken OR Fields userId, userName, email, password are compulsary OR UserId is compulsary",
+                "headers": {}
+              },
+              "404": {
+                "description": "user not found", 
+                "headers": {}
+              }
+          },
+          "deprecated": false
+        }
+      },
+      "/users/{userID}": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Get User by ID",
+          "operationId": "GetUserbyID",
+          "parameters": [{
+            "in": "path",
+            "name": "userID",
+            "type": "integer",
+            "required": true,
+            "description": "Numeric ID of the user to get"
+        }],
+          "responses": {
+            "200": {
+              "description": "user found",
+              "headers": {}
+            },
+            "404": {
+                "description": "user not found",
+                "headers": {}
+            }
+          },
+          "deprecated": false
+        },
+        "delete": {
+            "tags": [
+              "Users"
+            ],
+            "summary": "Delete user by Id",
+            "operationId": "DeleteuserbyId",
+            "parameters": [{
+              "in": "path",
+              "name": "userID",
+              "type": "integer",
+              "required": true,
+              "description": "Numeric ID of the user to get"
+            }],
+            "responses": {
+              "200": {
+                "description": "",
+                "headers": {}
+              }
+            },
+            "deprecated": false
+          }
+      }
+    },
+    "components": {
+      "schemas": {
+        "RegisterUserRequest": {
+          "title": "RegisterUserRequest",
+          "required": [
+            "userName",
+            "email",
+            "password",
+            "address"
+          ],
+          "type": "object",
+          "properties": {
+            "userName": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "address": {
+              "$ref": "#/components/schemas/Address"
+            }
+          },
+          "example": {
+            "userName": "ravi1",
+            "email": "ravi@gmail.com",
+            "password": "password",
+            "address": {
+              "houseno": 1,
+              "street": "String",
+              "city": "String",
+              "state": "String",
+              "zip": 678978
+            }
+          }
+        },
+        "Address": {
+          "title": "Address",
+          "required": [
+            "houseno",
+            "street",
+            "city",
+            "state",
+            "zip"
+          ],
+          "type": "object",
+          "properties": {
+            "houseno": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "street": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "houseno": 1,
+            "street": "String",
+            "city": "String",
+            "state": "String",
+            "zip": 678978
+          }
+        },
+      "AuthenticateUserRequest": {
+        "title": "AuthenticateUserRequest",
+        "required": [
+          "userName",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "userName": "ravi",
+          "password": "null"
+        }
+      },
+      "UpdateUserRequest": {
+        "title": "UpdateUserRequest",
+        "required": [
+          "userId",
+          "userName",
+          "email",
+          "password",
+          "address"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        },
+        "example": {
+          "userId": 10,
+          "userName": "mama",
+          "email": "ravi@gmail.com",
+          "password": "password",
+          "address": {
+            "houseno": 1,
+            "street": "String",
+            "city": "String",
+            "state": "String",
+            "zip": 678978
+          }
+        }
+      }
+      }
+    },
+    "security": [
+        {}
+      ],
+      "tags": [
+        {
+          "name": "Users",
+          "description": ""
+        }
+      ]
+  }
+
+  
