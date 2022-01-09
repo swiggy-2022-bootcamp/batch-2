@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const OddEven = (x) => {
+            if(x%2 ==0){
+                console.log("Even number")
+            }else{
+                console.log("Odd number")
+            }
+        }
+        OddEven(3);
+        OddEven(8)
+        var user = {
+            name:"John",
+            age:23,
+            phone:"09812345634",
+            address:{
+                street_no:007,
+                address_street:'3rd main',
+                area:'JP Nagar',
+                city:'Bangalore',
+                state:'Karnataka',
+                pincode:'560029',
+                country:'india'
+            },
+            order_details:{
+                order_id:"SWIGGY_001",
+                order_date:"05-01-2022",
+                order_status:"In-Progress",
+                ordered_time:"8:00 PM IST",
+                Delivered_time:""
+            }
+        }
+        const sum = () => 15
+        const addition = function(x,y = x*sum()){
+            return x+y
+        }
+        const res = addition(10)
+        console.log(res);
+
+        const obj1 = {x:10,y:20}
+        const obj2 = {z:30}
+        const obj3 = {...obj1,...obj2}
+        console.log(obj3)
+    
+        const obj = {​​​​​​​​name:"Rishabh"}​​​​​​​​;
+        const {​​​​​​​​ name: uname}​​​​​​​​ = obj;
+        console.log(uname);
+    </script>
+</body>
+</html>
