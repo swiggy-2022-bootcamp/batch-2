@@ -2,6 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
+const accessRouter = require('./app/routes/access.routes')
+const foodRouter = require('./app/routes/food.routes')
+const userRouter = require('./app/routes/user.routes')
 
 const app = express();
 
@@ -28,7 +31,9 @@ db.mongoose.connect(dbURL, {
     process.exit()
 })
 
-require("./app/routes/routes")(app);
+app.use("/api", accessRouter)
+app.use("/api/users", userRouter)
+app.use("/api/food", foodRouter)
 
 app.listen(PORT, () => {
     console.log(`server running on port: ${PORT}`);
