@@ -2,6 +2,10 @@ module.exports = mongoose => {
 
     var foodSchema = mongoose.Schema(
         {
+            foodId: {
+                type: Number,
+                unique: true
+            },
             foodName: {
                 type: String
             },

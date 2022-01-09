@@ -40,7 +40,7 @@ exports.registerUser = async (req, res) => {
             { user_id: user._id, email },
             process.env.TOKEN_KEY,
             {
-                expiresIn: "2h",
+                expiresIn: "24h",
             }
         );
         // save user token
@@ -64,6 +64,7 @@ exports.authenticate = async (req, res) => {
         if (!(email && password)) {
             res.status(400).send("All input is required");
         }
+
         // Validate if user exist in our database
         const user = await User.findOne({ email });
 
@@ -73,7 +74,7 @@ exports.authenticate = async (req, res) => {
                 { user_id: user._id, email },
                 process.env.TOKEN_KEY,
                 {
-                    expiresIn: "2h",
+                    expiresIn: "24h",
                 }
             );
 

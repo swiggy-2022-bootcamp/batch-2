@@ -6,15 +6,24 @@ exports.addFood = async (req, res) => {
 
     try {
         // Get user input
-        const { foodName, foodCost, foodType } = req.body;
+        const { foodId, foodName, foodCost, foodType } = req.body;
 
         // Validate food type
         if (foodType != "Indian" && foodType != "Mexican" && foodType != "Chinese") {
             res.status(400).send("Food type is not valid. Valide types: Indian/Mexican/Chinese");
         }
 
+        // check if food already exist
+        // Validate if food exist in our database
+        const oldFood = await Food.findOne({ foodId });
+
+        if (oldFood) {
+            return res.status(409).send("Food Already Exist.");
+        }
+
         // Create food in our database
         const food = await Food.create({
+            foodId: foodId,
             foodName: foodName,
             foodCost: foodCost,
             foodType: foodType,
@@ -28,19 +37,15 @@ exports.addFood = async (req, res) => {
 };
 
 //fetch food by id
-exports.fetchFoodById = (req, res) => {
-    const id = req.params.id;
-    console.log(id)
-    Food.findById(id).then(
-        data => {
-            if (!data)
-                res.status(404).send({ message: "Sorry Food Not Found" })
-            else
-                res.send(data);
-        }
-    ).catch(err => {
-        res.status(500).send({
-            message: err.message || "error while retrieving the user with id " + id
-        })
-    })
+exports.fetchFoodById = async (req, res) => {
+    const foodId = req.params.id;
+
+    const food = await Food.findOne({ foodId });
+
+    if (!food)
+        res.status(404).send({ message: "Sorry Food Not Found" })
+    else
+        res.send(food);
 }
+
+
