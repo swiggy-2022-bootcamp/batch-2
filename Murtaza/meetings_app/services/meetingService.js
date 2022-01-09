@@ -147,15 +147,19 @@ const dropMeeting = async (userId, meetingIdToBeRemoved) => {
 
     let meetingWithParticipantIds = await MeetingModel.findOne({ meetingId: meetingIdToBeRemoved }, { participants: 1 }).populate("participants");
     let updatedParticipants = [];
-
-    for await (let participant of meetingWithParticipantIds.participants) {
+    for (let participant of meetingWithParticipantIds.participants) {
         if (participant.id != userId)
             updatedParticipants.push(participant);
     }
 
-    meetingWithParticipantIds.participants = [];
-    meetingWithParticipantIds.participants.push(...updatedParticipants);
-    await meetingWithParticipantIds.save();
+    if (updatedParticipants.length == 0) {
+        await MeetingModel.findOneAndDelete({_id: meetingWithParticipantIds._id});
+    } else {
+        meetingWithParticipantIds.participants = [];
+        meetingWithParticipantIds.participants.push(...updatedParticipants);
+        await meetingWithParticipantIds.save();
+    }
+    console.log(meetingWithParticipantIds);
 };
 
 module.exports = {

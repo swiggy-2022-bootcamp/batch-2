@@ -3,6 +3,12 @@
 
 A team utility app for scheduling meetings 
 
+Features:
+- Registration
+- Login
+- Schedule a Meeting
+- Edit a Meeting
+- Drop off a user from a meeting
 
 ## Docker Deployment
 
@@ -97,5 +103,3 @@ Start the server
 ```
   auth-token: ""
 ```
-
-
