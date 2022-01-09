@@ -1,5 +1,6 @@
 const db = require("../config/db.config")
 
+const { registerationValidation } = require('../../validation')
 const User = db.users;
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
@@ -8,13 +9,14 @@ const jwt = require("jsonwebtoken")
 exports.registerUser = async (req, res) => {
 
     try {
+        // Validate user input
+        const { error } = registerationValidation(req.body)
+        if (error) {
+            return res.status(400).send(error.details[0].message)
+        }
+
         // Get user input
         const { username, email, password, address } = req.body;
-
-        // Validate user input
-        if (!(email && password)) {
-            res.status(400).send("All input is required");
-        }
 
         // check if user already exist
         // Validate if user exist in our database
