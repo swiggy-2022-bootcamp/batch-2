@@ -1,12 +1,12 @@
 {
-	"name": "meet",
+	"name": "meet-application",
 	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"description": "An app to easily manage all the online meetings.",
+	"main": "server.js",
 	"scripts": {
 		"start": "nodemon ./server.js"
 	},
-	"author": "",
+	"author": "Nihal Mittal",
 	"license": "ISC",
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
