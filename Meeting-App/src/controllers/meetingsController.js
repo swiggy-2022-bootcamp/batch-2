@@ -2,7 +2,7 @@ const moment = require('moment');
 const {
     createMeetingService,
     viewMeetingsService,
-    leaveMeetingService,
+    updateMeetingAttendees,
     deleteMeetingService
 } = require('../services/meetingsService');
 const { getUserByIdController } = require('./usersController');
@@ -129,7 +129,7 @@ const leaveMeetingController = async (req, res) => {
             })
             meeting[0].attendees = attendees.toString();
             
-            await leaveMeetingService(meeting[0]);
+            await updateMeetingAttendees(meeting[0]);
             return res.status(200).json({
                 successMessage: 'Left Meeting Successfully'
             })
@@ -202,7 +202,7 @@ const removeUserFromMeetingController = async (req, res) => {
                     return attendee != user.email
                 })
                 meeting.attendees = attendees.toString();
-                await leaveMeetingService(meeting)
+                await updateMeetingAttendees(meeting)
                 return res.status(200).json({
                     successMessage: `User was removed from the meeting`
                 })
@@ -224,11 +224,57 @@ const removeUserFromMeetingController = async (req, res) => {
     }
 }
 
+const addUserToMeetingController = async (req, res) => {
+    const email = req.user.email;
+    const meetingId = req.params.meetingId;
+    const userId = req.params.userId;
+
+    try {
+        let result = await viewMeetingsService(email);
+        
+        result = result.filter((meeting) => {
+            return meeting.id == meetingId;
+        });
+
+        if(result.length > 0) {
+            const user = await getUserByIdController(userId);
+            if(user != null) {
+                const meeting = result[0];
+                if(meeting.attendees.includes(user.email)){                   
+                    return res.status(200).json({
+                        successMessage: `User is already a part of the meeting`
+                    })
+                } else {
+                    let attendees = meeting.attendees.split(",");
+                    attendees.push(user.email);
+                    meeting.attendees = attendees.toString();
+
+                    await updateMeetingAttendees(meeting)
+
+                    return res.status(400).json({
+                        errorMessage: `User added to a meeting`
+                    })
+                }
+            }
+        } else {
+            return res.status(400).json({
+                errorMessage: `Meeting with ID: ${meetingId} doesn't exist.`
+            })
+        }
+        
+    } catch (e) {
+        return res.status(400).json({
+            errorMessage: `Something went wrong. ${e.message}`,
+        })
+    }
+}
+
 module.exports = {
     createMeetingController,
     viewMeetingsController,
     searchMeetingsController,
     leaveMeetingController,
     deleteMeetingController,
-    removeUserFromMeetingController
+    removeUserFromMeetingController,
+    addUserToMeetingController
 }

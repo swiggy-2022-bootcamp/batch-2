@@ -30,7 +30,7 @@ const viewMeetingsService = async (email) => {
     }
 }
 
-const leaveMeetingService = async (meeting) => {
+const updateMeetingAttendees = async (meeting) => {
     await Meeting.sync();
 
     try {
@@ -60,6 +60,6 @@ const deleteMeetingService = async (meeting) => {
 module.exports = {
     createMeetingService,
     viewMeetingsService,
-    leaveMeetingService,
+    updateMeetingAttendees,
     deleteMeetingService
 }
