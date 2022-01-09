@@ -35,7 +35,9 @@ const expandParticipants = async (participants) => {
         let u = await User.findOne({email, isGroup:true}, {members:true, _id:false}).lean();
         if(!u || !u.members || u.members.length===0) continue;
         console.log("adding members of : ", email, u.members);
-        expanded.add(...u.members);
+        for(let m of u.members){
+            expanded.add(m);
+        }
     }
     console.log("total participants: ", expanded);
     return [...expanded];
@@ -55,7 +57,7 @@ exports.getMeeting = async (req, res, next) => {
     let {meeting_id} = req.params;
     let result = await Meeting.findOne({_id:meeting_id, participants: res.locals.user.email}).lean();
     if(!result){
-        next(makeErr("Meeting not found", 404));
+        return next(makeErr("Meeting not found", 404));
     }
 
     return res.status(200).send(meetingUtils.transformMeetings([result]));

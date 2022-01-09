@@ -1,17 +1,5 @@
-const moment = require('moment');
-
-exports.convertTimeZone = (date, timeZone) => {
-    if (typeof date === "string")
-        date = new Date(date);
-
-    return new Date(date.toLocaleString("en-US", { timeZone: timeZone }));
-}
-
 
 exports.parseDateTime = (date, time) => {
-
-    // let mydate = moment.utc(date+" "+time, "YYYY-MM-DD hh:mm");
-
     //'2014-04-03'
     let dateParts = date.split('-');
     //'14:30'
@@ -27,7 +15,6 @@ exports.parseDateTime = (date, time) => {
 exports.transformMeetings = (meetings) => {
 
     return meetings.map(m => {
-        //remove _v
         let {__v, start, end,...meeting} = m;
         
         meeting.date = start.getUTCFullYear()+"-"+(start.getUTCMonth()+1)+"-"+start.getUTCDate();

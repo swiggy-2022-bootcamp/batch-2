@@ -12,7 +12,7 @@ exports.register = async (req, res, next) => {
         let newUser = await User.create({
             email,
             name,
-            password: userUtils.encrypt(password),
+            password: await userUtils.encrypt(password),
         });
 
         res.locals.user = {
@@ -39,7 +39,7 @@ exports.login = async (req, res, next) => {
             throw makeErr("User Email not found", 401);
         }
 
-        if (user.password !== userUtils.encrypt(password)) {
+        if (!(await userUtils.comparehash(password, user.password))) {
             throw makeErr("Incorrect password", 401);
         }
 
