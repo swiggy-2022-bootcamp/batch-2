@@ -17,7 +17,7 @@ module.exports = app => {
     router.delete("/users/:id", users.deleteUserById);
 
     router.post("/food", auth, food.addFood);
-    //router.get("/food/:foodid", auth, food.fetchFoodByID);
+    router.get("/food/:id", auth, food.fetchFoodById);
 
     app.use("/api", router)
 }
