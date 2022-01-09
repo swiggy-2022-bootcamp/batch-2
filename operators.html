@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let a = 10;
+        let b = 20;
+
+        console.log("a == b", a == b);
+        console.log("a == 10", a == 10);
+        console.log('a == "10"', a == "10");
+        console.log("a === '10'", a === '10');
+
+        let c = "immutable string";
+        console.log("Before Changing : ", c);
+        c[0] = "9";
+        console.log("After Changing : ", c);
+
+        const d = 99;
+        console.log(d, " ; We cant reassign the value of variable d since it is a const data type")
+
+        const arr = [1, 2, 3];
+        console.log("Before Changing", arr);
+        arr[0] = 98;
+        console.log("After Changing", arr);
+        console.log("Even though arr is a const data type, we can change the indexed values since array is a non primitive");
+
+        console.log("a != b : ", a != b);
+
+    </script>
+</body>
+</html>
