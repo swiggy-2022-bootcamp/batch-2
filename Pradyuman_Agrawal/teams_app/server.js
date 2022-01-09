@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const userRouter=require("./routes/users")
 const authRouter=require("./routes/auth")
+const meetingRouter=require("./routes/meetings")
 
 const middleware_utils = require('./middleware/utils');
 const auth =require("./middleware/auth")
@@ -20,6 +21,7 @@ app.use(middleware_utils.requestLogger);
 
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
+app.use('/meetings',auth,meetingRouter);
 
 app.get("/profile",auth,(req,res)=>{
     res.status(200).send(`Welcome to user profile page ${req.userId} ${req.email}`)
