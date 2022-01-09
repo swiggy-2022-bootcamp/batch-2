@@ -5,25 +5,28 @@ const Question = require('../models/Question');
 
 // Add a new Question
 exports.addQuestion = async (req, res) => {
-    // const question = new Question(req.body);
-
-    const question = new Question({
-        ...req.body,
-        question_user_id: req.user._id,
-        question_user_name: req.user.name
-    })
-
     try{
+
+        const question = new Question({
+            ...req.body,
+            question_user_id: req.user._id,
+            question_user_name: req.user.name
+        });
+
         await question.save();
 
-        res.status(201).send(question);
+        res.status(201).send({
+            ...question, 
+            message : "Question posted successfully"
+        });
+
     }catch(err){
         res.status(400).send(err);
     }
 };
 
 
-// Add an answer
+// Add an answer to a question by id
 exports.addAnswer = async(req, res) => {
 
     const _id = req.params.id;
@@ -45,7 +48,10 @@ exports.addAnswer = async(req, res) => {
         
         await question.save();
 
-        res.status(201).send(question);
+        res.status(201).send({
+            ...answer,
+            message: "Answer posted successfully"
+        });
     }catch(err){
         res.status(500).send();
     }
@@ -57,14 +63,32 @@ exports.addAnswer = async(req, res) => {
 
 // Show all questions and answers
 exports.findAllQuestions = async (req, res) => {
-    const questions = await Question.find({});
-
+    
     try{
+        const questions = await Question.find({});
+
         res.status(200).send(questions);
     }catch(err){
         res.status(500).send();
     }
 }
+
+// Show a question by id
+exports.findQuestionById = async(req, res) => {
+    const _id = req.params.id;
+
+    try{
+        const question = await Question.findById(_id);
+        
+        if(!question){
+            return res.status(404).send();
+        }
+
+        res.status(201).send(question);
+    }catch(err){
+        res.status(500).send();
+    }
+};
 
 // Show all answers of a question by id
 exports.findAllAnswers = async(req, res) => {
@@ -98,18 +122,18 @@ exports.updateAnswerById = async(req, res) => {
         const question = await Question.findById(question_id);
 
         if(!question){
-            throw new Error({message: "Question don't exist"});
+            return res.status(404).send({message: "Question don't exist"});
         }
 
         const answers = question.question_answers;
         const idx = answers.findIndex((answer) => answer._id.toString() === answer_id.toString());
 
         if(idx == -1){
-            throw new Error("Answer don't exist");
+            return res.status(404).send({message: "Answer don't exist"});
         }
 
         if(answers[idx].answer_user_id.toString() !== user_id.toString()){
-            throw new Error("You are not the author of the answer");
+            return res.status(401).send({message: "You are not the author of the answer"});
         }
 
         answers[idx].answer_user_ans = req.body.new_answer;
@@ -118,7 +142,7 @@ exports.updateAnswerById = async(req, res) => {
 
         res.status(200).send(answers[idx]);
     }catch(err){
-        res.status(400).send();
+        res.status(500).send();
     }
 
 };
@@ -135,7 +159,7 @@ exports.deleteAnswer = async(req, res) => {
         const question = await Question.findById(question_id);
 
         if(!question){
-            throw new Error({message: "Question don't exist"});
+            return res.status(404).send({message: "Question don't exist"});
         }
 
         const answers = question.question_answers;

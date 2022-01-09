@@ -1,10 +1,13 @@
 const User = require('../models/User');
 
+
+/** ---------- Post --------------- */
+
 // Sign up new user
 exports.createUser = async (req, res) => {
+    const { email } = req.body;
+
     try{
-        const { email } = req.body;
-        
         // Checking if this new user is unique
         const oldUser = await User.findOne({email});
 
@@ -25,9 +28,10 @@ exports.createUser = async (req, res) => {
 
 // Login user
 exports.loginUser = async(req, res) => {
-    try {
-        const {email, password} = req.body;
+    
+    const {email, password} = req.body;
 
+    try {
         const user = await User.findByCredentials(email, password);
 
         const token = await user.generateAuthToken();
@@ -71,6 +75,9 @@ exports.logOutAll = async (req, res) => {
     }
 };
 
+
+/** ---------- Get --------------- */
+
 // Get User details (taking help of auth middleware)
 exports.getUserDetails = async (req, res) => {
 
@@ -101,8 +108,6 @@ exports.findUserById = async (req, res) => {
 
 // Get all users
 exports.findAllUsers = async (req, res) => {
-    
-    
     try{
         const users = await User.find({});
         

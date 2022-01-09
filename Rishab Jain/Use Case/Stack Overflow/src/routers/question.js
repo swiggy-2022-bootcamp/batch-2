@@ -10,11 +10,14 @@ router.post('/add_question', auth, questions.addQuestion);
 // Add answer to question by id
 router.post('/add_answer/:id', auth, questions.addAnswer);
 
-// Show questions
-router.get('/show_all_questions', questions.findAllQuestions);
+// Read all questions
+router.get('/read_all_questions', questions.findAllQuestions);
 
-// Show answers by id
-router.get('/show_answers/:id', questions.findAllAnswers);
+// Read question by id
+router.get('/read_question/:id', questions.findQuestionById);
+
+// Read answers by question id
+router.get('/read_answers/:id', questions.findAllAnswers);
 
 // Delete answer
 router.delete('/delete_answer', auth, questions.deleteAnswer);
