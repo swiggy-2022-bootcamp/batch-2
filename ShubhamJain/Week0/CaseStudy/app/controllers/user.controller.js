@@ -2,12 +2,25 @@ const db = require("../models")
 const User = db.users;
 var logger = require('../config/winston');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
 
 //signup user
-exports.createUser = (req,res) => {
+exports.createUser = async (req,res) => {
+
+    var hashedPassword;
+    try {
+        hashedPassword = await bcrypt.hash(req.body.password, 10);
+    }catch(err){
+        logger.error(err);
+        logger.error(`Hashing password for user: ${req.body.username} failed. Storing password without hashing.`);
+        hashedPassword = req.body.password;
+    }
+
+    console.log(req.body)
+
     const user = new User({
         email:req.body.email,
-        password:req.body.password,
+        password:hashedPassword,
         username:req.body.username,
         address: {}
     })
@@ -28,12 +41,11 @@ exports.createUser = (req,res) => {
             message:err.message ||"error while creating the User."
         })
     })
-
-
 }
 
 //fetch all users
 exports.findAllUsers = (req,res) => {
+    console.log("inside finall users!!!")
     User.find().then(data => {
         res.send(data);
     }).catch(err => {
@@ -42,7 +54,8 @@ exports.findAllUsers = (req,res) => {
         })
     })
 }
-//fecth user by id
+
+//fetch user by id
 exports.findUserById = (req,res) => {
     const id = req.params.id;
     User.findById(id).then(
@@ -60,8 +73,8 @@ exports.findUserById = (req,res) => {
 }
 
 exports.updateUserById = (req,res) => {
-    const id = req.body._id;
-
+    const id = newreq.body._id;
+    logger.info(`updating user with Id: ${JSON.stringify(req.body)} `)
     User.findByIdAndUpdate(id,req.body,{useFindAndModify:false, new:true}).then(
         data => {
             if(!data)
@@ -92,6 +105,4 @@ exports.deleteUserById = (req,res) => {
     })
     
 }
-
-
 
