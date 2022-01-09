@@ -16,7 +16,7 @@ exports.addQuestion = async (req, res) => {
         await question.save();
 
         res.status(201).send({
-            ...question, 
+            question, 
             message : "Question posted successfully"
         });
 
@@ -49,7 +49,7 @@ exports.addAnswer = async(req, res) => {
         await question.save();
 
         res.status(201).send({
-            ...answer,
+            answer,
             message: "Answer posted successfully"
         });
     }catch(err){
@@ -83,6 +83,8 @@ exports.findQuestionById = async(req, res) => {
         if(!question){
             return res.status(404).send();
         }
+
+        // const answers = question.question_answers;
 
         res.status(201).send(question);
     }catch(err){
@@ -164,7 +166,9 @@ exports.deleteAnswer = async(req, res) => {
 
         const answers = question.question_answers;
         const newAnswers = answers.filter((answer) => {
-            if(answer.answer_user_id.toString() !== user_id.toString() && answer._id.toString() !== answer_id.toString()){
+            if(answer.answer_user_id.toString() === user_id.toString() && answer._id.toString() === answer_id.toString()){
+                return false;
+            }else{
                 return true;
             }
         });
@@ -185,11 +189,19 @@ exports.deleteQuestionById = async(req, res) => {
     const question_id = req.params.id;
 
     try{
-        const question = await Question.findByIdAndDelete(question_id);
+        const question = await Question.findById(question_id);
 
         if(!question){
             return  res.status(404).send({message: "Question don't exist"});
         }
+
+        if(question.question_user_id.toString() !== req.user._id.toString()){
+            return  res.status(401).send({message: "You are not the author"});
+        }
+
+        await question.remove();
+
+        await question.save();
 
         res.status(200).send();
     }catch(err){

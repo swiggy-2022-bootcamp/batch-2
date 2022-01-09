@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs/dist/bcrypt');
 const jwt = require('jsonwebtoken');
 
 // Creating User Schema
-const userSchema =  new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -41,6 +41,8 @@ const userSchema =  new mongoose.Schema({
             required: true,
         }
     }]
+}, {
+    timestamps: true
 });
 
 

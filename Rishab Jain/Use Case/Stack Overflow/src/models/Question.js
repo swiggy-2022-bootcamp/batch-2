@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const questionSchema = {
+const questionSchema = new mongoose.Schema ({
     question_user_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -33,7 +33,9 @@ const questionSchema = {
             }
         },
     ],
-}
+}, {
+    timestamps: true,
+});
 
 // Defining Question Model
 const Question = mongoose.model('Question', questionSchema);
