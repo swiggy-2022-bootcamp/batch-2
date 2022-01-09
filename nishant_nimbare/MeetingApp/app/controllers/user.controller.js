@@ -1,13 +1,14 @@
 const User = require("../models/user.model");
 const userUtils = require("../utils/user.utils");
-
-// in your service file
-const { MongoError } = require('mongodb')
+const { makeErr } = require("../utils/error.utils");
+const { MongoError } = require('mongodb');
 
 exports.register = async (req, res, next) => {
     let { email, name, password } = req.body;
 
     try {
+        if(!password) throw makeErr("Password not found", 400);
+
         let newUser = await User.create({
             email,
             name,
@@ -23,8 +24,7 @@ exports.register = async (req, res, next) => {
     } catch (err) {
         if (err instanceof MongoError && err.code === 11000) {
             // mongo duplication err, thrown when email is already in use
-            res.locals.status = 401;
-            return next(new Error('Email already exist'));
+            return next(makeErr('Email already exist', 400));
         }
         next(err);
     }
@@ -36,15 +36,12 @@ exports.login = async (req, res, next) => {
     try {
         let user = await User.findOne({ email }).lean();
         if (!user) {
-            res.locals.status = 401;
-            throw new Error("User Email not found");
+            throw makeErr("User Email not found", 401);
         }
 
         if (user.password !== userUtils.encrypt(password)) {
-            res.locals.status = 401;
-            throw new Error("Incorrect password");
+            throw makeErr("Incorrect password", 401);
         }
-
 
         res.locals.user = {
             email: user.email,
