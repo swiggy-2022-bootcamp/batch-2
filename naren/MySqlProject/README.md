@@ -56,7 +56,7 @@ We currently facilitate 12 kinds of requests.
 
 # EXTENSIONS
 The application can easily be extended to serve
-1) Delete question. , so all its answers also gets deleted.
+1) Delete question, so all its answers also gets deleted.
 2) Get all particular users questions - read query- select Based on username
 3) Get all particular users answers - read query - select Based on username
 4) Display MOST upvoted answer for a question Based on question Id

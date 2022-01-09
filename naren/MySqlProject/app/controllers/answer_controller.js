@@ -241,7 +241,7 @@ const upvoteAnswer = async (req,res) =>
 }
 
 /*
-EXTRA USE CASE : DELEETING AN ANSWER
+EXTRA USE CASE : DELETING AN ANSWER
 
 Function : deleteAnswer
 

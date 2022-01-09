@@ -302,4 +302,119 @@ STATUS : 200
     }
 }
 
+*******************************************************
+EXTRA USE CASE : UPVOTING AN ANSWER
+For this use case, provide answer Id as part of endpoint URL.
+
+TEST CASE 1
+REQUEST TYPE: POST
+http://localhost:8080/answers/upvoteAnswer/510
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS: 201
+{
+    "message": "We have SUCCESSFULLY UPVOTED the answer"
+}
+
+TEST CASE 2
+REQUEST TYPE: POST
+http://localhost:8080/answers/upvoteAnswer/500
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS: 403
+{
+    "message": "ERROR: User trying to UPVOTE this ANSWER more than ONCE"
+}
+
+TEST CASE 3
+REQUEST TYPE: POST
+http://localhost:8080/answers/upvoteAnswer/504
+{
+    "userName": "naren3@gmail.com",
+    "password": "password3"
+}
+RESPONSE:
+STATUS: 403
+{
+    "message": "ERROR: User trying to UPVOTE HIS OWN ANSWER."
+}
+
+*******************************************************
+EXTRA USE CASE : DELETING AN ANSWER
+
+TEST CASE 1
+REQUEST TYPE: DELETE
+http://localhost:8080/answers/deleteAnswer/519
+{
+    "userName": "naren4@gmail.com",
+    "password": "password4"
+}
+RESPONSE:
+STATUS: 200
+{
+    "message": "SUCCESFULLY DELETED answer"
+}
+
+TEST CASE 2
+REQUEST TYPE: DELETE
+http://localhost:8080/answers/deleteAnswer/505
+{
+    "userName": "naren4@gmail.com",
+    "password": "password4"
+}
+RESPONSE:
+STATUS: 200
+{
+    "message": "Error: INVALID ANSWER ID OR USER has not posted this answer"
+}
+
+*******************************************************
+EXTRA USE CASE :  DISPLAY POINTS OF USERS
+TEST CASE 1
+REQUEST TYPE: GET
+http://localhost:8080/answers/getPrivilegedUsers
+
+RESPONSE:
+STATUS : 200
+[
+    {
+        "userName": "naren5@gmail.com",
+        "Points": 5
+    },
+    {
+        "userName": "naren4@gmail.com",
+        "Points": 3
+    }
+]
+
+*******************************************************
+EXTRA USE CASE :  DISPLAY UPVOTE COUNT OF ANSWERS
+TEST CASE 1
+REQUEST TYPE: GET
+http://localhost:8080/answers/upvoteCount
+RESPONSE:
+STATUS : 200
+[
+    {
+        "answerId": 500,
+        "content": "UPDATED i think sublime is better ",
+        "VoteCount": 3
+    },
+    {
+        "answerId": 501,
+        "content": "UPDATED i also think firefox is better 2",
+        "VoteCount": 2
+    },
+    {
+        "answerId": 510,
+        "content": "UPDATED i think xcode is better ",
+        "VoteCount": 1
+    }
+]
 
