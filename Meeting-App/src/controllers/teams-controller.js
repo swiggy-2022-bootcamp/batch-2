@@ -94,7 +94,52 @@ const addMemberToTeamController = async (req, res) => {
 }
 
 const removeMemberFromTeamController = async (req, res) => {
+    const teamId = req.params.teamId;
+    const userId = req.params.userId;
 
+    try {
+        const team = await getTeamById(teamId, req.user.email);
+        if(team.length > 0) {
+            if(team[0].createdBy == req.user.email) {
+                const user = await getUserById(userId);
+                if(user != null) {
+    
+                    const teamMembers = team[0].members.split(",");
+                    
+                    if(teamMembers.includes(user.email)){
+                        const updatedTeamMembers = teamMembers.filter((member) => {
+                            return member != user.email
+                        })
+                        team[0].members = updatedTeamMembers.toString();
+                        await updateTeamMembers(team[0]);
+                        return res.status(200).json({
+                            errorMessage: `User has been removed from the Team`
+                        })
+                    } else {
+                        return res.status(200).json({
+                            errorMessage: `User is not a part of the Team`
+                        })
+                    }
+                } else {
+                    return res.status(404).json({
+                        errorMessage: `User Not Found!!!`
+                    })
+                }
+            } else {
+                return res.status(401).json({
+                    errorMessage: `You don't have authority to remove a member from the Team`
+                })
+            }
+        } else {
+            return res.status(404).json({
+                errorMessage: `Team Not Found!!!`
+            })
+        }
+    } catch (e) {
+        return res.status(500).json({
+            errorMessage: `Something went wrong. ${e.message}`
+        })
+    }
 }
 
 const leavingTeamController = async (req, res) => {
