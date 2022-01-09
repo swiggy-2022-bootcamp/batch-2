@@ -1,4 +1,4 @@
-const Meeting = require('../models/meetingsModel');
+const Meeting = require('../models/meetings-model');
 const Op = require('sequelize').Op;
 
 const createMeetingService = async (meeting) => {

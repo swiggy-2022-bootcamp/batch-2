@@ -4,7 +4,7 @@ const {
     createUserService,
     getUserByEmailService,
     getUserByIdService
-} = require('../services/usersService');
+} = require('../services/users-service');
 
 const createUserController = async (req, res) => {
     const user = {
@@ -21,7 +21,7 @@ const createUserController = async (req, res) => {
         // Encrypting Password before sending it to DB
         try {
             const salt = await bcrypt.genSalt();
-            const hashedPassword = await bcrypt(user.password, salt);
+            const hashedPassword = await bcrypt.hash(user.password, salt);
             user.password = hashedPassword;
         } catch (e) {
             return res.status(500).json({

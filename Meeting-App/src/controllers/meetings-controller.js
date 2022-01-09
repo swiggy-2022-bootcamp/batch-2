@@ -4,8 +4,8 @@ const {
     viewMeetingsService,
     updateMeetingAttendees,
     deleteMeetingService
-} = require('../services/meetingsService');
-const { getUserByIdController } = require('./usersController');
+} = require('../services/meetings-service');
+const { getUserByIdController } = require('./users-controller');
 
 const createMeetingController = async (req, res) => {
     let date = moment(req.body.date, 'MM/DD/YYYY');
@@ -31,7 +31,7 @@ const createMeetingController = async (req, res) => {
             successMessage: `Meeting Created Successfully. Meeting ID: ${result.id}`
         });
     } catch (e) {
-        return res.status(400).json({
+        return res.status(500).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -59,12 +59,12 @@ const viewMeetingsController = async (req, res) => {
             
         });
 
-        return res.status(201).json({
+        return res.status(200).json({
             successMessage: `Meetings fetched successfully`,
-            data: filteredMeetings
+            meetings: filteredMeetings
         });
     } catch (e) {
-        return res.status(400).json({
+        return res.status(500).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -79,33 +79,37 @@ const searchMeetingsController = async (req, res) => {
     try {
         let result = await viewMeetingsService(email);
 
-        if(title != null) {
-            result = result.filter((meeting) => {
+        result = result.filter((meeting) => {
+            if(title != null){
                 return (meeting.title).includes(title);
-            })
-        } else if (desc != null) {
-            result = result.filter((meeting) => {
+            } else if (desc != null) {
                 return (meeting.description).includes(desc);
+            } else {
+                return meeting.id == meetingId;
+            }
+        })
+
+        if(result.length > 0) {
+            return res.status(200).json({
+                successMessage: `Meetings fetched successfully`,
+                meetings: result
+            });
+        } else if (result.length == 0 && title != null) {
+            return res.status(404).json({
+                errorMessage: `No Results Found!!!`
+            })
+        } else if (result.length == 0 && desc != null) {
+            return res.status(404).json({
+                errorMessage: `No Results Found!!!`
             })
         } else {
-            result = result.filter((meeting) => {
-                return meeting.id == meetingId;
-            });
-        }
-        
-        if(result.length > 0) {
-            return res.status(201).json({
-                successMessage: `Meetings fetched successfully`,
-                data: result
-            });
-        } else {
-            return res.status(400).json({
+            return res.status(500).json({
                 errorMessage: `Meeting with ID: ${meetingId} doesn't exists.`
             })
         }
         
     } catch (e) {
-        return res.status(400).json({
+        return res.status(500).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -118,11 +122,11 @@ const leaveMeetingController = async (req, res) => {
     try {
         let result = await viewMeetingsService(email);
 
-        meeting = result.filter((meeting) => {
+        const meeting = result.filter((meeting) => {
             return meeting.id == meetingId;
         });
 
-        if(result.length > 0) {
+        if(meeting.length > 0) {
             let attendees = meeting[0].attendees.split(",");
             attendees = attendees.filter((attendee) => {
                 return attendee != email;
@@ -134,13 +138,13 @@ const leaveMeetingController = async (req, res) => {
                 successMessage: 'Left Meeting Successfully'
             })
         } else {
-            return res.status(400).json({
+            return res.status(404).json({
                 errorMessage: `Meeting with ID: ${meetingId} doesn't exists.`
             })
         }
         
     } catch (e) {
-        return res.status(400).json({
+        return res.status(500).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -164,18 +168,18 @@ const deleteMeetingController = async (req, res) => {
                     successMessage: `Meeting Deleted Successfully.`
                 })
             } else {
-                return res.status(400).json({
+                return res.status(401).json({
                     errorMessage: `You don't have authority to delete this meeting`
                 });
             }
         } else {
-            return res.status(400).json({
+            return res.status(404).json({
                 errorMessage: `Meeting with ID: ${meetingId} doesn't exist.`
             })
         }
         
     } catch (e) {
-        return res.status(400).json({
+        return res.status(500).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -207,18 +211,18 @@ const removeUserFromMeetingController = async (req, res) => {
                     successMessage: `User was removed from the meeting`
                 })
             } else {
-                return res.status(400).json({
+                return res.status(404).json({
                     errorMessage: `User is not a part of the meeting`
                 })
             }
         } else {
-            return res.status(400).json({
+            return res.status(404).json({
                 errorMessage: `Meeting with ID: ${meetingId} doesn't exist.`
             })
         }
         
     } catch (e) {
-        return res.status(400).json({
+        return res.status(500).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }
@@ -242,7 +246,7 @@ const addUserToMeetingController = async (req, res) => {
                 const meeting = result[0];
                 if(meeting.attendees.includes(user.email)){                   
                     return res.status(200).json({
-                        successMessage: `User is already a part of the meeting`
+                        errorMessage: `User is already a part of the meeting`
                     })
                 } else {
                     let attendees = meeting.attendees.split(",");
@@ -251,19 +255,23 @@ const addUserToMeetingController = async (req, res) => {
 
                     await updateMeetingAttendees(meeting)
 
-                    return res.status(400).json({
-                        errorMessage: `User added to a meeting`
+                    return res.status(200).json({
+                        successMessage: `User added to a meeting`
                     })
                 }
+            } else {
+                return res.status(404).json({
+                    errorMessage: `User doesn't exists`
+                })
             }
         } else {
-            return res.status(400).json({
+            return res.status(404).json({
                 errorMessage: `Meeting with ID: ${meetingId} doesn't exist.`
             })
         }
         
     } catch (e) {
-        return res.status(400).json({
+        return res.status(500).json({
             errorMessage: `Something went wrong. ${e.message}`,
         })
     }

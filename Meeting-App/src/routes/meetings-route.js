@@ -8,7 +8,7 @@ const {
     deleteMeetingController,
     removeUserFromMeetingController,
     addUserToMeetingController
-} = require('../controllers/meetingsController');
+} = require('../controllers/meetings-controller');
 
 routes.post('/', authenticateToken, (req, res) => {
     createMeetingController(req, res);

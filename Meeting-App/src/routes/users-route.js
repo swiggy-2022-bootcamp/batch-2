@@ -4,7 +4,7 @@ const authenticateToken = require('../middleware/authenticate-token');
 const { 
     createUserController,
     loginUserController
-} = require('../controllers/usersController');
+} = require('../controllers/users-controller');
 
 routes.post('/register', (req, res) => {
     createUserController(req, res);
