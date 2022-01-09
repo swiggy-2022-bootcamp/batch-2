@@ -68,7 +68,7 @@ export const getMany = model => async (req, res) => {
       .lean()
       .exec()
 
-      res.status(200).json({ message: `All question asked by: ${req.user.name}`, data: documents})
+      res.status(200).json({ message: `All question asked by: ${req.user.firstName} ${req.user.lastName}`, data: documents})
   }catch(err){
     console.error(e)
     res.status(400).end()
