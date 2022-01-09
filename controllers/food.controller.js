@@ -1,8 +1,11 @@
-var ObjectId = require('mongoose').Types.ObjectId;
-
 var Food = require('../models/food.model');
 
-
+/**
+ * This function helps to fetch all foods.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 module.exports.getFoods = (req, res) => {
     // #swagger.tags = ['Food']
     // #swagger.description = 'Endpoint for fetching all foods.'
@@ -18,6 +21,12 @@ module.exports.getFoods = (req, res) => {
     });
 }
 
+/**
+ * This function helps to fetch a food by Food ID.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 module.exports.getFood = (req, res) => {
     // #swagger.tags = ['Food']
     // #swagger.description = 'Endpoint for fetching particular food with food_id.'
@@ -44,6 +53,12 @@ module.exports.getFood = (req, res) => {
     });
 }
 
+/**
+ * This function helps to add a new food.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 module.exports.addFood = (req, res) => {
     // #swagger.tags = ['Food']
     // #swagger.description = 'Endpoint for adding a new food..'
@@ -73,6 +88,12 @@ module.exports.addFood = (req, res) => {
     });
 }
 
+/**
+ * This function helps to update a food.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 module.exports.updateFood = (req, res) => {
     // #swagger.tags = ['Food']
     // #swagger.description = 'Endpoint for updating a food.'
@@ -112,6 +133,12 @@ module.exports.updateFood = (req, res) => {
     });
 }
 
+/**
+ * This function helps to delete a food.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 module.exports.deleteFood = (req, res) => {
     // #swagger.tags = ['Food']
     // #swagger.description = 'Endpoint for deleting a food.'

@@ -4,6 +4,13 @@ const _ = require('lodash');
 
 const User = mongoose.model('User');
 
+/**
+ * This function helps to validate user details before registration.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {*} next
+ */
 module.exports.validateUser = (req, res, next) => {
     User.findOne({ username: req.body.username }, (err, us1) => {
         if (us1) {
@@ -39,6 +46,13 @@ module.exports.validateUser = (req, res, next) => {
     });
 }
 
+/**
+ * This function helps to register a new user.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {*} next
+ */
 module.exports.registeruser = (req, res, next) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for user registration.'
@@ -76,6 +90,13 @@ module.exports.registeruser = (req, res, next) => {
     });
 }
 
+/**
+ * This function helps to authenticate an user and generate token.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {*} next
+ */
 module.exports.authenticateuser = (req, res, next) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for user login.'
@@ -105,6 +126,13 @@ module.exports.authenticateuser = (req, res, next) => {
     })(req, res);
 }
 
+/**
+ * This function helps to fetch an user profile.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {*} next
+ */
 module.exports.usrProfile = (req, res, next) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for fetching user profile.'
@@ -134,6 +162,13 @@ module.exports.usrProfile = (req, res, next) => {
     );
 }
 
+/**
+ * This function helps to fetch all users.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {*} next
+ */
 module.exports.getUsers = (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for fetching all users.'
@@ -149,6 +184,13 @@ module.exports.getUsers = (req, res) => {
     });
 }
 
+/**
+ * This function helps to fetch an user by User ID.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {*} next
+ */
 module.exports.getUser = (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for fetching particular user with id.'
@@ -176,6 +218,13 @@ module.exports.getUser = (req, res) => {
     });
 }
 
+/**
+ * This function helps to update details of an User.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {*} next
+ */
 module.exports.updateUser = async (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for updating an user.'
@@ -188,6 +237,7 @@ module.exports.updateUser = async (req, res) => {
             schema: { $ref: "#/definitions/UpdateUser" }
     } */
 
+    //Check if user wants to change username and hence restrict
     let currUser = await User.findOne({ _id: req._id }).exec();
     if (!(currUser.username === req.body.username)) {
         /* #swagger.responses[200] = { 
@@ -218,6 +268,13 @@ module.exports.updateUser = async (req, res) => {
     });
 }
 
+/**
+ * This function helps to delete an user.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {*} next
+ */
 module.exports.deleteUser = (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for deleting an user.'

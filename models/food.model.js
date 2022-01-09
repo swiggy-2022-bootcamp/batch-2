@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 
 const autoIncrement = require('mongoose-auto-increment');
 
+/**
+ * Food model definition
+ */
 var foodSchema = new mongoose.Schema({
     id: {
         type: Number,

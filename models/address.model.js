@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const autoIncrement = require('mongoose-auto-increment');
 
+/**
+ * Address model definition
+ */
 var addressSchema = new mongoose.Schema({
     id: {
         type: Number,

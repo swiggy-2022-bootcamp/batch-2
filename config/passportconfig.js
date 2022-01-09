@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 
 var User = mongoose.model('User');
 
+/**
+ * Passport.js auth strategy.
+ */
 passport.use('local',
     new localStrategy({ usernameField: 'username' },
         (username, password, done) => {

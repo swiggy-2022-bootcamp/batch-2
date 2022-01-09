@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+/**
+ * Connect to MongoDB.
+ */
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, (err) => {
     if (!err) {
         console.log('Connection Success..');

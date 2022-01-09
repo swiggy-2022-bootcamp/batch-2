@@ -5,6 +5,9 @@ var Address = require('./address.model').schema
 
 const autoIncrement = require('mongoose-auto-increment');
 
+/**
+ * User model definition
+ */
 var userSchema = new mongoose.Schema({
     id: {
         type: Number,
