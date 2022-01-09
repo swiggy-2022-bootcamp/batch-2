@@ -63,3 +63,15 @@ exports.removeGroupMembers = async (req, res, next) => {
 } 
 
 
+exports.viewGroups =  async (req, res, next) => {
+    
+    let result = await User.find({ isGroup:true, members: res.locals.user.email}).lean();
+
+    let transformed = result.map(g => {
+        delete g.__v;
+        delete g.isGroup;
+        return g;
+    });
+
+    return res.status(200).send(transformed);
+}
