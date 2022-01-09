@@ -17,3 +17,24 @@ Sequelize
 ## Authentication
 
 JWT auth
+
+## How to Run ?
+
+### Create a .env file in the root folder with the following
+
+```
+DB_NAME=<db_name>
+JWT_SECRET=<any_secret_key>
+```
+
+### Install server dependencies
+
+```bash
+npm install
+```
+
+### Run the Express server
+
+```bash
+npm start
+```
