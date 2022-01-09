@@ -76,10 +76,20 @@ router.get("/meeting/:id", auth, async (req, res) => {
 router.get("/user/meetings", auth, async (req, res) => {
 	try {
 		const user = await User.findOne({ where: { id: req.user.id } });
+
+		let q = "";
+		if (req.query.q) {
+			q = req.query.q;
+		}
+		console.log(q);
+
 		const allMeetings = await Meeting.findAll({
 			where: {
 				email_ids_of_attendees: {
 					[Op.substring]: user.userid,
+				},
+				description: {
+					[Op.substring]: q,
 				},
 			},
 		});
