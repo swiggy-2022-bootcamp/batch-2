@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 
 const db = new Sequelize({
 	dialect: "sqlite",
-	storage: "db.sqlite3",
+	storage: process.env.DB_NAME,
 	logging: false,
 });
 

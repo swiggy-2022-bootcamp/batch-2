@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -19,6 +20,7 @@ connectDB();
 app.use(express.json());
 
 app.use(require("./routes/auth"));
+app.use(require("./routes/meeting"));
 
 app.get("/", (req, res) => {
 	res.send("Hello World!");
