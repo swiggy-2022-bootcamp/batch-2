@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const UserModel = require('./User.js');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const MeetingSchema = new mongoose.Schema({

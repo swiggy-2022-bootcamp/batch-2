@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const meetingsRouter = require('./meetings');
 const userService = require('../../services/userService');
 const logger = require('../../config/logger');
@@ -8,6 +8,11 @@ const auth = require('../auth');
 
 router.use('/meetings', meetingsRouter);
 
+/*
+ * GET /
+ * description: fetch (authenticated) user details
+ * 
+ */
 router.get('/', auth, async (req, res) => {
   let result = await userService.findUserByUserId(res.locals.userId);  
   if (result.data) {
@@ -19,6 +24,11 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+/*
+ * POST /signup
+ * description: register new user
+ * 
+ */
 router.post('/signup', requestValidator.validateSignUpRequest, async (req, res)=>{
   const userDomainEntity = req.body;
   const response = await userService.createUserIfNotExists(userDomainEntity)
@@ -35,6 +45,11 @@ router.post('/signup', requestValidator.validateSignUpRequest, async (req, res)=
   res.json(response);
 });
 
+/*
+ * POST /login
+ * description: authenticate new user
+ * 
+ */
 router.post('/login', requestValidator.validateLoginRequest, async (req, res)=>{  
   const username = req.body.username;
   const password = req.body.password;

@@ -2,7 +2,6 @@ const MeetingModel = require('../models/Meeting');
 const UserModel = require('../models/User');
 const userService = require('./userService');
 
-//TODO: implement transactional context
 const createMeeting = async (creatorUserId, startTime, endTime, description, participantEmailAddresses) => {
     const meeting = new MeetingModel();
     meeting.description = description;
@@ -45,20 +44,6 @@ const addParticipantsToMeeting = async (participantEmailAddresses, meetingWithPa
         const participant = await UserModel.findOne({emailAddress: participantEmailAddress});
         meetingWithParticipantInfo.participants.push(participant);
     }
-}
-
-const removeParticipantsFromMeeting = async (participantEmailAddressesToBeRemoved, meetingWithParticipantInfo) => {
-    let exisingMeetingParticipants = meetingWithParticipantInfo.participants;
-    
-    let updatedMeetingParticipants = exisingMeetingParticipants
-        .filter((participant) => !(participant.emailAddress in participantEmailAddressesToBeRemoved));
-    meetingWithParticipantInfo.participants = [];
-    meetingWithParticipantInfo.participants.push(...updatedMeetingParticipants);
-        
-    let removedParticipants = exisingMeetingParticipants
-        .filter((participant) => (participant.emailAddress in participantEmailAddressesToBeRemoved));
-    console.log(removedParticipants);
-    await removeMeetingIdFromParticipants(removedParticipants, meetingWithParticipantInfo.meetingId);
 }
 
 const findAllMeetingsForUser = async (userId) => {
