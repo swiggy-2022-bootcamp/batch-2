@@ -81,7 +81,6 @@ router.get("/user/meetings", auth, async (req, res) => {
 		if (req.query.q) {
 			q = req.query.q;
 		}
-		console.log(q);
 
 		const allMeetings = await Meeting.findAll({
 			where: {
