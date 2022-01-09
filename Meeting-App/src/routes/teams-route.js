@@ -3,6 +3,7 @@ const authenticateToken = require('../middleware/authenticate-token');
 
 const {
     createTeamController,
+    viewTeamsController,
     addMemberToTeamController,
     removeMemberFromTeamController,
     leavingTeamController,
@@ -12,6 +13,11 @@ const {
 // Creating a Team
 routes.post('/', authenticateToken, (req, res) => {
     createTeamController(req, res);
+});
+
+// Get All Teams Details
+routes.get('/', authenticateToken, (req, res) => {
+    viewTeamsController(req, res);
 });
 
 // Adding a member to Team
