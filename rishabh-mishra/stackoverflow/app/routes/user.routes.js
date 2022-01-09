@@ -1,18 +1,20 @@
-const users = require("../controllers/user.controller.js");
 const { userAuth } = require("../middleware/auth.middleware.js");
+const users = require("../controllers/user.controller.js");
 let router = require("express").Router();
 
 module.exports = (app) => {
   const {
-    validateUser,
-    validateSignin,
+    getAllUsers,
+    getUser,
     createUser,
     signin,
-    getAllUsers,
     updateUser,
+    validateUser,
+    validateSignin,
   } = users;
 
-  router.get("/get_all", getAllUsers);
+  router.get("/list", getAllUsers);
+  router.get("/:id", users.getUser);
 
   router.post("/signup", validateUser, createUser);
   router.post("/signin", validateSignin, signin);

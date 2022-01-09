@@ -53,7 +53,7 @@ edit other people's posts.
   - created_at: timestamp
   - updated_at: timestamp
 
-Vote will be extracted as a seprated schema.
+`Vote` will be extracted as a seprated schema and `Version` will be specialised schemas.
 
 ## Privilages:
 

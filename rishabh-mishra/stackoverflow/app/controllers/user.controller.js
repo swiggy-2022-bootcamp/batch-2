@@ -1,13 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const { createToken, verifyPassword } = require("../utils/authentication");
+const { validationErrorsHandler } = require("../utils/validation");
 const User = require("../models").users;
-
-const validationErrorsHandler = (req, res) => {
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(422).json({ errors: result.array() });
-  }
-};
 
 // Signup
 exports.createUser = async (req, res, next) => {
@@ -38,10 +32,11 @@ exports.createUser = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(400).json({ errors: [{ msg: err.message }] });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 
+// Signin
 exports.signin = async (req, res, next) => {
   validationErrorsHandler(req, res);
 
@@ -71,17 +66,29 @@ exports.signin = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(400).json({ errors: [{ msg: err.message }] });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 
+// Get all users
 exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     return res.status(200).json(users);
   } catch (err) {
     console.log(err);
-    return res.status(400).json({ errors: [{ msg: err.message }] });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
+  }
+};
+
+// Get User By id
+exports.getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    return res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 
@@ -124,7 +131,7 @@ exports.updateUser = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(400).json({ errors: [{ msg: err.message }] });
+    return res.status(500).json({ errors: [{ msg: err.message }] });
   }
 };
 
