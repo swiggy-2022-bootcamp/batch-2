@@ -1,6 +1,7 @@
 
 const questionsAuth = (req, res, next) => {
-    if (req.question.author._id.equals(req.user.id)) return next();
+    console.log(req);
+    // if (req.question.author._id.equals(req.user.user_id)) return next();
     res.status(401).end();
 };
 

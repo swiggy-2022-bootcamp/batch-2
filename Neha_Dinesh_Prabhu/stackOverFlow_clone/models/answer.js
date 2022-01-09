@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const voteSchema = require('./vote');
+const voteSchema = require('./votes');
 
 const answerSchema = new Schema({
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-    required: true
-  },
-  created: { type: Date, default: Date.now },
-  text: { type: String, required: true },
-  score: { type: Number, default: 0 },
-  votes: [voteSchema]
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+    created: { type: Date, default: Date.now },
+    text: { type: String, required: true },
+    score: { type: Number, default: 0 },
+    votes: [voteSchema]
 });
 
 answerSchema.set('toJSON', { getters: true });

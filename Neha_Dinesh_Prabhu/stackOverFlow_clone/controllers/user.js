@@ -72,5 +72,4 @@ exports.signIn = async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-    // Our register logic ends here
 }

@@ -32,6 +32,13 @@ mongoose.connect(config.db.url).then(() => {
 })
 
 require("./routes/user.routes")(app);
+require("./routes/question.routes")(app);
+const questions = require("./controllers/question.js");
+var router = require("express").Router();
+
+router.get('/quest/:id', questions.getQuestionById);
+app.use(router);
+
 
 //testing server
 app.get("/test", auth, (req, res) => {
