@@ -11,7 +11,7 @@ module.exports = app =>
     router.post("/upvoteAnswer/:id", answers.upvoteAnswer);
     //router.get("/getPrivilegedUsers", answers.getPrivilegedUsers);
     //router.get("/upvoteCount", answers.getVoteCountOfAnswers);
-    //router.delete("/deleteAnswer/:id", answers.deleteAnswer);
+    router.delete("/deleteAnswer/:id", answers.deleteAnswer);
     
     app.use("/answers",router)
 }
