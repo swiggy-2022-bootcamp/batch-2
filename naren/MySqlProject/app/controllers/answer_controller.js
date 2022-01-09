@@ -1,7 +1,46 @@
+// FOR QUERYING THE DATABASE
 const sql = require("./db.js")
 
+/*
 
-// API to post answer
+************ CONTROLLER FOR ALL ANSWER RELATED REQUESTS ********************
+
+*/
+
+// USE CASE 4 OF CASE STUDY -Part 1
+// POSTING A ANSWER
+/*
+
+Function : postAnswer
+
+API TYPE : POST REQUEST
+
+Description : 
+It serves the POST request made from the client for posting a new 
+answer. For the given question Id we post an answer with the provided content.
+We have an assumption that the user can post an answer to a question only once.
+He can alternately update his previous answer with a PUT REQUEST. We enforce this unique
+contraint(username,question id) and also valid question id is enforced because of foreign key 
+constraint on question Id refering to questions table in the database. 
+We also need to authorize the client making the request. 
+
+Input parameters :
+From the request we get,
+1) questionId - The id of the question we want to the post the answer for.
+2) answerContent - The content of the answer to post.
+3) userName - Email Id of the user
+4) password - password of the user
+
+Response of the API with HTTP STATUS codes:
+201: Question posted Successfully with question ID
+400: 1)question ID is invalid or 
+     2)User is trying to post an answer again for the same question. The user should
+       alternately make a PUT request to update his previous answer.
+401: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN
+500: "Internal Server Error "
+
+*/
+
 const postAnswer = (req,res) =>
 {
     const answersData =
@@ -45,7 +84,37 @@ const postAnswer = (req,res) =>
     })
 }   
 
-// API to update answer
+// USE CASE 4 OF CASE STUDY -Part 2
+// UPDATING AN ANSWER
+/*
+
+Function : updateAnswer
+
+API TYPE : PUT REQUEST
+
+Description : 
+It serves the PUT request made from the client for posting a new 
+answer. For the given question Id and username, we first check if the 
+user has already answered this question before. If he has not answered, he is 
+directed to make a POST request to add a new answer. Else, his answer is 
+updated successfully. The question Id should also be valid. 
+We also need to authorize the client making the request. 
+
+Input parameters :
+From the request we get,
+1) questionId - The id of the question we want to the UPDATE the answer for.
+2) answerContent - The content of the answer to post.
+3) userName - Email Id of the user
+4) password - password of the user
+
+Response of the API with HTTP STATUS codes:
+200: Answer posted by given user for given question ID is UPDATED SUCCESSFULLY.
+400: 1)INVALID QUESTION ID or
+     2)User has NOT YET answered this question. please raise a POST REQUEST to add answer.
+401: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN
+500: "Internal Server Error "
+
+*/
 const updateAnswer = (req,res) =>
 {
     const answersData =
@@ -74,8 +143,8 @@ const updateAnswer = (req,res) =>
             {
                 if(err || result.length == 0)
                 {
-                    console.log("User has NOT YET answered this question. please raise a POST REQUEST to add answer");
-                    res.status(403).send({ message: "User has NOT YET answered this question. please raise a POST REQUEST to add answer"});   
+                    console.log("Invalid question ID or User has NOT YET answered this question. please raise a POST REQUEST to add answer");
+                    res.status(400).send({ message: "Invalid question Id or User has NOT YET answered this question. please raise a POST REQUEST to add answer"});   
                 }
                 else
                 {
@@ -87,7 +156,7 @@ const updateAnswer = (req,res) =>
                         if(err)
                         {
                             console.log("error: ",err)
-                            res.status(400).send({ message: 'This is an error!'});
+                            res.status(500).send({ message: 'This is an internal server error!'});
                         }
                         else
                         {
@@ -100,6 +169,36 @@ const updateAnswer = (req,res) =>
         }
     })
 }
+
+// EXTRA USE CASE
+// UPVOTING AN ANSWER
+/*
+
+Function : upvoteAnswer
+
+API TYPE : POST REQUEST
+
+Description : 
+It serves the POST request made from the client for upvoting an answer.
+For the given answer Id, we first check if it is valid. Then we make sure 
+the user is not upvoting his own answer. We also make sure he can upvote
+an answer only once. We also need to authorize the client making the request.
+
+Input parameters :
+From the request we get,
+1) answerId - The answer Id we want to upvote.
+2) userName - Email Id of the user
+3) password - password of the user
+
+Response of the API with HTTP STATUS codes:
+201: Answer upvoted SUCCESSFULLY
+400: INVALID ANSWER ID
+403: 1) User is trying to Upvote his OWN answer
+     2) User is trying to Upvote the answer MORE than ONCE
+401: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN
+500: "Internal Server Error "
+
+*/
 
 const upvoteAnswer = (req,res) =>
 {
@@ -132,7 +231,7 @@ const upvoteAnswer = (req,res) =>
                 if(err ||result.length == 0 )
                 {
                     console.log("error: INVALID ANSWER ID ")
-                    res.status(404).send({ message: 'This is an error! INVALID ANSWER ID'});
+                    res.status(400).send({ message: 'This is an error! INVALID ANSWER ID'});
                 }
                 else
                 {
@@ -163,12 +262,12 @@ const upvoteAnswer = (req,res) =>
                                     if(err )
                                     {
                                         console.log("Error:",err)
-                                        res.status(400).send({ message: 'This is an error!'});
+                                        res.status(500).send({ message: 'This is an internal server error!'});
                                     }
                                     else
                                     {
                                         console.log("We have successfully upvoted the answer")
-                                        res.status(200).send({message:"WE HAVE SUCCESSFULLY UPVOTED the answer"});
+                                        res.status(201).send({message:"WE HAVE SUCCESSFULLY UPVOTED the answer"});
                                     }
                                 });
                             }
@@ -281,4 +380,6 @@ const deleteAnswer = (req,res) =>
     })
 }   
 
+
+// export all these functions.
 module.exports ={postAnswer,updateAnswer,upvoteAnswer,getPrivilegedUsers,getVoteCountOfAnswers,deleteAnswer}

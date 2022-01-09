@@ -8,6 +8,7 @@ const sql = require("./db.js")
 */
 
 // USE CASE 5 OF CASE STUDY - Part 1
+// GET ALL ANSWERS FOR A GIVEN QUESTION
 /*
 
 Function : getAllAnswersForQuestion
@@ -28,7 +29,7 @@ From the request we get,
 
 Response of the API with HTTP STATUS codes:
 401: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN
-404 : INVALID QUESTION ID
+400 : INVALID QUESTION ID
 500: "Internal Server Error "
 200: The question content and answers for the question in JSON FORMAT
 Example
@@ -73,7 +74,7 @@ const getAllAnswersForQuestion = (req,res) =>
                 if((err) || result.length == 0)
                 {
                     console.log("error: INVALID QUESTION ID ")
-                    res.status(404).send({ message: 'This is an error! INVALID QUESTION ID'});
+                    res.status(400).send({ message: 'This is an error! INVALID QUESTION ID'});
                 }
                 else
                 {
@@ -106,6 +107,7 @@ const getAllAnswersForQuestion = (req,res) =>
 };
 
 // USE CASE 3 OF CASE STUDY
+// POSTING A NEW QUESTION
 /*
 
 Function : postQuestion
@@ -173,6 +175,7 @@ const postQuestion = (req,res) =>
 }
 
 // USE CASE 5 OF CASE STUDY - Part 2
+// GETTING ALL QUESTIONS AND ITS CORRESPONDING ANSWERS
 /*
 
 Function : getAllQuestionsAndAnswers 

@@ -8,6 +8,7 @@ const sql = require("./db.js")
 */
 
 // USE CASE 1 OF CASE STUDY
+// LOGIN INTO APPLICATION
 /*
 
 Function : loginUser
@@ -76,6 +77,7 @@ const loginUser = (req,res) =>
 
 
 // USE CASE 2 OF CASE STUDY
+// CREATE A NEW USER
 /*
 
 Function : creatUser
@@ -148,6 +150,7 @@ const createUser = (req,res) =>
 }
 
 // EXTRA USE CASE
+// DISPLAY ALL USERS , FROM ADMIN SIDE.
 /*
 
 Function : listAllUsers
