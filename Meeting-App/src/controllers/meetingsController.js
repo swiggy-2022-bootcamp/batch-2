@@ -70,14 +70,26 @@ const viewMeetingsController = async (req, res) => {
 const searchMeetingsController = async (req, res) => {
     const email = req.user.email;
     const meetingId = req.params.meetingId;
+    const title = req.query.title;
+    const desc = req.query.desc;
 
     try {
         let result = await viewMeetingsService(email);
 
-        result = result.filter((meeting) => {
-            return meeting.id == meetingId;
-        });
-
+        if(title != null) {
+            result = result.filter((meeting) => {
+                return (meeting.title).includes(title);
+            })
+        } else if (desc != null) {
+            result = result.filter((meeting) => {
+                return (meeting.description).includes(desc);
+            })
+        } else {
+            result = result.filter((meeting) => {
+                return meeting.id == meetingId;
+            });
+        }
+        
         if(result.length > 0) {
             return res.status(201).json({
                 successMessage: `Meetings fetched successfully`,

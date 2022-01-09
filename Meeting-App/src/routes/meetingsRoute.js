@@ -15,8 +15,14 @@ routes.get('/', authenticateToken, (req, res) => {
     viewMeetingsController(req, res);
 });
 
-routes.get('/:time', authenticateToken, (req, res) => {
+routes.get('/date/:time', authenticateToken, (req, res) => {
     viewMeetingsController(req, res);
+    
+});
+
+// Search Meeting by Title or Desc
+routes.get('/search', authenticateToken, (req, res) => {
+    searchMeetingsController(req, res);
 });
 
 // Search meeting based on ID
