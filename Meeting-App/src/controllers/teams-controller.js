@@ -1,8 +1,10 @@
+const { updateMeetingAttendees } = require('../services/meetings-service');
 const {
     createTeamService,
     viewTeamsService,
     updateTeamMembersService
 } = require('../services/teams-service');
+const { getMeetingById } = require('./meetings-controller');
 const { getUserByIdController } = require('./users-controller');
 
 const createTeamController = async (req, res) => {
@@ -173,7 +175,52 @@ const leavingTeamController = async (req, res) => {
 }
 
 const addingTeamToMeetingController = async (req, res) => {
+    const teamId = req.params.teamId;
+    const meetingId = req.params.meetingId
 
+    try {
+        const team = await getTeamById(teamId, req.user.email);
+        if(team.length > 0) {
+            const meeting = await getMeetingById(req.user.email, meetingId);
+            if(meeting.length > 0) {
+                const teamMembers = team[0].members.split(",");
+                const meetingAttendees = meeting[0].attendees.split(",");
+                
+                const newAttendees = [];
+
+                teamMembers.forEach((member) => {
+                    if(!newAttendees.includes(member)){
+                        newAttendees.push(member);
+                    }
+                })
+
+                meetingAttendees.forEach((attendee) => {
+                    if(!newAttendees.includes(attendee)){
+                        newAttendees.push(attendee);
+                    }
+                })
+
+                meeting[0].attendees = newAttendees.toString();
+
+                await updateMeetingAttendees(meeting[0]);
+                return res.status(200).json({
+                    successMessage: `Team added to Meeting Successfully`
+                });
+            } else {
+                return res.status(404).json({
+                    errorMessage: `Meeting Not Found!!!`
+                });
+            }
+        } else {
+            return res.status(404).json({
+                errorMessage: `Team Not Found!!!`
+            })
+        }
+    } catch (e) {
+        return res.status(500).json({
+            errorMessage: `Something went wrong. ${e.message}`
+        })
+    }
 }
 
 const viewTeams = async (email) => {

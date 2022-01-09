@@ -277,6 +277,26 @@ const addUserToMeetingController = async (req, res) => {
     }
 }
 
+const getMeetingById = async (email, meetingId) => {
+    try {
+        const meetings = await viewMeetingsService(email);
+
+        const filteredMeetings = meetings.filter((meeting) => {
+            const todayMomentVal = moment().format('YYYY-MM-DD');
+            const meetingDateMomentVal = meeting.date;
+            return moment(meetingDateMomentVal).isSameOrAfter(todayMomentVal);
+        });
+
+        const meeting = filteredMeetings.filter((meeting) => {
+            return meeting.id == meetingId
+        })
+
+        return meeting;
+    } catch (e) {
+        throw Error(e);
+    }
+}
+
 module.exports = {
     createMeetingController,
     viewMeetingsController,
@@ -284,5 +304,6 @@ module.exports = {
     leaveMeetingController,
     deleteMeetingController,
     removeUserFromMeetingController,
-    addUserToMeetingController
+    addUserToMeetingController,
+    getMeetingById
 }
