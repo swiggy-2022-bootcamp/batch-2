@@ -1,7 +1,14 @@
 const mongoose = require('mongoose');
 
-// Deifining Question Model
-const Question = mongoose.model('Question', {
+const questionSchema = {
+    question_user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+    },
+    question_user_name: {
+        type: String,
+        required: true,
+    },
     question_title: {
         type: String,
         required: true,
@@ -10,22 +17,25 @@ const Question = mongoose.model('Question', {
         type: String,
         required: true,
     },
-    question_answer:[
+    question_answers:[
         {   
-            user_id: {
+            answer_user_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            answer_user_name: {
                 type: String,
                 required: true,
             },
-            user_name: {
-                type: String,
-                required: true,
-            },
-            user_answer: {
+            answer_user_ans: {
                 type: String,
                 required: true,
             }
         },
     ],
-});
+}
+
+// Defining Question Model
+const Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question;

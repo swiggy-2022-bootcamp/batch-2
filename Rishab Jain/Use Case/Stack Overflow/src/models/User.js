@@ -43,6 +43,7 @@ const userSchema =  new mongoose.Schema({
     }]
 });
 
+
 // statics are used for the whole model
 // methods are used for specific object/instance of the model
 
@@ -92,7 +93,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user;
 };
 
-// Setting middleware for hashing passwords before saving
+// Setting mongoose middleware for hashing passwords before saving
 userSchema.pre('save', async function (next){
     const user = this;
 
@@ -103,7 +104,7 @@ userSchema.pre('save', async function (next){
     next();
 });
 
-// Deifining User Model
+// Defining User Model
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

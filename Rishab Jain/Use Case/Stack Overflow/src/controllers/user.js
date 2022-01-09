@@ -71,12 +71,13 @@ exports.logOutAll = async (req, res) => {
     }
 };
 
-// Read User details
-exports.findAllUsers = async (req, res) => {
+// Get User details (taking help of auth middleware)
+exports.getUserDetails = async (req, res) => {
 
     res.status(200).send(req.user);
 };
 
+// Get user by id
 exports.findUserById = async (req, res) => {
     
     const _id = req.params.id;
@@ -88,7 +89,28 @@ exports.findUserById = async (req, res) => {
             return res.status(404).send();
         }
         
-        res.status(200).send(user);
+        res.status(200).send({
+            user_id: _id,
+            user_name: user.name
+        });
+
+    }catch(err){
+        res.status(500).send();
+    }
+};
+
+// Get all users
+exports.findAllUsers = async (req, res) => {
+    
+    
+    try{
+        const users = await User.find({});
+        
+        if(!users){
+            return res.status(404).send();
+        }
+        
+        res.status(200).send(users);
     }catch(err){
         res.status(500).send();
     }
