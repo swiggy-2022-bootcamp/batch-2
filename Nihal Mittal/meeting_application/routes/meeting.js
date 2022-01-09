@@ -121,7 +121,7 @@ router.delete("/user/meetings/:id", auth, async (req, res) => {
 		}
 
 		let email_ids_of_attendees = meeting.email_ids_of_attendees.replace(
-			`,${user.userid}`,
+			user.userid,
 			""
 		);
 
