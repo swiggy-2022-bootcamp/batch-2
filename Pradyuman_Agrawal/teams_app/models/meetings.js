@@ -3,22 +3,25 @@ const pool = require("../config/db")
 const Meeting = function(meeting){
     this.creatorId = meeting.creatorId;
     this.startTime = meeting.startTime;
+    this.endTime = meeting.endTime;
+    this.description=meeting.description;
     this.members=meeting.members;
+    this.inviteLinkAccess=meeting.inviteLinkAccess;
 }
-
 
 
 Meeting.create = async (newMeeting) => {
     //console.log(newMeeting);
     const resultObj ={...newMeeting};
-    const {creatorId,startTime,members}=newMeeting;  
+    const {creatorId,startTime,endTime,description,members,inviteLinkAccess}=newMeeting;
+    console.log(inviteLinkAccess);  
     try{
-        const res = await pool.promise("INSERT INTO meetings SET ?; ", { creatorId: creatorId, startTime: startTime });
+        const res = await pool.promise("INSERT INTO meetings SET ?; ", { creatorId: creatorId, startTime: startTime,endTime:endTime,description:description,inviteLinkAccess:inviteLinkAccess});
         console.log("meeting created",{...newMeeting});
         resultObj.id=res.insertId;
         let promises=[]
         members.forEach(memberId => {
-            promises.push(pool.promise("INSERT IGNORE INTO meetingMembers SET ?; ", { meetingId: resultObj.id, userId:memberId }))
+            promises.push(pool.promise("INSERT INTO meetingMembers SET ?; ", { meetingId: resultObj.id, userId:memberId }))
         });
 
         await Promise.all(promises);
@@ -128,6 +131,28 @@ Meeting.dropOffMeetingById= async (meetingId,userId) => {
         
         console.log([meetingId,userId]);
         const res = await pool.promise("Delete from meetingMembers where (meetingId = ?) AND (userId = ?)",[meetingId,userId]);
+        return res;
+    }
+    catch(err){
+        console.log("error: ",err);
+        throw err;
+    }
+};
+
+Meeting.createInviteLink = async (inviteLink,meetingId) => {
+    try{
+        const res = await pool.promise("update meetings set inviteLink = ? where meetingId =?",[inviteLink,meetingId]);
+        return res;
+    }
+    catch(err){
+        console.log("error: ",err);
+        throw err;
+    }
+};
+
+Meeting.joinMeetingbyId = async (userId,meetingId) => {
+    try{
+        const res = await pool.promise("INSERT INTO meetingMembers SET ?; ", { meetingId: meetingId, userId:userId });
         return res;
     }
     catch(err){

@@ -22,6 +22,9 @@ CREATE TABLE meetings(
 meetingId INT PRIMARY KEY AUTO_INCREMENT,
 creatorId INT NOT NULL,
 startTime TIMESTAMP NOT NULL,
+endTime TIMESTAMP DEFAULT "2000-01-01T12:00:00",
+description varchar(200),
+inviteLinkAccess BOOLEAN DEFAULT FALSE,
 FOREIGN KEY (creatorId) REFERENCES users(userId)
 );
 
