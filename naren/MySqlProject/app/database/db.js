@@ -1,8 +1,9 @@
+// This file is for Creating connection to the database to facilitate all our queries.
+
 const util = require('util');
 const mysql = require('mysql' );
 const dbConfig = require('./db_config.js')
 
-// Returns a connection to the Database
 function getDbConnection() 
 {
   const connection = mysql.createConnection(

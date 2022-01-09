@@ -7,7 +7,7 @@ module.exports = app =>
     
     router.post("/getAllAnswersForQuestion/:id",questions.getAllAnswersForQuestion);
     router.post("/addQuestion",questions.postQuestion);
-    router.get("/getAllQuestionsAndAnswers",questions.getAllQuestionsAndAnswers)
+    router.get("/getAllQuestionsAndAnswers",questions.getAllQuestionsAndAnswers);
  
-    app.use("/questions",router)
+    app.use("/questions",router);
 }

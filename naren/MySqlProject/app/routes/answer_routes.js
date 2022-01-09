@@ -12,5 +12,5 @@ module.exports = app =>
     router.get("/upvoteCount", answers.getUpvoteCountOfAnswers);
     router.delete("/deleteAnswer/:id", answers.deleteAnswer);
     
-    app.use("/answers",router)
+    app.use("/answers",router);
 }
