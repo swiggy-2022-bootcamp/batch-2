@@ -9,11 +9,9 @@ const verifyToken=(req,res,next)=>{
         const decoded=jwt.verify(token,process.env.TOKEN_KEY);
         req.userId=decoded.userId
         req.email=decoded.email
-
     }catch(err){
         return res.status(403).json(err);
     }
-
     return next();
 }
 
