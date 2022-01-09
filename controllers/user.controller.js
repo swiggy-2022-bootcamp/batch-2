@@ -269,7 +269,7 @@ module.exports.updateUser = async (req, res) => {
 }
 
 /**
- * This function helps to delete an user.
+ * This function helps to delete an user by User ID.
  * 
  * @param {*} req 
  * @param {*} res
