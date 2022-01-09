@@ -2,6 +2,7 @@ const { body, validationResult } = require("express-validator");
 const { validationErrorsHandler } = require("../utils/validation");
 const Question = require("../models").questions;
 const User = require("../models").users;
+const Answer = require("../models").answers;
 
 exports.getAllQuestions = async (req, res) => {
   try {
@@ -119,6 +120,97 @@ exports.updateQuestion = async (req, res) => {
   }
 };
 
+exports.acceptAnswer = async (req, res) => {
+  const { questionId, answerId } = req.body;
+
+  try {
+    const question = await Question.findById(questionId);
+    if (!question) {
+      return res.status(404).send({
+        msg: "Question not found",
+      });
+    }
+
+    const answer = await Answer.findById(answerId);
+    if (!answer) {
+      return res.status(404).send({
+        msg: "Answer not found",
+      });
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!question.version[0].user_id.equals(user._id)) {
+      return res.status(403).send({
+        msg: "You are not authorized to accept this answer",
+      });
+    }
+
+    if (!question.answers.some((answerId) => answerId.equals(answer._id))) {
+      return res.status(403).send({
+        msg: "Answer is not part of this question",
+      });
+    }
+    if (
+      question.accepted_answer_id &&
+      question.accepted_answer_id.equals(answer._id)
+    ) {
+      return res.status(403).send({
+        msg: "Answer is already accepted",
+      });
+    }
+
+    question.accepted_answer_id = answer._id;
+    await question.save();
+
+    res.json({
+      msg: "Answer accepted successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      errors: [{ msg: err.message }],
+    });
+  }
+};
+
+exports.removeAcceptedAnswer = async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.questionId);
+    if (!question) {
+      return res.status(404).send({
+        msg: "Question not found",
+      });
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!question.version[0].user_id.equals(user._id)) {
+      return res.status(403).send({
+        msg: "You are not authorized to remove accepted answer",
+      });
+    }
+
+    if (!question.accepted_answer_id) {
+      return res.status(403).send({
+        msg: "No accepted answer to remove",
+      });
+    }
+
+    question.accepted_answer_id = null;
+    await question.save();
+
+    res.json({
+      msg: "Accepted answer removed successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      errors: [{ msg: err.message }],
+    });
+  }
+};
+
 exports.deleteQuestion = async (req, res) => {
   try {
     const question = await Question.findById(req.params.id);
@@ -137,6 +229,22 @@ exports.deleteQuestion = async (req, res) => {
       return res.status(403).send({
         msg: "You are not authorized to delete this question",
       });
+    }
+
+    if (user.role !== "admin") {
+      let assosiatedAnswerIds = question.answers;
+      let assosiatedAnswers = await Answer.find({
+        _id: { $in: assosiatedAnswerIds },
+      });
+
+      assosiatedAnswers.forEach((answer) => {
+        if (answer.vote.some((vote) => vote.action))
+          return res.status(403).send({
+            msg: "You can't delete question because someone has put effort for this question",
+          });
+      });
+
+      await Answer.deleteMany({ _id: { $in: assosiatedAnswerIds } });
     }
 
     const assosiatedUserIds = new Set(

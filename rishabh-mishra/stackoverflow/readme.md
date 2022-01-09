@@ -21,6 +21,7 @@ edit other people's posts.
   - password: string
   - reputation: integer
   - questions: [id]
+  - answers: [id]
   - role: string
   - created_at: timestamp
   - updated_at: timestamp

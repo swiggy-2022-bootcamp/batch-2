@@ -9,6 +9,7 @@ module.exports = (mongoose) => {
     role: { type: String, default: "user" },
     reputation: { type: Number, default: 1 },
     questions: [{ type: mongoose.Schema.Types.ObjectId }],
+    answers: [{ type: mongoose.Schema.Types.ObjectId }],
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
   });

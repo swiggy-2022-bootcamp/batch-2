@@ -14,7 +14,7 @@ module.exports = (app) => {
   } = users;
 
   router.get("/list", getAllUsers);
-  router.get("/:id", users.getUser);
+  router.get("/:id", getUser);
 
   router.post("/signup", validateUser, createUser);
   router.post("/signin", validateSignin, signin);

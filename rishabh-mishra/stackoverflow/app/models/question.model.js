@@ -15,6 +15,7 @@ module.exports = (mongoose) => {
     version: [versionSchema],
     vote: [VoteSchema],
     answers: [mongoose.Schema.Types.ObjectId],
+    accepted_answer_id: mongoose.Schema.Types.ObjectId,
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
   });
