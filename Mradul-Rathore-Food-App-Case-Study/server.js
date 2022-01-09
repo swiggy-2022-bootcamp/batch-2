@@ -9,12 +9,15 @@ var corsOptions = {
     origin: "*"
 }
 
+// for env variables
 app.use(cors(corsOptions));
 app.use(express.json())
 
 const db = require("./app/models")
 const dbURL = process.env.MONGO_URI
-console.log(dbURL)
+const PORT = process.env.PORT
+
+//connect with mongodb
 db.mongoose.connect(dbURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -25,13 +28,8 @@ db.mongoose.connect(dbURL, {
     process.exit()
 })
 
-// app.get("/test", (req, res) => {
-//     res.json({ message: "welcome to NodeJS App" })
-// });
+require("./app/routes/routes")(app);
 
-require("./app/routes/user.routes")(app);
-
-const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`server running on port: ${PORT}`);
 });

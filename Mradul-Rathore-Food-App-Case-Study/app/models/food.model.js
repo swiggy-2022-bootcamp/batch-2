@@ -8,7 +8,7 @@ module.exports = mongoose => {
             foodCost: {
                 type: Number
             },
-            //Indian / Chinese / Mexican
+            //Indian, Chinese, Mexican
             foodType: {
                 type: String,
                 enum: ['Indian', 'Chinese', 'Mexican'],
