@@ -15,7 +15,8 @@ module.exports = mongoose => {
             },
             //Indian / Chinese / Mexican
             foodType: {
-                type: foodType
+                type: String,
+                enum: ['Indian', 'Chinese', 'Mexican'],
             }
 
         }

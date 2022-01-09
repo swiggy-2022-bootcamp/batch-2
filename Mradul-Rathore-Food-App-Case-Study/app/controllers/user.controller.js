@@ -1,4 +1,5 @@
 const db = require("../models")
+
 const User = db.users;
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
