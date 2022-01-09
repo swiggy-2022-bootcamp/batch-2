@@ -2,7 +2,18 @@ var express = require('express');
 var router = express.Router({mergeParams: true});
 const meetingService = require('../../services/meetingService');
 const auth = require('../auth');
+const { validateSearchQuery } = require('../validator');
 const requestValidator = require('../validator');
+
+router.get('/search', auth, validateSearchQuery, async (req, res)=>{
+  let description = req.query.description;
+  let fromStartTime = req.query.from;
+  let toEndTime = req.query.to;
+
+  console.log(description);
+  let result = await meetingService.searchMeeting(res.locals.userId, description, fromStartTime, toEndTime);
+  res.status(200).json({data: result.data, message: result.message});
+});
 
 router.get('/:meetingId', auth, requestValidator.validateFindMeetingRequest, async (req, res, next) => {
   let result = await meetingService.findMeetingByMeetingId(res.locals.userId, req.params.meetingId);
@@ -35,8 +46,6 @@ router.patch('/:meetingId', auth, async(req, res) => {
 
 });
 
-router.get('/search', (req, res)=>{
-    res.send(`Searching for meeting based on description: ${req.query.description}, between ${req.query.from} and ${req.query.to}`);
-});
+
 
 module.exports = router;

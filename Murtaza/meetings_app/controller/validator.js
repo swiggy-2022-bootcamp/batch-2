@@ -135,6 +135,21 @@ const validateRemoveParticipantRequest = async (req, res, next) => {
     }
 }
 
+const validateSearchQuery = (req, res, next) => {
+    if (("description" in req.query) || (("from" in req.query) && ("to" in req.query))) {
+        if ((("from" in req.query) && ("to" in req.query))) {
+            if (Date.parse(req.query.from) > Date.parse(req.query.to)) {
+                res.status(400).json({message: "'from' cannot be later in time than 'to'"});
+                return res.end();
+            }
+        }
+        next();
+    } else {
+        res.status(400).json({message: "please provide either 'description' or 'from/to' timestamps in search query"});
+        return res.end();
+    }
+}
+
 module.exports = {
     validateSignUpRequest: validateSignUpRequest,
     validateLoginRequest: validateLoginRequest,
@@ -142,5 +157,6 @@ module.exports = {
     validateFindMeetingRequest: validateFindMeetingRequest,
     validateAddParticipantRequest: validateAddParticipantRequest,
     validateRemoveParticipantRequest: validateRemoveParticipantRequest,
-    validateMeetingTimeInfo: validateMeetingTimeInfo
+    validateMeetingTimeInfo: validateMeetingTimeInfo,
+    validateSearchQuery: validateSearchQuery
 }

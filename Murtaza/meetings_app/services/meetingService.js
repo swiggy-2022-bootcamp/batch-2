@@ -124,12 +124,40 @@ const updateMeeting = async (userId, meetingId, startTime, endTime, description,
     }
 }
 
+const searchMeeting = async (userId, description, fromStartTime, toEndTime) => {
+    let user = await UserModel.findOne({id: userId});
+    let meetingIds = user.meetings;
+
+    if (meetingIds) {
+        let searchResult = [];
+        for await(let meetingId of meetingIds) {
+            let meeting = await MeetingModel.findOne({meetingId: meetingId});
+            
+            if (description) {
+                if (meeting.description == description) {
+                    searchResult.push(meeting);
+                }
+            }
+
+            console.log(meeting.startTime, meeting.endTime);
+            if (fromStartTime && toEndTime) {
+                if (new Date(fromStartTime) <= new Date(meeting.startTime) 
+                    && new Date(toEndTime) >= new Date(meeting.endTime)) {
+                    searchResult.push(meeting);
+                }
+            }
+        }
+        return {data: searchResult, message: `Found ${searchResult.length} results for your query`};
+    } else {
+        return {message: "No meeting scheduled for this user"};
+    }
+}
+
 module.exports = {
     createMeeting: createMeeting,
     findAllMeetingsForUser: findAllMeetingsForUser,
-    findMeetingByMeetingId: findMeetingByMeetingId
+    findMeetingByMeetingId: findMeetingByMeetingId,
+    searchMeeting: searchMeeting
 }
 
-// UserModel(meetingId:int) >|----|< MeetingModel (meetingId, User:ref)
-// 
 

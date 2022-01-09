@@ -17,7 +17,7 @@ const MeetingSchema = new mongoose.Schema({
 MeetingSchema.methods.setMeetingTime = function (startTime, endTime) {
     this.startTime = startTime;
     this.endTime = endTime;
-    this.duration = endTime - startTime;
+    this.duration = new Date(endTime) - new Date(startTime);
 }
 
 MeetingSchema.plugin(AutoIncrement, {inc_field: 'meetingId'});
