@@ -18,7 +18,7 @@ export const createAnswer = async (req, res) => {
     .exec();
 
     if(answerAlreadyExist.length !== 0)
-      return res.status(401).send({ message : `user already posted answer for quesId: ${req.body.question_id}, you can update your answer if required` });
+      return res.status(401).send({ message : `Answer already posted for quesId: ${req.body.question_id} by user: ${req.user.firstName} ${req.user.lastName}, you can update your answer if required` });
 
     const answer = await Answer.create({
       ques_id: queId,
@@ -52,6 +52,17 @@ export const createAnswer = async (req, res) => {
  */
  export const updateAnswer = async (req, res) => {
   try{
+    const isQuesAnsByUser = await Answer.find({
+      ques_id:req.params.id,
+      createdBy: req.user._id
+    })
+    .select("-updatedAt, -__v")
+    .lean()
+    .exec();
+
+    if(isQuesAnsByUser.length === 0)
+      return res.status(401).send({ message : `No answer posted for quesId: ${req.params.id} by user: ${req.user.firstName} ${req.user.lastName}, post answer only then you can update` });
+      
     const updatedAnswer = await Answer.findOneAndUpdate({
       ques_id: req.params.id,
       createdBy: req.user._id
@@ -62,10 +73,8 @@ export const createAnswer = async (req, res) => {
     .lean()
     .exec();
 
-    console.log(updatedDocument);
-
-    if(!updatedDocument){
-      return res.status(400).end()
+    if(!updatedAnswer){
+      return res.status(400).send({ message: "Update Answer Request failed"});
     }
     res.status(200).json({ message: `Answer updated for quesId: ${req.params.id}`, data: updatedAnswer})
   }catch(e){

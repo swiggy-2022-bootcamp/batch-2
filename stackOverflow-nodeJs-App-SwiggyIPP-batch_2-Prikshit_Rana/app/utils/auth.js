@@ -39,7 +39,7 @@ export const register = async (req, res) => {
     return res.status(201).send({ message: "User registered Successfully" , registration_name: user._doc.firstName + " " + user._doc.lastName , email: user._doc.email ,access_token: token });
   } catch (e) {
     console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
-    return res.status(500).end();
+    return res.status(500).send({ message: "User Registration Failed" });
   }
 };
 
@@ -72,7 +72,7 @@ export const login = async (req, res) => {
     return res.status(201).send({ message: "User logged in successfully" , access_token: token });
   } catch (e) {
     console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
-    res.status(500).end();
+    res.status(500).send({ message: "User login failed" });;
   }
 };
 
@@ -82,7 +82,7 @@ export const login = async (req, res) => {
 export const protect = async (req, res, next) => {
   const bearer = req.headers.authorization;
   if (!bearer || !bearer.startsWith("Bearer ")) {
-    return res.status(401).end();
+    return res.status(401).send({ message: "Authentication Token Incorrect" });
   }
 
   const token = bearer.split("Bearer ")[1].trim();
@@ -91,7 +91,7 @@ export const protect = async (req, res, next) => {
     payload = await verifyToken(token);
   } catch (e) {
     console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
-    return res.status(401).end();
+    return res.status(401).end({ message:"Token Verification failed" });
   }
 
   const user = await User.findById(payload.id)
@@ -100,10 +100,8 @@ export const protect = async (req, res, next) => {
     .exec();
 
 
-  const invalidUser = { message: "Sorry invalid credentials" };
-
   if (!user) {
-    return res.status(401).end();
+    return res.status(401).send({ message: "Sorry invalid credentials" });
   }
 
   req.user = user;
