@@ -1,7 +1,29 @@
 const sql = require("./db.js")
 
-// LOGIN
+// USE CASE 1 OF CASE STUDY
+/*
 
+Function : loginUser
+
+API TYPE : POST REQUEST
+
+Description : 
+It serves the POST request made from the client for logging into the 
+application. We check the database,if a user has entered correct 
+credentials and respond with a success message.
+
+Input parameters :
+From the request we get,
+1) userName - Email Id of the user
+2) password - password of the user
+
+Response of the API with HTTP STATUS codes:
+200: "SUCCESSFULLY logged in"
+401: "PASSWORD INCORRECT for given user name"
+403: "UserName not REGISTERED YET. Please register first"
+500: "Internal Server Error "
+
+*/
 const loginUser = (req,res) =>
 {
     const userData=
@@ -15,12 +37,12 @@ const loginUser = (req,res) =>
         if(err)
         {
             console.log("error: ",err)
-            res.status(400).send({ message: 'This is an error!'});
+            res.status(500).send({ message: 'This is an internal server error!'});
         }
         else
         {
             result = JSON.parse(JSON.stringify(result));
-            //console.log(result.length);
+            
             if (result.length == 1)
             {
                 // user name exists, now check if password exists
@@ -46,7 +68,30 @@ const loginUser = (req,res) =>
 }
 
 
-//signup user
+// USE CASE 2 OF CASE STUDY
+/*
+
+Function : creatUser
+
+API TYPE : POST REQUEST
+
+Description : 
+It serves the POST request made from the client for creating a new
+user. We check the database,if the user email has already been registered.
+If not we create the new user.
+
+Input parameters :
+From the request we get,
+1)registrationName - name of the user
+2) userName - Email Id of the user
+3) password - password of the user
+
+Response of the API with HTTP STATUS codes:
+201: "SUCCESSFULLY added the new user"
+403: "UserName already REGISTERED. Please choose another"
+500: "Internal Server Error "
+
+*/
 const createUser = (req,res) => 
 {
     const userData=
@@ -61,7 +106,7 @@ const createUser = (req,res) =>
         if(err)
         {
             console.log("error: ",err)
-            res.status(400).send({ message: 'This is an error!'});
+            res.status(500).send({ message: 'This is an internal server error!'});
         }
         else
         {
@@ -82,7 +127,7 @@ const createUser = (req,res) =>
                     if (err) 
                     {
                         console.log("error: ",err)
-                        res.status(400).send({ message: 'This is an error!'});
+                        res.status(500).send({ message: 'This is an internal server error!'});
                     }
                     else
                     {
@@ -95,7 +140,26 @@ const createUser = (req,res) =>
     });  
 }
 
-// list all users
+// EXTRA USE CASE
+/*
+
+Function : listAllUsers
+
+API TYPE : GET REQUEST
+
+Description : 
+It serves the GET request made from the client for 
+listing all users. This request is usually only for the admin
+of the application on the server side. We dont want a client
+seeing all the users. 
+
+Input parameters : NONE
+
+Response of the API with HTTP STATUS codes:
+201: "The users listed in JSON FORMAT")
+500: "Internal Server Error "
+
+*/
 
 const listAllUsers = (req,res) =>
 {
@@ -104,7 +168,7 @@ const listAllUsers = (req,res) =>
         if(err)
         {
             console.log("error: ",err)
-            res.status(404).send({ message: 'This is an error!'});
+            res.status(500).send({ message: 'This is an internal server error!'});
         }
         else
         {
@@ -115,6 +179,8 @@ const listAllUsers = (req,res) =>
     });
 }
 
+
+// export all these modules.
 module.exports = {createUser,listAllUsers,loginUser}
 
 
