@@ -82,7 +82,7 @@ Create .env file under config/ folder and setup all the required variables
 npm start
 ```
 * Finally, import the postman collection in your local postman and test the APIs: <br/> 
-[Meeting-App.postman_collection.json]()
+[Meeting-App.postman_collection.json](https://raw.githubusercontent.com/iamrahulpanchal/batch-2/rahulpanchal/Meeting-App/Meeting-App.postman_collection.json)
 
 ## Project Structure
 | Name | Description |
