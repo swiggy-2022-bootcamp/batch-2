@@ -2,7 +2,7 @@ const Question = require('../models/question');
 const User = require('../models/user');
 
 //creat or post a question
-exports.createQuestion = async (req, res) => {
+exports.createQuestion = async (req, res, next) => {
     try {
         const { title, text } = req.body;
         const author = req.user.user_id;
@@ -14,8 +14,20 @@ exports.createQuestion = async (req, res) => {
         data = { "message": "question created successfully", "details": question }
         res.status(201).json(data);
     } catch (error) {
-        console.log(err);
+        next(error);
     }
+};
+exports.getAllAnswers = async (req, res, next) => {
+    try {
+        const question = await Question.findById(req.params.id);
+
+        if (!question.answers) return res.json({ message: 'Answer not found.' });
+        data = { "msg": "answers found", "details": question.answers }
+    } catch (error) {
+        if (error.name === 'CastError') return res.status(400).json({ message: 'Invalid question id.' });
+        return next(error);
+    }
+    next();
 };
 
 exports.getQuestionById = async (req, res) => {

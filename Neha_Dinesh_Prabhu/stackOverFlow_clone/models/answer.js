@@ -11,35 +11,10 @@ const answerSchema = new Schema({
     },
     created: { type: Date, default: Date.now },
     text: { type: String, required: true },
-    score: { type: Number, default: 0 },
     votes: [voteSchema]
 });
 
+
 answerSchema.set('toJSON', { getters: true });
-
-// answerSchema.methods = {
-//   vote: function (user, vote) {
-//     const existingVote = this.votes.find((v) => v.user._id.equals(user));
-//     console.log(existingVote);
-
-//     if (existingVote) {
-//       // reset score
-//       this.score -= existingVote.vote;
-//       if (vote == 0) {
-//         // remove vote
-//         this.votes.pull(existingVote);
-//       } else {
-//         //change vote
-//         this.score += vote;
-//         existingVote.vote = vote;
-//       }
-//     } else if (vote !== 0) {
-//       // new vote
-//       this.score += vote;
-//       this.votes.push({ user, vote });
-//     }
-//     return this;
-//   }
-// };
 
 module.exports = answerSchema;

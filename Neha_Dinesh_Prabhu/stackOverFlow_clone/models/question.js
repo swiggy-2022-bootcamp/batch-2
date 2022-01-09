@@ -25,4 +25,18 @@ questionSchema.options.toJSON.transform = (doc, ret) => {
     delete obj.__v;
     return obj;
 };
-module.exports = mongoose.model('Question', questionSchema);
+
+questionSchema.methods = {
+    addAnswer: function (author, text) {
+        this.answers.push({ author, text });
+        return this.save();
+    },
+
+    removeAnswer: function (id) {
+        const answer = this.answers.id(id);
+        if (!answer) throw new Error('Answer not found');
+        answer.remove();
+        return this.save();
+    }
+};
+module.exports = mongoose.model('question', questionSchema);
