@@ -1,0 +1,49 @@
+<script>
+    const evenOrOdd = (n) => {
+        return ((n%2)===0)?('EVEN'):('ODD');
+    }
+
+    console.log(evenOrOdd(13));
+    console.log(evenOrOdd(28));
+    console.log(evenOrOdd(157));
+
+    const defValues = (a=1, b=1) => a*b;
+
+    console.log(defValues(5,3));
+    console.log(defValues(5));
+    console.log(defValues());
+
+
+    const add = (y, x=10*15) => x+y;
+    console.log(add(10));
+
+    let arr1 = [4,5,6];
+    let arr2 = [...arr1, 1,2,3];
+    console.log(arr2);
+
+
+    let a1 = [10,30,50];
+    let a2 = a1;
+    let a3 = [...a1];
+
+    a1.push(70);
+    console.log(a1);
+    console.log(a2);
+    console.log(a3);
+
+    let o1 = {a:1, b:'k'};
+    let o2 = {c:12.34, b:'z'};
+    let o3 = {...o2, ...o1};
+    console.log(o3);
+
+    let obj = {a : 1, b : 'a'};
+    let {a, b} = obj;
+    console.log(a,b);
+
+    let n1 = 10;
+    let n2 = 20;
+
+    [n1,n2] = [n2,n1];
+    console.log(n1, n2);
+
+</script>
