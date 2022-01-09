@@ -25,15 +25,31 @@ const createMeeting = async (creatorUserId, startTime, endTime, description, par
     }); 
 
     for await (let participant of response.data.users) {
-        participant.meetings.push(response.data);
+        participant.meetings.push(response.data.meetingId);
         await participant.save();
     }
 
     return response;
 }
 
+const findAllMeetingsForUser = async (userId) => {
+    let user = await UserModel.findOne({id: userId});
+    let meetingIds = user.meetings;
+
+    let meetings = [];
+    for await (let meetingId of meetingIds) {
+        let meeting = await MeetingModel.findOne({meetingId: meetingId}).populate('users');
+        meetings.push(meeting);
+    }
+    if (meetings.length > 0)
+        return {data: meetings,  message: "All Meeting Details Fetched Succesfully"};
+    else
+        return {message: "No Meetings found for this user"};
+}
+
 module.exports = {
-    createMeeting: createMeeting
+    createMeeting: createMeeting,
+    findAllMeetingsForUser: findAllMeetingsForUser
 }
 
 // UserModel(meetingId:int) >|----|< MeetingModel (meetingId, User:ref)

@@ -2,16 +2,21 @@ var express = require('express');
 var router = express.Router({mergeParams: true});
 const meetingService = require('../../services/meetingService');
 const auth = require('../auth');
+const requestValidator = require('../validator');
 
-router.get('/:meetingId', auth, function(req, res, next) {
-  res.send(`Here's meeting id: ${req.params.meetingId} info for user id: ${res.locals.userId}`);
+router.get('/:meetingId', auth, async (req, res, next) => {
+  
 });
 
-router.get('/', auth, function(req, res, next) {
-  res.send(`Here's all meetings for user id: ${res.locals.userId}`);
+router.get('/', auth, async (req, res, next) => {
+  let result = await meetingService.findAllMeetingsForUser(res.locals.userId);
+  if (result.data)
+    res.json({status: 200, data: result.data, message: result.message});
+  else 
+    res.json({status: 200, message: result.message});
 });
 
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, requestValidator.validateCreateMeetingRequest, async (req, res) => {
   let creatorUserId = res.locals.userId;
   let {startTime, endTime, participantEmailAddresses, description} = req.body;
   const newMeetingInfo = await meetingService.createMeeting(creatorUserId, startTime, endTime, description, participantEmailAddresses);
