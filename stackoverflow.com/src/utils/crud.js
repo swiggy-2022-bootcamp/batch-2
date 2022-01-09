@@ -66,6 +66,7 @@ export const updateOne = (model) => async (req, res) => {
       .exec();
 
     if (!updatedDocument) {
+      logger.error(`${methodName} Error encountered while updating the resource in the database.`) 
       return res.status(400).end();
     }
     logger.info(`${methodName} Updated document: ${JSON.stringify(updatedDocument)}`)  
@@ -85,6 +86,7 @@ export const deleteOne = (model) => async (req, res) => {
       _id: req.params.id,
     });
     if (!removed) {
+      logger.error(`${methodName} Error encountered while deleting the resource in the database.`) 
       return res.status(400).end();
     }
     logger.info(`${methodName} Removed document: ${JSON.stringify(removed)}`)  
