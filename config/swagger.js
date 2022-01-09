@@ -40,6 +40,19 @@ const doc = {
                 "zip": 11201
             }
         },
+        UpdateUser: {
+            "username": "achilles",
+            "email": "achilles98@gmail.com",
+            "password": "nicetrybro",
+            "phone": 987654312,
+            "address": {
+                "house_no": 1,
+                "street": "First Avenue",
+                "city": "NY",
+                "state": "New York",
+                "zip": 11201
+            }
+        },
         Users: [{
             "id": 1,
             "username": "achilles",
@@ -71,16 +84,19 @@ const doc = {
             }
         }],
         UserProfile: {
-            "username": "achilles",
-            "email": "achilles98@gmail.com",
-            "phone": 987654321,
-            "address": {
-                "id": 1,
-                "house_no": 1,
-                "street": "Brooklyn Avenue",
-                "city": "NY",
-                "state": "New York",
-                "zip": 11201
+            "status": "true",
+            "user": {
+                "username": "achilles",
+                "email": "achilles98@gmail.com",
+                "phone": 987654321,
+                "address": {
+                    "id": 1,
+                    "house_no": 1,
+                    "street": "Brooklyn Avenue",
+                    "city": "NY",
+                    "state": "New York",
+                    "zip": 11201
+                }
             }
         },
         Food: {
@@ -126,8 +142,17 @@ const doc = {
             "message": "User Registered Successfully!",
             "user": this.User
         },
-        Register400ErrorResponse: {
+        Register409UsernameErrorResponse: {
             "message": "Username already registered!"
+        },
+        Register409EmailErrorResponse: {
+            "message": "Email already registered!"
+        },
+        Register409PhoneNumberErrorResponse: {
+            "message": "Phone number already registered!"
+        },
+        ChangeUsername409ErrorResponse: {
+            "message": "Username can't be changed!"
         },
         FetchUser404ErrorResponse: {
             "message": "Sorry, user with id: 10 not found!"

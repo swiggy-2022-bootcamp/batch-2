@@ -52,6 +52,15 @@ userSchema.pre('save', function (next) {
     });
 });
 
+userSchema.pre('findOneAndUpdate', function (next) {
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(this.get('password'), salt, (err, hash) => {
+            this.set('password', hash);
+            next();
+        });
+    });
+});
+
 
 userSchema.methods.verifyPassword = function (password) {
     return bcrypt.compareSync(password, this.password);

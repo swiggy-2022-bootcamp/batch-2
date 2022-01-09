@@ -51,10 +51,10 @@
               "$ref": "#/definitions/RegisterSuccessResponse"
             }
           },
-          "400": {
+          "409": {
             "description": "Registration Forbidden.",
             "schema": {
-              "$ref": "#/definitions/Register400ErrorResponse"
+              "$ref": "#/definitions/Register409PhoneNumberErrorResponse"
             }
           }
         }
@@ -178,54 +178,6 @@
           }
         }
       },
-      "put": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoint for updating an user.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "user-details",
-            "in": "body",
-            "description": "User details.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User update successful.",
-            "schema": {
-              "$ref": "#/definitions/UpdatedUser"
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "User Not Found.",
-            "schema": {
-              "$ref": "#/definitions/FetchUser404ErrorResponse"
-            }
-          }
-        }
-      },
       "delete": {
         "tags": [
           "User"
@@ -267,6 +219,47 @@
         }
       }
     },
+    "/users": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for updating an user.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "user-details",
+            "in": "body",
+            "description": "User details.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User update successful.",
+            "schema": {
+              "$ref": "#/definitions/UpdatedUser"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
     "/food": {
       "get": {
         "tags": [
@@ -290,6 +283,11 @@
         "description": "Endpoint for adding a new food..",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "food",
             "in": "body",
             "description": "Food details.",
@@ -308,6 +306,12 @@
               "$ref": "#/definitions/Food"
             },
             "description": "Food add successful."
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -355,6 +359,11 @@
             "type": "string"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "food",
             "in": "body",
             "description": "Food details.",
@@ -370,6 +379,12 @@
             "schema": {
               "$ref": "#/definitions/UpdatedFood"
             }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Food Not Found.",
@@ -391,6 +406,11 @@
             "required": true,
             "type": "string",
             "description": "Food ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -399,6 +419,12 @@
             "schema": {
               "$ref": "#/definitions/FoodDeletedSuccessMessage"
             }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Food Not Found.",
@@ -448,6 +474,52 @@
             "street": {
               "type": "string",
               "example": "Brooklyn Avenue"
+            },
+            "city": {
+              "type": "string",
+              "example": "NY"
+            },
+            "state": {
+              "type": "string",
+              "example": "New York"
+            },
+            "zip": {
+              "type": "number",
+              "example": 11201
+            }
+          }
+        }
+      }
+    },
+    "UpdateUser": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "achilles"
+        },
+        "email": {
+          "type": "string",
+          "example": "achilles98@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "nicetrybro"
+        },
+        "phone": {
+          "type": "number",
+          "example": 987654312
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "house_no": {
+              "type": "number",
+              "example": 1
+            },
+            "street": {
+              "type": "string",
+              "example": "First Avenue"
             },
             "city": {
               "type": "string",
@@ -525,44 +597,53 @@
     "UserProfile": {
       "type": "object",
       "properties": {
-        "username": {
+        "status": {
           "type": "string",
-          "example": "achilles"
+          "example": "true"
         },
-        "email": {
-          "type": "string",
-          "example": "achilles98@gmail.com"
-        },
-        "phone": {
-          "type": "number",
-          "example": 987654321
-        },
-        "address": {
+        "user": {
           "type": "object",
           "properties": {
-            "id": {
-              "type": "number",
-              "example": 1
-            },
-            "house_no": {
-              "type": "number",
-              "example": 1
-            },
-            "street": {
+            "username": {
               "type": "string",
-              "example": "Brooklyn Avenue"
+              "example": "achilles"
             },
-            "city": {
+            "email": {
               "type": "string",
-              "example": "NY"
+              "example": "achilles98@gmail.com"
             },
-            "state": {
-              "type": "string",
-              "example": "New York"
-            },
-            "zip": {
+            "phone": {
               "type": "number",
-              "example": 11201
+              "example": 987654321
+            },
+            "address": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "house_no": {
+                  "type": "number",
+                  "example": 1
+                },
+                "street": {
+                  "type": "string",
+                  "example": "Brooklyn Avenue"
+                },
+                "city": {
+                  "type": "string",
+                  "example": "NY"
+                },
+                "state": {
+                  "type": "string",
+                  "example": "New York"
+                },
+                "zip": {
+                  "type": "number",
+                  "example": 11201
+                }
+              }
             }
           }
         }
@@ -693,12 +774,39 @@
         }
       }
     },
-    "Register400ErrorResponse": {
+    "Register409UsernameErrorResponse": {
       "type": "object",
       "properties": {
         "message": {
           "type": "string",
           "example": "Username already registered!"
+        }
+      }
+    },
+    "Register409EmailErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Email already registered!"
+        }
+      }
+    },
+    "Register409PhoneNumberErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Phone number already registered!"
+        }
+      }
+    },
+    "ChangeUsername409ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Username can't be changed!"
         }
       }
     },

@@ -5,21 +5,32 @@ const _ = require('lodash');
 const User = mongoose.model('User');
 
 module.exports.validateUser = (req, res, next) => {
-    /* #swagger.responses[400] = { 
-        schema: { $ref: "#/definitions/Register400ErrorResponse" },
-        description: 'Registration Forbidden.' 
-    } */
     User.findOne({ username: req.body.username }, (err, us1) => {
-        if (us1)
-            return res.status(400).send({ "message": 'Username already registered!' });
+        if (us1) {
+            /* #swagger.responses[409] = { 
+                schema: { $ref: "#/definitions/Register409UsernameErrorResponse" },
+                description: 'Registration Forbidden.' 
+            } */
+            return res.status(409).send({ "message": 'Username already registered!' });
+        }
         else {
             User.findOne({ email: req.body.email }, (err, us2) => {
-                if (us2)
-                    return res.status(400).send({ "message": 'Email already registered!' });
+                if (us2) {
+                    /* #swagger.responses[409] = { 
+                        schema: { $ref: "#/definitions/Register409EmailErrorResponse" },
+                        description: 'Registration Forbidden.' 
+                    } */
+                    return res.status(409).send({ "message": 'Email already registered!' });
+                }
                 else {
                     User.findOne({ phone: req.body.phone }, (err, us3) => {
-                        if (us3)
-                            return res.status(400).send({ "message": 'Phone number already registered!' });
+                        if (us3) {
+                            /* #swagger.responses[409] = { 
+                                schema: { $ref: "#/definitions/Register409PhoneNumberErrorResponse" },
+                                description: 'Registration Forbidden.' 
+                            } */
+                            return res.status(409).send({ "message": 'Phone number already registered!' });
+                        }
                         next();
                     });
                 }
@@ -165,7 +176,7 @@ module.exports.getUser = (req, res) => {
     });
 }
 
-module.exports.updateUser = (req, res) => {
+module.exports.updateUser = async (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for updating an user.'
 
@@ -174,8 +185,19 @@ module.exports.updateUser = (req, res) => {
             description: 'User details.',
             required: true,
             type: 'object',
-            schema: { $ref: "#/definitions/User" }
+            schema: { $ref: "#/definitions/UpdateUser" }
     } */
+
+    let currUser = await User.findOne({ _id: req._id }).exec();
+    if (!(currUser.username === req.body.username)) {
+        /* #swagger.responses[200] = { 
+            schema: { $ref: "#/definitions/ChangeUsername409ErrorResponse" },
+            description: 'Username cannot be changed.'
+        } */
+        return res.status(409).send({
+            "message": "Username can't be changed!"
+        });
+    }
 
     var user = {
         username: req.body.username,
@@ -185,16 +207,7 @@ module.exports.updateUser = (req, res) => {
         address: req.body.address
     };
     User.findOneAndUpdate({ _id: req._id }, { $set: user }, { new: true }, (err, doc) => {
-        if (!doc) {
-            /* #swagger.responses[404] = { 
-                schema: { $ref: "#/definitions/FetchUser404ErrorResponse" },
-                description: 'User Not Found.' 
-            } */
-            res.status(404).send({
-                "message": `Sorry, user with id: ${req._id} not found!`
-            });
-        }
-        else if (!err) {
+        if (!err) {
             /* #swagger.responses[200] = {
                 schema: { $ref: "#/definitions/UpdatedUser" },
                 description: 'User update successful.' 

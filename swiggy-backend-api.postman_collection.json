@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "4b200b27-72d5-45a0-847d-12e10c6a9e26",
+		"name": "swiggy-backend-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Food",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWRhY2JmNGU0MmM5MWNhZmUxMDk1MjgiLCJpYXQiOjE2NDE3MjkwMjMsImV4cCI6MTY0MTcyOTYyM30.M2dIGKbnWV7c969HnKAq2j--ikA6AVb8Rr7mftclMHk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"food_id\": 10,\r\n    \"food_name\": \"Chicken Barbeque Pizza\",\r\n    \"food_cost\": 50,\r\n    \"food_type\": \"Non-Veg Pizza\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3200/api/food",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"food"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Foods",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3200/api/food",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"food"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Food by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3200/api/food/10",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"food",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Food by Food ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWRhY2JmNGU0MmM5MWNhZmUxMDk1MjgiLCJpYXQiOjE2NDE3MjkwMjMsImV4cCI6MTY0MTcyOTYyM30.M2dIGKbnWV7c969HnKAq2j--ikA6AVb8Rr7mftclMHk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"food_id\": 10,\r\n    \"food_name\": \"Chicken Barbeque Pizza\",\r\n    \"food_cost\": 60,\r\n    \"food_type\": \"Non-Veg Pizza\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3200/api/food/10",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"food",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Food by Food ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWRhY2JmNGU0MmM5MWNhZmUxMDk1MjgiLCJpYXQiOjE2NDE3MjkwMjMsImV4cCI6MTY0MTcyOTYyM30.M2dIGKbnWV7c969HnKAq2j--ikA6AVb8Rr7mftclMHk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3200/api/food/10",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"food",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"achilles\",\r\n    \"email\": \"achilles98@gmail.com\",\r\n    \"password\": \"nicetry\",\r\n    \"phone\": 987654321,\r\n    \"address\": {\r\n        \"house_no\": 1,\r\n        \"street\": \"Brooklyn Avenue\",\r\n        \"city\": \"NY\",\r\n        \"state\": \"New York\",\r\n        \"zip\": 11201\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3200/api/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3200/api/users/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3200/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"achilles\",\r\n    \"password\": \"nicetry\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3200/api/authenticate",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch User Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWRhY2JmNGU0MmM5MWNhZmUxMDk1MjgiLCJpYXQiOjE2NDE3MjkwMjMsImV4cCI6MTY0MTcyOTYyM30.M2dIGKbnWV7c969HnKAq2j--ikA6AVb8Rr7mftclMHk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3200/api/usrProfile",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"usrProfile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWRhY2JmNGU0MmM5MWNhZmUxMDk1MjgiLCJpYXQiOjE2NDE3MjkzMjMsImV4cCI6MTY0MTcyOTkyM30.tRPo4xy5IAcYxZ9Qy6orLmKWNiocnnfUA14HZ0viSAg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3200/api/users/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User by User ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWRhY2JmNGU0MmM5MWNhZmUxMDk1MjgiLCJpYXQiOjE2NDE3MjkwMjMsImV4cCI6MTY0MTcyOTYyM30.M2dIGKbnWV7c969HnKAq2j--ikA6AVb8Rr7mftclMHk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"achilles\",\r\n    \"email\": \"achilles98@gmail.com\",\r\n    \"password\": \"nicetrybro\",\r\n    \"phone\": 987654312,\r\n    \"address\": {\r\n        \"house_no\": 1,\r\n        \"street\": \"First Avenue\",\r\n        \"city\": \"NY\",\r\n        \"state\": \"New York\",\r\n        \"zip\": 11201\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3200/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3200",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

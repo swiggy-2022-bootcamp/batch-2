@@ -133,7 +133,9 @@ module.exports.deleteFood = (req, res) => {
                 schema: { $ref: "#/definitions/FoodDeletedSuccessMessage" },
                 description: 'Food delete successful.' 
             } */
-            res.send(doc);
+            res.send({
+                "message": "Food deleted successfully!"
+            });
         }
         else { console.log('Error in Food Delete :' + JSON.stringify(err, undefined, 2)); }
     });
