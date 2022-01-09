@@ -1,6 +1,44 @@
+// FOR QUERYING THE DATABASE
 const sql = require("./db.js")
 
+/*
 
+************ CONTROLLER FOR ALL QUESTION RELATED REQUESTS ********************
+
+*/
+
+// USE CASE 5 OF CASE STUDY - Part 1
+/*
+
+Function : getAllAnswersForQuestion
+
+API TYPE : POST REQUEST
+
+Description : 
+It serves the POST request made from the client for getting all the
+answers for a particular question. We query the database for the given
+question ID. If valid, we display all the questions for it. We also
+need to authorize the client making the request. 
+
+Input parameters :
+From the request we get,
+1) questionId - The question id for which the user wants answers.
+2) userName - Email Id of the user
+3) password - password of the user
+
+Response of the API with HTTP STATUS codes:
+401: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN
+404 : INVALID QUESTION ID
+500: "Internal Server Error "
+200: The question content and answers for the question in JSON FORMAT
+Example
+{
+        "Question" : "which is better chrome or firefox or safari?",
+        "Answers" : ["firefox is best", " I would go for chrome", 
+                    "I also think firefox is best"]
+}
+
+*/
 const getAllAnswersForQuestion = (req,res) =>
 {
     
@@ -9,7 +47,7 @@ const getAllAnswersForQuestion = (req,res) =>
         userName : req.body.userName,
         password : req.body.password
     }
-
+    // display object made for displaying the result
     const displayObject =
     {
         "Question" : "",
@@ -46,7 +84,7 @@ const getAllAnswersForQuestion = (req,res) =>
                         if(err)
                         {
                             console.log("error: ",err)
-                            res.status(404).send({ message: 'This is an error!'});
+                            res.status(500).send({ message: 'This is an internal server error!'});
                         }
                         else
                         {
@@ -67,8 +105,32 @@ const getAllAnswersForQuestion = (req,res) =>
     })
 };
 
+// USE CASE 3 OF CASE STUDY
+/*
 
-//testing inserting a question into questions table
+Function : postQuestion
+
+API TYPE : POST REQUEST
+
+Description : 
+It serves the POST request made from the client for posting a new 
+question. We insert a new question into the database and reespond
+with the question id generated for the question. We also 
+need to authorize the client making the request. 
+
+Input parameters :
+From the request we get,
+1) questionContent - The content of the question to post.
+2) userName - Email Id of the user
+3) password - password of the user
+
+Response of the API with HTTP STATUS codes:
+201: Question posted Successfully with question ID
+401: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN
+500: "Internal Server Error "
+
+*/
+
 const postQuestion = (req,res) =>
 {
     const questionData =
@@ -81,7 +143,6 @@ const postQuestion = (req,res) =>
         userName : req.body.user_Details.userName,
         password : req.body.user_Details.password
     }
-    // lets do the authentication part later
 
     const authenticateQueryString = 'SELECT * FROM UserDetails where userName = ? and password =?;';
     sql.query(authenticateQueryString,[userData.userName,userData.password],(err,result) => 
@@ -98,8 +159,8 @@ const postQuestion = (req,res) =>
             {
                 if(err)
                 {
-                    console.log("error: CHECK type of username and content ",err)
-                    res.status(400).send({ message: 'ERROR: CHECK type of username and content'});
+                    console.log("error:  ",err)
+                    res.status(500).send({ message: 'ERROR: this is an internal server error'});
                 }
                 else
                 {
@@ -111,8 +172,46 @@ const postQuestion = (req,res) =>
     });
 }
 
-//GET API for all questions and answers
+// USE CASE 5 OF CASE STUDY - Part 2
+/*
 
+Function : getAllQuestionsAndAnswers 
+
+API TYPE : GET REQUEST
+
+Description : 
+It serves the GET request made from the client for getting all the
+Questions and Answers. We query the database and return 
+the results in JSON FORMAT.
+
+Input parameters : NONE
+
+
+Response of the API with HTTP STATUS codes:
+500: "Internal Server Error "
+200: The question ID,question content and all its answers in JSON FORMAT
+Example
+"100": {
+        "question": "which is better? - vscode or notepad++ or xcode",
+        "answers": [
+            "vs code is best UPDATED now",
+            "xcode is best. but you can try notepadd++ as well"
+        ]
+    },
+    "101": {
+        "question": "which is better? - chrome or firefox or safari",
+        "answers": [
+            "UPDATED i also think firefox is better 2",
+            "i think firefox is better"
+        ]
+    },
+    "102": {
+        "question": "how to install brew on macos?",
+        "answers": []
+    }
+}
+
+*/
 const getAllQuestionsAndAnswers = (req,res) =>
 {
     // display object made for displaying the result
@@ -124,7 +223,7 @@ const getAllQuestionsAndAnswers = (req,res) =>
         if(err)
         {
             console.log("error: ",err)
-            res.status(404).send({ message: 'This is an error!'});
+            res.status(500).send({ message: 'This is an internal server error!'});
         }
         else
         {
@@ -144,7 +243,7 @@ const getAllQuestionsAndAnswers = (req,res) =>
                 if(err)
                 {
                     console.log("error: ",err)
-                    res.status(404).send({ message: 'This is an error!'});
+                    res.status(500).send({ message: 'This is an internal server error!'});
                 }
                 else
                 {
@@ -164,4 +263,6 @@ const getAllQuestionsAndAnswers = (req,res) =>
         }
     })
 }
+
+// export all these functions.
 module.exports ={getAllAnswersForQuestion,postQuestion,getAllQuestionsAndAnswers}

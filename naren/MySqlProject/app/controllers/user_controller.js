@@ -1,4 +1,11 @@
+// FOR QUERYING THE DATABASE
 const sql = require("./db.js")
+
+/*
+
+************ CONTROLLER FOR ALL USER RELATED REQUESTS ********************
+
+*/
 
 // USE CASE 1 OF CASE STUDY
 /*
@@ -156,7 +163,7 @@ seeing all the users.
 Input parameters : NONE
 
 Response of the API with HTTP STATUS codes:
-201: "The users listed in JSON FORMAT")
+200: "The users listed in JSON FORMAT")
 500: "Internal Server Error "
 
 */
@@ -180,7 +187,7 @@ const listAllUsers = (req,res) =>
 }
 
 
-// export all these modules.
+// export all these functions.
 module.exports = {createUser,listAllUsers,loginUser}
 
 
