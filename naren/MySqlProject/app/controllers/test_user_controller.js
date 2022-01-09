@@ -1,4 +1,3 @@
-
 // Establishing DataBase connection
 const db = require("../database/db.js")
 const dbConnection= db.getDbConnection()
@@ -12,7 +11,7 @@ const dbConnection= db.getDbConnection()
 // QUERY STRINGS FOR THIS CONTROLLER
 const getUserQueryString = "SELECT * FROM UserDetails WHERE userName = ?;";
 const insertUserQueryString = "INSERT into UserDetails SET ? ;";
-const getAllUsersQueryString = "SELECT * from UserDetails;"
+const getAllUsersQueryString = "SELECT * from UserDetails;";
 
 /*
 USE CASE 1 OF CASE STUDY: LOGIN INTO APPLICATION
@@ -45,7 +44,7 @@ const loginUser = async (req,res) =>
     {       
         userName : req.body.userName,
         password : req.body.password
-    }
+    };
 
     try
     {
@@ -103,7 +102,7 @@ const createUser = async (req,res) =>
         registrationName: req.body.registrationName,
         userName : req.body.userName,
         password : req.body.password
-    }
+    };
 
     try
     {
@@ -113,7 +112,7 @@ const createUser = async (req,res) =>
             res.status(403).send({message: "Username already registered. Please choose another"});
             return;
         }
-        await dbConnection.query(insertUserQueryString, userData) 
+        await dbConnection.query(insertUserQueryString, userData); 
         res.status(201).send({message: "User created Successfully"});
     }
     catch (err)
