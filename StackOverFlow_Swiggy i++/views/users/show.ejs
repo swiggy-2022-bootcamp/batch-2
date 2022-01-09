@@ -1,0 +1,51 @@
+<% include ../partials/header %>
+<div class="container">
+  <h1>Profile</h1>
+  <div class="row">
+    <div class="card" style="border: 0px">
+      <div class="col-8">
+        <span><%= user.points %></span>
+        <% if(user.points < 30){ %>
+        <img
+          src="https://5.imimg.com/data5/MC/NN/MY-14100615/bronze-trophy-500x500.jpg"
+          style="width: 100px; height: 100px"
+          alt="user profile image"
+        />
+        <% }else if(user.points < 60){ %>
+        <img
+          src="https://5.imimg.com/data5/EQ/MY/MY-24795219/silver-trophy-500x500.jpg"
+          style="width: 100px; height: 100px"
+          alt="user profile image"
+        />
+        <% }else{ %>
+        <img
+          src="https://5.imimg.com/data5/RT/LW/MY-25635601/award-trophy-500x500.jpg"
+          style="width: 100px; height: 100px"
+          alt="user profile image"
+        />
+
+        <% } %> <% if(user.firstName && user.lastName){ %>
+        <h3 class="card-title"><%= user.firstName + " " + user.lastName %></h3>
+        <% }else{ %>
+        <h3 class="card-title"><%= user.username %></h3>
+        <% } %>
+        <div>
+          <a class="card-link" href="mailto:<%= user.email %>"
+            ><%= user.email %></a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <h3><%= user.username %>'s Questions:</h3>
+      <ul>
+        <% questions.forEach(function(question){ %>
+        <li>
+          <a href="/question/<%= question.id %>"><%= question.name %></a>
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+</div>
+<% include ../partials/footer %>

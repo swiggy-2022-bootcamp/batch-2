@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+<div class="container">
+  <header class="jumbotron">
+    <div class="container">
+      <h1>Welcome to questions page!!</h1>
+      <p>Ask anything and get best possible solution! Be curious!.</p>
+      <p>
+        <a class="btn btn-primary btn-lg" href="/question/new"
+          >Ask a question</a
+        >
+      </p>
+    </div>
+  </header>
+  <div class="row-lg-12">
+    <!-- <h3>All the Best questions.</h3> -->
+  </div>
+  <div class="row" style="display: flex; flex-wrap: wrap">
+    <% question.forEach(function(ground){ %>
+    <div class="col-12">
+      <div class="card">
+        <!-- <img class = "card-img-top" src = "<%= ground.image %>" style = "width: 100%; height: 200px"> -->
+        <div class="card-body">
+          <span
+            style="
+              font-size: 18px;
+              font-weight: 600;
+              text-transform: capitalize;
+            "
+            ><%= ground.name %></span
+          >
+
+          <a
+            href="/question/<%= ground._id %>"
+            class="btn btn-small btn-primary"
+            style="float: right"
+            >More Info</a
+          >
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>
+
+<% include ../partials/footer %>
