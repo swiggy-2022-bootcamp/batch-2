@@ -152,5 +152,4 @@ exports.deleteUserById = (req, res) => {
             message: err.message || "error deleting the user with id " + id
         })
     })
-
 }
