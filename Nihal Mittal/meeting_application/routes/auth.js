@@ -6,6 +6,9 @@ const User = require("../models/User");
 const validateRequest = require("../middlewares/validateRequest");
 const router = express.Router();
 
+// @route    POST /user
+// @desc     Register user and get token
+// @access   Public
 router.post(
 	"/user",
 	check("userid", "Please include a valid email").isEmail(),
@@ -48,6 +51,9 @@ router.post(
 	}
 );
 
+// @route    POST /login
+// @desc     Authenticate user & get token
+// @access   Public
 router.post(
 	"/login",
 	check("userid", "Please include a valid email").isEmail(),
