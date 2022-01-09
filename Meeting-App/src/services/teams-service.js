@@ -30,7 +30,22 @@ const viewTeamsService = async (email) => {
     }
 }
 
+const updateTeamMembersService = async (team) => {
+    await Team.sync();
+
+    try {
+        const result = await Team.update(
+            { members: team.members },
+            { where: { id: team.id } },
+        )
+        return result;
+    } catch (e) {
+        throw Error(e.message);
+    } 
+}
+
 module.exports = {
     createTeamService,
-    viewTeamsService
+    viewTeamsService,
+    updateTeamMembersService
 }
