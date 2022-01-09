@@ -2,6 +2,10 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/sequelizeConn');
 
 const Meeting = sequelize.define('Meeting', {
+    title: {
+        type: DataTypes.STRING(5000),
+        allowNull: false,
+    },
     date: {
         type: DataTypes.DATEONLY,
         allowNull: false
@@ -10,7 +14,7 @@ const Meeting = sequelize.define('Meeting', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    end: {
+    endTime: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -18,7 +22,7 @@ const Meeting = sequelize.define('Meeting', {
         type: DataTypes.TEXT,
     },
     attendees: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     }
 }, {
