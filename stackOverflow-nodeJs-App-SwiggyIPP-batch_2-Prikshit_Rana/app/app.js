@@ -19,6 +19,10 @@ app.use(morgan("dev"));
 app.post("/register", register);
 app.post("/login", login);
 
+app.use("/api", protect);
+app.use('/api/user', apiUserRouter)
+app.use('/api/question', apiQuestionRouter)
+
 /**
  * start() : connect to database and start server
  */
