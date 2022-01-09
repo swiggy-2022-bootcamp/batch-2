@@ -5,11 +5,9 @@ const sql = require("./db.js")
 
 ************ CONTROLLER FOR ALL QUESTION RELATED REQUESTS ********************
 
-*/
 
 // USE CASE 5 OF CASE STUDY - Part 1
 // GET ALL ANSWERS FOR A GIVEN QUESTION
-/*
 
 Function : getAllAnswersForQuestion
 
@@ -60,7 +58,7 @@ const getAllAnswersForQuestion = (req,res) =>
     const authenticateQueryString = 'SELECT * FROM UserDetails where userName = ? and password =?;';
     sql.query(authenticateQueryString,[userData.userName,userData.password],(err,result) => 
     {
-        if(err ||result.length == 0 )
+        if( err || result.length == 0 )
         {
             console.log("Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN");
             res.status(401).send({ message: "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"});

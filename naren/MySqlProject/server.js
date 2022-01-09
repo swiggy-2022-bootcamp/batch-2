@@ -15,8 +15,8 @@ app.get("/test",(req,res) => {
 });
 
 require("./app/routes/user_routes")(app);
-require("./app/routes/question_routes")(app);
-require("./app/routes/answer_routes")(app);
+//require("./app/routes/question_routes")(app);
+//require("./app/routes/answer_routes")(app);
 
 const PORT = 8080;
 app.listen(PORT,() => {
