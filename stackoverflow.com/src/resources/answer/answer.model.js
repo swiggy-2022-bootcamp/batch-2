@@ -16,6 +16,12 @@ const answerSchema = new mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: "user",
       required: true
+    },
+    
+    questionId: {
+      type: mongoose.SchemaTypes.ObjectId,
+      required: true,
+      ref: "question"
     }
   },
 
