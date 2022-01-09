@@ -1,76 +1,68 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const meetingsRouter = require('./meetings');
-const userService = require('../../services/userService');
-const logger = require('../../config/logger');
-const requestValidator = require('../validator');
-const auth = require('../auth');
+const meetingsRouter = require("./meetings");
+const userService = require("../../services/userService");
+const { validateSignUpRequest, validateLoginRequest } = require("../validator");
+const auth = require("../auth");
+const createError = require("http-errors");
+const { createUserIfNotExists } = require("../../services/userService");
+const { collection } = require("../../models/Meeting");
 
-router.use('/meetings', meetingsRouter);
+router.use("/meetings", meetingsRouter);
 
-/*
- * GET /
- * description: fetch (authenticated) user details
- * 
+/**
+ *
+ * @swagger
+ * /users:
+ * get:
+ *    description: fetch user details
+ *    
+ *          
  */
-router.get('/', auth, async (req, res) => {
-  let result = await userService.findUserByUserId(res.locals.userId);  
-  if (result.data) {
-    res.status(200);
-    res.json({status: 200, data: result.data, message: result.message});
-  } else {
-    res.status(404);
-    res.json({status: 404, data: result.data, message: result.message});
-  }
+router.get("/", auth, async (req, res, next) => {
+    userService.findUserByUserId(req.userId).then(result => {
+      res.status(200).json({ status: 200, data: result.data, message: result.message });
+    }).catch(err => {
+      console.log(err);
+      next(err);     
+    });
 });
 
 /*
  * POST /signup
  * description: register new user
- * 
+ *
  */
-router.post('/signup', requestValidator.validateSignUpRequest, async (req, res)=>{
-  const userDomainEntity = req.body;
-  const response = await userService.createUserIfNotExists(userDomainEntity)
-    .then(result => {
-      res.cookie("auth-token", result.cookie, {httpOnly: true});
-      res.status(201);
-      return {status: 201, data: result.data, message: result.message};    
-    })
-    .catch(err => {
-      res.status(400);
-      return {status: 400, data: err, message: "Failed to create user"};
-    });
-
-  res.json(response);
+router.post("/signup", validateSignUpRequest, async (req, res, next) => {
+    const userDomainEntity = req.body;
+    userService.createUserIfNotExists(userDomainEntity)
+      .then((result) => {
+        res.cookie("auth-token", result.cookie, { httpOnly: true });
+        res.status(201).json({data: result.data, message: result.message });
+      })
+      .catch((err) => {
+        console.log(err);
+        next(err);
+      });
 });
 
 /*
  * POST /login
  * description: authenticate new user
- * 
+ *
  */
-router.post('/login', requestValidator.validateLoginRequest, async (req, res)=>{  
-  const username = req.body.username;
-  const password = req.body.password;
-  const response = await userService.authenticateUser(username, password)
-    .then(result => {
-      console.log(result.cookie);
-      if (result.isLoggedin == true) {
-        res.cookie("auth-token", result.cookie, {httpOnly: true});
-        res.status(200);
-        return {status: 200, message: result.message};
-      } else {
-        res.status(403);
-        return {status: 403, message: result.message};
-      }
-    })
-    .catch(err => {
-      res.status(500);
-      return {status: 500, message: err.message};
-    });
-  
-  res.json(response);
+router.post("/login", validateLoginRequest, async (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    userService.authenticateUser(username, password)
+      .then((result) => {
+        res.cookie("auth-token", result.cookie, { httpOnly: true });
+        res.status(200).json({message: result.message });
+      })
+      .catch((err) => {
+        console.log(err);
+        next(err);
+      });
 });
 
 module.exports = router;

@@ -1,11 +1,11 @@
 {
-    "app":{
-        "host": "localhost",
-        "port": 8080,
-        "db": {
-            "username":"murtaza-ipp",
-            "password":"meetingsApp123"
-        },
-        "secret": "Gringotts"    
-    }
+  "app": {
+    "host": "localhost",
+    "port": 8080,
+    "db": {
+      "username": "murtaza-ipp",
+      "password": "meetingsApp123"
+    },
+    "secret": "Gringotts"
+  }
 }

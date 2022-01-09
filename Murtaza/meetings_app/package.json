@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "start:dev": "cross-env NODE_ENV=development nodemon --inspect app.js",
+    "start:dev": "cross-env NODE_ENV=development node app.js",
     "start:demo": "cross-env NODE_ENV=demo node app.js"
   },
   "dependencies": {
@@ -15,6 +14,7 @@
     "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "http-errors": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.3.0",
     "mongoose": "^6.1.5",
