@@ -21,6 +21,10 @@ const Meeting = sequelize.define('Meeting', {
     description: {
         type: DataTypes.TEXT,
     },
+    createdBy: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     attendees: {
         type: DataTypes.TEXT,
         allowNull: false

@@ -4,7 +4,8 @@ const {
     createMeetingController,
     viewMeetingsController,
     searchMeetingsController,
-    leaveMeetingsController
+    leaveMeetingController,
+    deleteMeetingController
 } = require('../controllers/meetingsController');
 
 routes.post('/', authenticateToken, (req, res) => {
@@ -31,7 +32,11 @@ routes.get('/:meetingId', authenticateToken, (req, res) => {
 });
 
 routes.put('/:meetingId', authenticateToken, (req, res) => {
-    leaveMeetingsController(req, res);
+    leaveMeetingController(req, res);
+});
+
+routes.delete('/:meetingId', authenticateToken, (req, res) => {
+    deleteMeetingController(req, res);
 });
 
 module.exports = routes;

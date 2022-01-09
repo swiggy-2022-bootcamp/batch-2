@@ -44,8 +44,22 @@ const leaveMeetingService = async (meeting) => {
     }
 }
 
+const deleteMeetingService = async (meeting) => {
+    await Meeting.sync();
+
+    try {
+        const result = await Meeting.destroy(
+            { where: { id: meeting.id } },
+        );
+        return result;
+    } catch (e) {
+        throw Error(e.message);
+    }
+}
+
 module.exports = {
     createMeetingService,
     viewMeetingsService,
-    leaveMeetingService
+    leaveMeetingService,
+    deleteMeetingService
 }

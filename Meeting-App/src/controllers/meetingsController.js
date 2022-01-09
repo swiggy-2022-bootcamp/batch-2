@@ -2,7 +2,8 @@ const moment = require('moment');
 const {
     createMeetingService,
     viewMeetingsService,
-    leaveMeetingService
+    leaveMeetingService,
+    deleteMeetingService
 } = require('../services/meetingsService');
 
 const createMeetingController = async (req, res) => {
@@ -14,7 +15,8 @@ const createMeetingController = async (req, res) => {
         startTime: req.body.startTime,
         endTime: req.body.endTime,
         description: req.body.description,
-        attendees: req.body.attendees
+        attendees: req.body.attendees,
+        createdBy: req.user.email
     }
 
     meeting.attendees.push(req.user.email);
@@ -108,7 +110,7 @@ const searchMeetingsController = async (req, res) => {
     }
 }
 
-const leaveMeetingsController = async (req, res) => {
+const leaveMeetingController = async (req, res) => {
     const email = req.user.email;
     const meetingId = req.params.meetingId;
 
@@ -143,9 +145,45 @@ const leaveMeetingsController = async (req, res) => {
     }
 }
 
+const deleteMeetingController = async (req, res) => {
+    const email = req.user.email;
+    const meetingId = req.params.meetingId;
+
+    try {
+        let result = await viewMeetingsService(email);
+        
+        result = result.filter((meeting) => {
+            return meeting.id == meetingId;
+        });
+
+        if(result.length > 0) {
+            if(result[0].createdBy === email) {
+                await deleteMeetingService(result[0]);
+                return res.status(200).json({
+                    successMessage: `Meeting Deleted Successfully.`
+                })
+            } else {
+                return res.status(400).json({
+                    errorMessage: `You don't have authority to delete this meeting`
+                });
+            }
+        } else {
+            return res.status(400).json({
+                errorMessage: `Meeting with ID: ${meetingId} doesn't exist.`
+            })
+        }
+        
+    } catch (e) {
+        return res.status(400).json({
+            errorMessage: `Something went wrong. ${e.message}`,
+        })
+    }
+}
+
 module.exports = {
     createMeetingController,
     viewMeetingsController,
     searchMeetingsController,
-    leaveMeetingsController
+    leaveMeetingController,
+    deleteMeetingController
 }
