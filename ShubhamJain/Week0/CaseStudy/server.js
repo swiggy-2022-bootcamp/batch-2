@@ -37,31 +37,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
-app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.name })
-})
-
-app.get('/login', checkNotAuthenticated, (req, res) => {
-  res.render('login.ejs')
-})
-
-app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true
-}))
-
-app.delete('/logout', (req, res) => {
-  req.logOut()
-  res.redirect('/login')
-})
-
-app.get("/test",checkAuthenticated, (req,res) => {
-    res.json({message:"welcome to NodeJS App"})
-});
 
 require("./app/routes/user.routes")(app);
 require("./app/routes/food.routes")(app);
+require("./app/routes/login.routes")(app, passport);
 
 db.mongoose.connect(db.url,{
     useNewUrlParser:true,
