@@ -1,0 +1,23 @@
+{
+	"name": "meet-application",
+	"version": "1.0.0",
+	"description": "An app to easily manage all the online meetings.",
+	"main": "server.js",
+	"scripts": {
+		"start": "nodemon ./server.js"
+	},
+	"author": "Nihal Mittal",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.2",
+		"express-validator": "^6.14.0",
+		"jsonwebtoken": "^8.5.1",
+		"sequelize": "^6.12.5",
+		"sqlite3": "^5.0.2"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
