@@ -62,8 +62,8 @@ const postQuestion = async (req,res) =>
             res.status(401).send({message: "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"});
             return;
         }
-        var InsertQuestionQueryResult = await dbConnection.query(insertQuestionQueryString,questionData);
-        res.status(201).send({message:"Question posted Successfully with ID "+InsertQuestionQueryResult.insertId});
+        var insertQuestionQueryResult = await dbConnection.query(insertQuestionQueryString,questionData);
+        res.status(201).send({message:"Question posted Successfully with ID " + insertQuestionQueryResult.insertId});
     }
     catch (err)
     {
