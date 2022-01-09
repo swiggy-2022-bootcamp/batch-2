@@ -13,11 +13,11 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(middleware_utils.requestLogger);
 
-app.get("/test",(req,res) => {
-    res.json({message:"welcome to NodeJS App"})
-});
-
+//request for path /users
 require("./routes/users")(app);
+//path /auth
+require("./routes/auth")(app);
+
 
 app.use(middleware_utils.unknownEndpoint);
 app.use(middleware_utils.errorHandler);

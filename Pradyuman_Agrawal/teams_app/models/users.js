@@ -18,19 +18,44 @@ User.create = (newUser,cb) => {
     });
 };
 
-User.findUserByEmailId = (email,cb) => {
+User.getAllUser = (cb) => {
+    pool.query("Select * from users ",(err,res) => {
+        if(err){
+            console.log("error: ",err);
+            cb(err,null);
+            return;
+        }
+        console.log("All users info sent");
+        cb(null,{user:res});
+    });
+};
+
+User.findUserById = (userId,cb) => {
+    pool.query("Select * from users where userId = ?",userId,(err,res) => {
+        if(err){
+            console.log("error: ",err);
+            cb(err,null);
+            return;
+        }
+        console.log("User found with userId",userId);
+        cb(null,{user:res});
+    });
+};
+
+User.findUserByEmailId = async (email,cb) => {
     pool.query("Select * from users where email = ?",email,(err,res) => {
         if(err){
             console.log("error: ",err);
             cb(err,null);
             return;
         }
-        console.log("user found with email",email);
+        if(res.length)
+            console.log("user found with email",email);
         cb(null,{user:res});
     });
 };
 
-User.updateUserByEmailId = (updateInfo,cb) => {
+User.updateUserById = (userId,updateInfo,cb) => {
     var sql=`UPDATE users SET `;
         var arg=[]
         if(updateInfo.name){
@@ -41,8 +66,8 @@ User.updateUserByEmailId = (updateInfo,cb) => {
             sql+=`password=? `;
             arg.push(updateInfo.password);
         }
-        sql+= `WHERE email=?`;
-        arg.push(updateInfo.email);
+        sql+= `WHERE userId=?`;
+        arg.push(userId);
 
         pool.query(sql,arg,(err,res) => {
         if(err){
@@ -50,19 +75,19 @@ User.updateUserByEmailId = (updateInfo,cb) => {
             cb(err,null);
             return;
         }
-        console.log("user info update where email is",updateInfo.email);
+        console.log("user info update where userId is",userId);
         cb(null,{user:res});
     });
 };
 
-User.deleteUserByEmailId = (email,cb) => {
-    pool.query("Delete from users where email = ?",email,(err,res) => {
+User.deleteUserById = (userId,cb) => {
+    pool.query("Delete from users where userId = ?",userId,(err,res) => {
         if(err){
             console.log("error: ",err)
             cb(err,null);
             return;
         }
-        console.log("user deleted with email",email);
+        console.log("user deleted with userId",userId);
         cb(null,{user:res});
     });
 };
