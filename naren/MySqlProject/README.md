@@ -61,6 +61,7 @@ The application can easily be extended to serve
 3) Get all particular users answers - read query - select Based on username
 4) Display MOST upvoted answer for a question Based on question Id
 5) VOTE QUESTIONS- same logic as vote answers
+6) We can add a front end UI to accept the inputs and develop an end to end application.
 
 # OUTSIDE THE SCOPE OF THE PROJECT
 HAVE TO TAKE CARE OF TYPE MISMATCH FROM POSTMAN, inside the json body - number instead of string…MYSQL accepts number as VARCHAR.Empty strings in postman. 
