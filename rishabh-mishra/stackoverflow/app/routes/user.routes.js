@@ -3,12 +3,21 @@ const { userAuth } = require("../middleware/auth.middleware.js");
 let router = require("express").Router();
 
 module.exports = (app) => {
-  const { validateUser, createUser, validateSignin, signin, getAllUsers } =
-    users;
+  const {
+    validateUser,
+    validateSignin,
+    createUser,
+    signin,
+    getAllUsers,
+    updateUser,
+  } = users;
+
+  router.get("/get_all", getAllUsers);
 
   router.post("/signup", validateUser, createUser);
   router.post("/signin", validateSignin, signin);
-  router.get("/get_all", userAuth, getAllUsers);
+
+  router.put("/update", userAuth, updateUser);
 
   return router;
 };
