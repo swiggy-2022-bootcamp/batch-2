@@ -5,7 +5,8 @@ const {
     viewMeetingsController,
     searchMeetingsController,
     leaveMeetingController,
-    deleteMeetingController
+    deleteMeetingController,
+    removeUserFromMeetingController
 } = require('../controllers/meetingsController');
 
 routes.post('/', authenticateToken, (req, res) => {
@@ -31,12 +32,19 @@ routes.get('/:meetingId', authenticateToken, (req, res) => {
     searchMeetingsController(req, res);
 });
 
+// Leaving a meeting
 routes.put('/:meetingId', authenticateToken, (req, res) => {
     leaveMeetingController(req, res);
 });
 
+// Deleting a meeting
 routes.delete('/:meetingId', authenticateToken, (req, res) => {
     deleteMeetingController(req, res);
+});
+
+// Remove a user from a meeting
+routes.delete('/:meetingId/user/:userId', authenticateToken, (req, res) => {
+    removeUserFromMeetingController(req, res);
 });
 
 module.exports = routes;

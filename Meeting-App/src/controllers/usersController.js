@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { 
     createUserService,
-    getUserByEmailService
+    getUserByEmailService,
+    getUserByIdService
 } = require('../services/usersService');
 
 const createUserController = async (req, res) => {
@@ -88,7 +89,18 @@ const getUserByEmailController = async (email) => {
     return null;
 }
 
+const getUserByIdController = async (id) => {
+    const user = await getUserByIdService(id);
+
+    if(user != null){
+        return user;
+    }
+
+    return null;
+}
+
 module.exports = {
     createUserController,
-    loginUserController
+    loginUserController,
+    getUserByIdController
 }

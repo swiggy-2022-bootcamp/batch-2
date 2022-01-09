@@ -29,7 +29,25 @@ const getUserByEmailService = async (email) => {
     }
 }
 
+const getUserByIdService = async (id) => {
+
+    await User.sync();
+
+    try {
+        const user = await User.findOne({
+            where: {
+                id: id
+            },
+            raw: true
+        });
+        return user;
+    } catch (e) {
+        throw Error(e.message);
+    }
+}
+
 module.exports = {
     createUserService,
-    getUserByEmailService
+    getUserByEmailService,
+    getUserByIdService
 };

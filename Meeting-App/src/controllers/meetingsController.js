@@ -5,6 +5,7 @@ const {
     leaveMeetingService,
     deleteMeetingService
 } = require('../services/meetingsService');
+const { getUserByIdController } = require('./usersController');
 
 const createMeetingController = async (req, res) => {
     let date = moment(req.body.date, 'MM/DD/YYYY');
@@ -180,10 +181,54 @@ const deleteMeetingController = async (req, res) => {
     }
 }
 
+const removeUserFromMeetingController = async (req, res) => {
+    const email = req.user.email;
+    const meetingId = req.params.meetingId;
+    const userId = req.params.userId;
+
+    try {
+        let result = await viewMeetingsService(email);
+        
+        result = result.filter((meeting) => {
+            return meeting.id == meetingId;
+        });
+
+        if(result.length > 0) {
+            const user = await getUserByIdController(userId);
+            const meeting = result[0];
+            if(meeting.attendees.includes(user.email)){
+                let attendees = meeting.attendees.split(",");
+                attendees = attendees.filter((attendee) => {
+                    return attendee != user.email
+                })
+                meeting.attendees = attendees.toString();
+                await leaveMeetingService(meeting)
+                return res.status(200).json({
+                    successMessage: `User was removed from the meeting`
+                })
+            } else {
+                return res.status(400).json({
+                    errorMessage: `User is not a part of the meeting`
+                })
+            }
+        } else {
+            return res.status(400).json({
+                errorMessage: `Meeting with ID: ${meetingId} doesn't exist.`
+            })
+        }
+        
+    } catch (e) {
+        return res.status(400).json({
+            errorMessage: `Something went wrong. ${e.message}`,
+        })
+    }
+}
+
 module.exports = {
     createMeetingController,
     viewMeetingsController,
     searchMeetingsController,
     leaveMeetingController,
-    deleteMeetingController
+    deleteMeetingController,
+    removeUserFromMeetingController
 }
