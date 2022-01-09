@@ -13,6 +13,7 @@ module.exports = {
 		);
 	},
 	validateTime: function (value) {
+		// Regex for checking whether time is in HH:MM format
 		const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 		if (value) {
 			const matches = value.match(regex);
