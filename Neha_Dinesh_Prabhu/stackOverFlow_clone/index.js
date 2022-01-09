@@ -6,6 +6,8 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 const config = require("./config");
 
+const auth = require("./middleware/auth");
+
 
 const app = express();
 
@@ -32,8 +34,8 @@ mongoose.connect(config.db.url).then(() => {
 require("./routes/user.routes")(app);
 
 //testing server
-app.get("/test", (req, res) => {
-    res.json({ message: "welcome to StackOverFlow" })
+app.get("/test", auth, (req, res) => {
+    res.status(200).json({ message: "welcome to StackOverFlow" });
 });
 
 
