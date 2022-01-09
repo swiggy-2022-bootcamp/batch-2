@@ -1,4 +1,5 @@
 const Meeting = require('../models/meetingsModel');
+const Op = require('sequelize').Op;
 
 const createMeetingService = async (meeting) => {
     await Meeting.sync();
@@ -11,6 +12,24 @@ const createMeetingService = async (meeting) => {
     }
 }
 
+const viewMeetingsService = async (email) => {
+    await Meeting.sync();
+
+    try {
+        const result = await Meeting.findAll({
+            where: {
+                attendees: {
+                    [Op.like]: `%${email}%`
+                }
+            }
+        });
+        return result;
+    } catch (e) {
+        throw Error(e.message);
+    }
+}
+
 module.exports = {
-    createMeetingService
+    createMeetingService,
+    viewMeetingsService
 }

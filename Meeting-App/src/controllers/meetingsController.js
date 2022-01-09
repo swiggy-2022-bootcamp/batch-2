@@ -1,6 +1,7 @@
 const moment = require('moment');
 const {
-    createMeetingService
+    createMeetingService,
+    viewMeetingsService
 } = require('../services/meetingsService');
 
 const createMeetingController = async (req, res) => {
@@ -32,6 +33,23 @@ const createMeetingController = async (req, res) => {
     }
 }
 
+const viewMeetingsController = async (req, res) => {
+    const email = req.user.email;
+
+    try {
+        const result = await viewMeetingsService(email);
+        res.status(201).json({
+            successMessage: `Meetings fetched successfully`,
+            data: result
+        });
+    } catch (e) {
+        res.status(400).json({
+            errorMessage: `Something went wrong. ${e.message}`,
+        })
+    }
+}
+
 module.exports = {
-    createMeetingController
+    createMeetingController,
+    viewMeetingsController
 }
