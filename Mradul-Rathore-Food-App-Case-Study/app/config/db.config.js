@@ -4,7 +4,8 @@ mongoose.Promise = global.Promise;
 const db = {};
 db.mongoose = mongoose;
 db.url = process.env.MONGO_URI;
-db.users = require("./user.model.js")(mongoose);
-db.foods = require("./food.model.js")(mongoose);
+db.users = require("../models/user.model")(mongoose);
+db.foods = require("../models/food.model")(mongoose);
+db.port = process.env.PORT
 
 module.exports = db;

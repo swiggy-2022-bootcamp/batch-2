@@ -1,4 +1,4 @@
-const db = require("../models")
+const db = require("../config/db.config")
 const Food = db.foods;
 
 //register user

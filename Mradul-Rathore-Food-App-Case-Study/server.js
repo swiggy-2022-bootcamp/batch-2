@@ -16,9 +16,9 @@ var corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json())
 
-const db = require("./app/models")
-const dbURL = process.env.MONGO_URI
-const PORT = process.env.PORT
+const db = require("./app/config/db.config")
+const dbURL = db.url
+const PORT = db.port
 
 //connect with mongodb
 db.mongoose.connect(dbURL, {
