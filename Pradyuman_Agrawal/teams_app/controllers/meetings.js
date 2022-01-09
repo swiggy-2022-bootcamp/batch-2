@@ -37,6 +37,14 @@ const create = async (req,res) => {
        return res.status(400).send("All Meeting inputs are required");
     }
 
+    //make sure creatorId is a member of the meeting
+    let flag=false;
+    members.forEach(memberId=>{
+        flag=(memberId===creatorId)
+    })
+    if(!flag)
+        members.push(creatorId)
+    
     const meeting = new Meeting({
         creatorId : creatorId,
         startTime : new Date(startTime),
@@ -57,7 +65,6 @@ const create = async (req,res) => {
 const getAllMeeting = async (req,res) => {
     try{
         const data = await Meeting.getAllMeeting();
-
         const result = createMembersArray(data);
         res.send(result);
     } catch(e){
@@ -140,12 +147,15 @@ const updateMeetingById = (req,res) => {
 const deleteMeetingById = async (req,res) => {
     const meetingId = req.params.id;
     try{
-        const data = await Meeting.deleteMeetingById(meetingId);
-        if(data.length==0){
+        const result = await Meeting.findcreatorIdByMeetingId(meetingId)
+        if(result.length==0)
             return res.send("meeting with Id Doesnt exist");
-        }
+        else if(result[0].creatorId!==req.userId)
+            return res.status(403).send("user Is not authorised to delete this Meeting");
+        const data = await Meeting.deleteMeetingById(meetingId);
         res.send(data);
     } catch(e){
+        console.log(e)
         res.status(500).send({
             message:"internal error"
         })

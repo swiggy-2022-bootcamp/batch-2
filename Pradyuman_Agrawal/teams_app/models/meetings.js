@@ -52,6 +52,17 @@ Meeting.findMeetingById = async (meetingId) => {
     }
 };
 
+Meeting.findcreatorIdByMeetingId = async (meetingId) => {
+    try{
+        const res = await pool.promise("Select creatorId from meetings where meetingId = ?",[meetingId]);
+        return res;
+    }
+    catch(err){
+        console.log("error: ",err);
+        throw err;
+    }
+};
+
 Meeting.findMeetingByCreatorId = async (creatorId) => {
     try{
         const res = await pool.promise("Select * from meetings m  natural join meetingMembers  where m.creatorId = ? ORDER BY m.meetingId",[creatorId]);
