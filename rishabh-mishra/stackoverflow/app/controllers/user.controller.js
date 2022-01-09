@@ -1,86 +1,124 @@
-const db = require("../models");
-const User = db.users;
+const { body, validationResult } = require("express-validator");
+const { createToken, verifyPassword } = require("../utils/authentication");
+const User = require("../models").users;
 
-//signup user
-const createUser = async (req, res) => {
-  console.log(req.body);
-  const user = new User({
-    email: req.body.email,
-    password: req.body.password,
-  });
+// Signup
+exports.createUser = async (req, res, next) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(422).json({ errors: result.array() });
+  }
 
   try {
-    const savedUser = await user.save();
-    res.send(savedUser);
-  } catch (err) {
-    res.status(500).send({
-      message: err.message || "error while creating the User.",
+    const { name, email, password } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(422).json({
+        errors: [{ msg: "Email already exists, Try Login instead" }],
+      });
+    }
+
+    const user = await new User({
+      name,
+      email,
+      password,
     });
+    user.isNew = true;
+    user.save();
+    const token = createToken(user);
+
+    return res.status(201).json({
+      user,
+      token,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ errors: [{ msg: err.message }] });
   }
 };
 
-//fetch all users
-const findAllUsers = async (req, res) => {
+exports.signin = async (req, res, next) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(422).json({ errors: result.array() });
+  }
+
   try {
-    const allUsers = await User.find();
-    res.send(allUsers);
-  } catch (err) {
-    res.status(500).send({
-      message: err.message || "error while retrieving the users.",
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(422).json({
+        errors: [{ msg: "Invalid Credentials" }],
+      });
+    }
+
+    const isMatch = await verifyPassword(password, user.password);
+    if (!isMatch) {
+      return res.status(422).json({
+        errors: [{ msg: "Invalid Credentials" }],
+      });
+    }
+
+    const token = createToken(user);
+
+    return res.status(201).json({
+      user,
+      token,
     });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ errors: [{ msg: err.message }] });
   }
 };
 
-//fecth user by id
-const findUserById = async (req, res) => {
-  const id = req.params.id;
-
+exports.getAllUsers = async (req, res, next) => {
   try {
-    const user = await User.findById(id);
-    if (!user)
-      res.status(404).send({ message: "User Not Found with Id " + id });
-    else res.send(user);
+    const users = await User.find();
+    return res.status(200).json(users);
   } catch (err) {
-    res.status(500).send({
-      message: err.message || "error while retrieving the user with id " + id,
-    });
+    console.log(err);
+    return res.status(400).json({ errors: [{ msg: err.message }] });
   }
 };
 
-const updateUserById = async (req, res) => {
-  const id = req.params.id;
+// Validate Singin
+exports.validateSignin = [
+  body("email")
+    .exists()
+    .trim()
+    .withMessage("is required")
 
-  try {
-    const updatedUser = await User.findByIdAndUpdate(id, req.body);
-    if (!updatedUser)
-      res.status(404).send({ message: "User cannot be updated with Id " + id });
-    else res.send({ message: "User updated successfully" });
-  } catch (err) {
-    res.status(500).send({
-      message: err.message || "error Updating the user with id " + id,
-    });
-  }
-};
+    .notEmpty()
+    .withMessage("cannot be blank")
 
-const deleteUserById = async (req, res) => {
-  const id = req.params.id;
+    .isEmail()
+    .withMessage("must be a valid email address"),
 
-  try {
-    const deletedUser = await User.findByIdAndRemove(id);
-    if (!deletedUser)
-      res.status(404).send({ message: "User cannot be deleted with Id " + id });
-    else res.send({ message: "User deleted successfully" });
-  } catch (err) {
-    res.status(500).send({
-      message: err.message || "error deleting the user with id " + id,
-    });
-  }
-};
+  body("password")
+    .exists()
+    .trim()
+    .withMessage("is required")
 
-module.exports = {
-  createUser,
-  findAllUsers,
-  findUserById,
-  updateUserById,
-  deleteUserById,
-};
+    .notEmpty()
+    .withMessage("cannot be blank")
+
+    .isLength({ min: 6 })
+    .withMessage("must be at least 6 characters long")
+
+    .isLength({ max: 50 })
+    .withMessage("must be at most 50 characters long"),
+];
+
+// Validate user
+exports.validateUser = [
+  body("name")
+    .exists()
+    .trim()
+    .withMessage("is required")
+
+    .notEmpty()
+    .withMessage("cannot be blank"),
+  ...this.validateSignin,
+];

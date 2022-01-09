@@ -1,13 +1,14 @@
 const users = require("../controllers/user.controller.js");
+const { userAuth } = require("../middleware/auth.middleware.js");
 let router = require("express").Router();
 
 module.exports = (app) => {
-  router.post("/signup", users.createUser);
-  router.get("/get_all_users", users.findAllUsers);
-  router.get("/get_user_by_id/:id", users.findUserById);
-  router.put("/update_user_by_id/:id", users.updateUserById);
-  router.delete("/delete_user_by_id/:id", users.deleteUserById);
+  const { validateUser, createUser, validateSignin, signin, getAllUsers } =
+    users;
 
-  app.use("/users", router);
+  router.post("/signup", validateUser, createUser);
+  router.post("/signin", validateSignin, signin);
+  router.get("/get_all", userAuth, getAllUsers);
+
   return router;
 };
