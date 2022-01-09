@@ -71,6 +71,7 @@ export const login = async (req, res) => {
     const token = newToken(user);
     return res.status(201).send({ message: "User logged in successfully" , access_token: token });
   } catch (e) {
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
     res.status(500).end();
   }
 };
@@ -89,6 +90,7 @@ export const protect = async (req, res, next) => {
   try {
     payload = await verifyToken(token);
   } catch (e) {
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
     return res.status(401).end();
   }
 

@@ -9,8 +9,8 @@ export const createOne = model => async (req, res) => {
     const document = await model.create({ ...req.body, createdBy });
     
     res.status(201).json({ message: "Question posted Successfully", data: document });
-  } catch (e) {
-    console.error(e);
+  } catch(e) {
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
     res.status(400).end();
   }
 };
@@ -35,7 +35,8 @@ export const updateOne = model => async(req, res) => {
     }
 
     res.status(200).json({ message: "Question updated Successfully", data: updatedDocument})
-  }catch(err){
+  }catch(e){
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
     res.status(400).end();
   }
 }
@@ -47,13 +48,15 @@ export const getOne = model => async (req, res) => {
   try {
     const document = await model.findById(req.params.id)
     .select("-updatedAt, -__v")
+    .populate("answers")
     .exec();
 
     if (!document) {
       return res.status(400).send({message: `No Question found with given id: ${req.params.id}`});
     }
     res.status(200).send({ data: document });
-  } catch (err) {
+  } catch(e) {
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
     res.status(400).end();
   }
 };
@@ -66,12 +69,13 @@ export const getMany = model => async (req, res) => {
     const documents = await model.find({createdBy: req.user._id})
       .select("-updatedAt, -__v")
       .lean()
-      .exec()
+      .populate("answers")
+      .exec();
 
-      res.status(200).json({ message: `All question asked by: ${req.user.firstName} ${req.user.lastName}`, data: documents})
-  }catch(err){
-    console.error(e)
-    res.status(400).end()
+      res.status(200).json({ message: `All question asked by: ${req.user.firstName} ${req.user.lastName}`, data: documents});
+  }catch(e){
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
+    res.status(400).end();
   }
 }
 
@@ -90,8 +94,9 @@ export const deleteOne = model => async (req, res) => {
       return res.status(400).end();
     }
     return res.status(200).json({ message: "Question deleted Successfully", data: removed})
-  }catch(err){
-    res.status(400).end()
+  }catch(e){
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
+    res.status(400).end();
   }
 }
 

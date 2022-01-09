@@ -18,7 +18,7 @@ export const createAnswer = async (req, res) => {
     .exec();
 
     if(answerAlreadyExist.length !== 0)
-      return res.status(401).send({ message : `user already posted answer for quesId: ${req.user._id}, you can update your answer if required` });
+      return res.status(401).send({ message : `user already posted answer for quesId: ${req.body.question_id}, you can update your answer if required` });
 
     const answer = await Answer.create({
       ques_id: queId,
@@ -68,8 +68,8 @@ export const createAnswer = async (req, res) => {
       return res.status(400).end()
     }
     res.status(200).json({ message: `Answer updated for quesId: ${req.params.id}`, data: updatedAnswer})
-  }catch(err){
-    console.log(err);
+  }catch(e){
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
     res.status(400).end();
   }
 }
@@ -83,7 +83,7 @@ export const displayAllAnswersToQuestionById = async (req, res) => {
     
     return res.status(200).send({ data });
   } catch (e) {
-    console.log(e);
+    console.log('[' + new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}) + '] ', e)
     res.status(400).send({ message: e });
   }
 };
