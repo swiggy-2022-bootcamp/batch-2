@@ -41,7 +41,7 @@ We currently facilitate 12 kinds of requests.
     npm install cors
     npm install body-parser
 5) Follow the steps mentioned Data Sources section to create the tables in the databases.
-6) On the terminal in the MySQLProject folder, type node server.js
+6) On the terminal in the MySQLProject folder, run node server.js
 7) Install POSTMAN if you haven't
 8) Make the requests on POSTMAN. Please refer to the TestCases.txt for example requests.
 
@@ -64,3 +64,8 @@ Based on username
 4)Display MOST upvoted answer for a question Based on question Id
 5) VOTE QUESTIONS- same logic as vote answers
 
+# OUTSIDE THE SCOPE OF THE PROJECT
+HAVE TO TAKE CARE OF TYPE MISMATCH FROM POSTMAN, inside the json body - number instead of string…MYSQL accepts number as VARCHAR.Empty strings in postman. 
+Example: Question and answer content shouldn’t be empty. Tried mysql not null constraint..but it allows empty string.
+Username should be an email.
+Password follow all required criteria like special characters, lowercase, uppercase etc. 
