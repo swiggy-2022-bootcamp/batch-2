@@ -4,23 +4,28 @@ const meetingService = require('../../services/meetingService');
 const auth = require('../auth');
 const requestValidator = require('../validator');
 
-router.get('/:meetingId', auth, async (req, res, next) => {
-  
+router.get('/:meetingId', auth, requestValidator.validateFindMeetingRequest, async (req, res, next) => {
+  let result = await meetingService.findMeetingByMeetingId(res.locals.userId, req.params.meetingId);
+  if (result.data) {
+    res.json({data: result.data, message: result.message}).status(result.status);
+  } else {
+    res.json({message: result.message}).status(500);
+  }
 });
 
 router.get('/', auth, async (req, res, next) => {
   let result = await meetingService.findAllMeetingsForUser(res.locals.userId);
   if (result.data)
-    res.json({status: 200, data: result.data, message: result.message});
+    res.json({data: result.data, message: result.message}).status(result.status);
   else 
-    res.json({status: 200, message: result.message});
+    res.json({message: result.message}).status(result.status);
 });
 
 router.post('/', auth, requestValidator.validateCreateMeetingRequest, async (req, res) => {
   let creatorUserId = res.locals.userId;
   let {startTime, endTime, participantEmailAddresses, description} = req.body;
-  const newMeetingInfo = await meetingService.createMeeting(creatorUserId, startTime, endTime, description, participantEmailAddresses);
-  res.json({status: 200, data: newMeetingInfo.data, message: newMeetingInfo.message});
+  const result = await meetingService.createMeeting(creatorUserId, startTime, endTime, description, participantEmailAddresses);
+  res.json({data: result.data, message: result.message}).status(result.status);
 });
 
 router.get('/search', (req, res)=>{

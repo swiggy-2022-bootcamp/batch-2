@@ -7,7 +7,7 @@ const MeetingSchema = new mongoose.Schema({
     description: {type: String, required: true},
     startTime: {type: Date, required: true},
     endTime: {type: Date, required: true},
-    users: [{type: mongoose.Schema.Types.ObjectId,ref:'User'}]
+    participants: [{type: mongoose.Schema.Types.ObjectId,ref:'User'}]
 },
 {
     timestamps: true

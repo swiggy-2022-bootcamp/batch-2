@@ -9,22 +9,22 @@ const createMeeting = async (creatorUserId, startTime, endTime, description, par
     meeting.endTime = endTime;
 
     const creator = await UserModel.findOne({id: creatorUserId});
-    meeting.users.push(creator);
+    meeting.participants.push(creator);
 
     for await (let participantEmailAddress of participantEmailAddresses) {
         const participant = await UserModel.findOne({emailAddress: participantEmailAddress});
-        meeting.users.push(participant);
+        meeting.participants.push(participant);
     }
     
     //iterate over meetings and save info in all users.
     let response;
     await meeting.save().then((newMeeting)=>{
-        response = {data: newMeeting, message: "Meeting created succesfully"};
+        response = {status: 200, data: newMeeting, message: "Meeting created succesfully"};
     }).catch(err => {
         throw err;
     }); 
 
-    for await (let participant of response.data.users) {
+    for await (let participant of response.data.participants) {
         participant.meetings.push(response.data.meetingId);
         await participant.save();
     }
@@ -38,18 +38,36 @@ const findAllMeetingsForUser = async (userId) => {
 
     let meetings = [];
     for await (let meetingId of meetingIds) {
-        let meeting = await MeetingModel.findOne({meetingId: meetingId}).populate('users');
+        let meeting = await MeetingModel.findOne({meetingId: meetingId}).populate('participants', 'emailAddress');
         meetings.push(meeting);
     }
     if (meetings.length > 0)
-        return {data: meetings,  message: "All Meeting Details Fetched Succesfully"};
+        return {status: 200, data: meetings, message: "All Meeting Details Fetched Succesfully"};
     else
-        return {message: "No Meetings found for this user"};
+        return {status: 200, message: "No Meetings found for this user"};
+}
+
+const findMeetingByMeetingId = async(userId, meetingId) => {
+    let user = await UserModel.findOne({id: userId});
+    let isMeetingIdValid = user.meetings.includes(meetingId);
+    let meetingInfo = {};
+    if (isMeetingIdValid) {
+        meetingInfo = await MeetingModel.findOne({meetingId: meetingId}).populate({
+            path: 'participants',
+            transform: function(doc) {
+                return doc.emailAddress;
+            }
+        });
+    } else {
+        return {status: 200, message: `No Meetings with id: ${meetingId} found for user: ${user.emailAddress}`};
+    }
+    return {status: 200, data: meetingInfo, message: "Meeting Details fetched succesfully"};
 }
 
 module.exports = {
     createMeeting: createMeeting,
-    findAllMeetingsForUser: findAllMeetingsForUser
+    findAllMeetingsForUser: findAllMeetingsForUser,
+    findMeetingByMeetingId: findMeetingByMeetingId
 }
 
 // UserModel(meetingId:int) >|----|< MeetingModel (meetingId, User:ref)
