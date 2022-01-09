@@ -12,7 +12,9 @@ const authenticateUserQueryString = "SELECT * FROM UserDetails WHERE userName = 
 const insertAnswerQueryString = "INSERT INTO Answers SET ?;";
 const getAnswerQueryString = "SELECT * FROM Answers WHERE userName = ? AND questionId = ?;";
 const updateAnswerQueryString = "UPDATE Answers SET content = ? WHERE userName =? AND questionId =?;";
-
+const getUserWhoPostedAnswerQueryString = "SELECT userName FROM Answers WHERE answerId = ?;";
+const insertUpvoteQueryString = "INSERT INTO Votes SET ?;";
+const insertUserPointsQueryString = "INSERT INTO UserPoints(userName) VALUES(?);"
 /*
 USE CASE 4 OF CASE STUDY -Part 1 : POSTING A ANSWER
 
@@ -70,7 +72,7 @@ const postAnswer = async (req,res) =>
         try
         {
         var insertAnswerQueryResult = await dbConnection.query(insertAnswerQueryString,answersData);
-        res.status(201).send({message:"Answer for posted Successfully with ID " + insertAnswerQueryResult.insertId});
+        res.status(201).send({message: "Answer for posted Successfully with ID " + insertAnswerQueryResult.insertId});
         }
         catch (err)
         {
@@ -131,7 +133,7 @@ const updateAnswer = async (req,res) =>
         var userAuthenticationDetails = await dbConnection.query(authenticateUserQueryString, [userData.userName, userData.password]);
         if (userAuthenticationDetails.length == 0)
         {
-            res.status(401).send({ message: "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"});
+            res.status(401).send({message: "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"});
             return;
         }
         var questionUserDetails = await dbConnection.query(getAnswerQueryString, [answersData.userName, answersData.questionId]);
@@ -141,7 +143,7 @@ const updateAnswer = async (req,res) =>
             return;
         }
         await dbConnection.query(updateAnswerQueryString,[answersData.content, answersData.userName, answersData.questionId]);
-        res.status(200).send({message:"Answer for question updated SUCCESSFULLY"});
+        res.status(200).send({message: "Answer for question updated SUCCESSFULLY"});
     }
     catch (err)
     {
@@ -149,7 +151,91 @@ const updateAnswer = async (req,res) =>
     }
 }
    
-    
+/*
+EXTRA USE CASE : UPVOTING AN ANSWER
+
+Function : upvoteAnswer
+
+API TYPE : POST REQUEST
+
+Description : 
+It serves the POST request made from the client for upvoting an answer.
+For the given answer Id, we first check if it is valid. Then we make sure 
+the user is not upvoting his own answer. We also make sure he can upvote
+an answer only once. We also need to authorize the client making the request.
+
+Input parameters :
+From the request we get,
+1) answerId - The answer Id we want to upvote.
+2) userName - Email Id of the user
+3) password - password of the user
+
+Response of the API with HTTP STATUS codes:
+201: Answer upvoted SUCCESSFULLY
+400: INVALID ANSWER ID
+403: 1) User is trying to Upvote his OWN answer
+     2) User is trying to Upvote the answer MORE than ONCE
+401: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN
+500: "Internal Server Error "
+
+*/
+
+const upvoteAnswer = async (req,res) =>
+{
+    const userData=
+    {       
+        userName : req.body.userName,
+        password : req.body.password
+    };
+    const upvoteData =
+    {
+        userName : req.body.userName,
+        answerId : req.params.id
+    };
+    try
+    {
+        var userAuthenticationDetails = await dbConnection.query(authenticateUserQueryString, [userData.userName, userData.password]);
+        if (userAuthenticationDetails.length == 0)
+        {
+            res.status(401).send({message: "Error: INVALID CREDENTIALS FOR LOGIN. PLEASE TRY AGAIN"});
+            return;
+        }
+        // Lets find the user who posted the answer and make sure current user doesnt match with that
+        var userDetails = await dbConnection.query(getUserWhoPostedAnswerQueryString, upvoteData.answerId)
+        if (userDetails.length == 0)
+        {
+            res.status(400).send({message: "INVALID ANSWER ID"});
+            return;
+        }  
+        var userWhoPostedThisAnswer = userDetails[0].userName;
+        if (userData.userName == userWhoPostedThisAnswer)
+        {
+            res.status(403).send({message: "ERROR: User trying to UPVOTE HIS OWN ANSWER."});
+            return;
+        }
+       
+        try
+        {
+            await dbConnection.query(insertUpvoteQueryString, upvoteData);
+        } 
+        catch
+        {
+            res.status(403).send({ message: "ERROR: User trying to UPVOTE this ANSWER more than ONCE"});
+            return;
+        }  
+         // Now lets increment points for the user who posted this answer         
+        await dbConnection.query(insertUserPointsQueryString, userWhoPostedThisAnswer);
+        res.status(201).send({message: "We have SUCCESSFULLY UPVOTED the answer"});          
+    }
+    catch (err)
+    {
+        res.status(500).send({message: "This is an internal server error!"});
+    }                                           
+}
+
+
+
+
 
 // export all these functions.
-module.exports ={updateAnswer,postAnswer}
+module.exports ={updateAnswer,postAnswer,upvoteAnswer}

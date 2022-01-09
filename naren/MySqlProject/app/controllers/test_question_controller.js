@@ -63,7 +63,7 @@ const postQuestion = async (req,res) =>
             return;
         }
         var insertQuestionQueryResult = await dbConnection.query(insertQuestionQueryString,questionData);
-        res.status(201).send({message:"Question posted Successfully with ID " + insertQuestionQueryResult.insertId});
+        res.status(201).send({message: "Question posted Successfully with ID " + insertQuestionQueryResult.insertId});
     }
     catch (err)
     {
