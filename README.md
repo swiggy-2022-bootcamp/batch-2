@@ -198,6 +198,17 @@ Start the server
   | :-------- | :------- | :------------------------- |
   | `meetingId` | `int` | **Required** |
 
+## Join a meeting
+
+  - all participants can join on the meet link for video conferencing
+
+  ```http
+    GET /api/user/meetings/:meetingId/join
+  ```
+
+  | Field | Type     | Description                |
+  | :-------- | :------- | :------------------------- |
+  | `meetingId` | `int` | **Required** |
 
 
 
@@ -209,10 +220,12 @@ Start the server
 - http-errors
 - jsonwebtoken
 - swagger-ui-express
+- ejs
 
 #### Techstack:
 - Node.js 17.3.0
 - mongoDB
 - Docker
+- Jitsi (3rd party video conferencing tool)
 
 
