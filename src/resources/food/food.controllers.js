@@ -1,7 +1,7 @@
 import { Food } from "./food.model"
 import { crudControllers } from "../../utils/crud"
 
-export const foodControllers = crudControllers(Food)
+export const foodControllers = crudControllers(Food) // Import Generic Crud Controllers
 
 foodControllers.updateRating = async (req, res) => {
     try{
