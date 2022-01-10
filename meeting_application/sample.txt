@@ -1,0 +1,76 @@
+
+
+Create user:
+
+POST http://localhost:8080/users/register
+
+Payload:
+{
+    "first_name": "Kunal",
+    "last_name": "Kadian",
+    "email": "kunalkadian16@gmail.com",
+    "password": "Hello@12345"
+}
+
+
+Login:
+
+Payload:
+{
+    "email": "kunalkadian16@gmail.com",
+    "password": "Hello@12345"
+}
+
+
+Create meeting:
+
+POST http://localhost:8080/meetings/create_meeting/61db4d51c5e0913426c13aa7
+
+
+Payload:
+{
+    "user" : {
+        "id" : "61db4d51c5e0913426c13aa7",
+        "password" : "Hello@12345"
+    },
+    "meeting" : {
+        "start_date": "1641774830834",
+        "start_time": "10:00",
+        "end_time": "12:00",
+        "description": "daily standup",
+        "invitee": "61db4d51c5e0913426c13aa7",
+        "members": ["61db5c8456b245a3c7159913"]
+    }
+}
+
+
+View meeting by date for a particular user
+
+GET  http://localhost:8080/meetings/view_meetings/61db4d51c5e0913426c13aa7
+
+
+Payload:
+{
+    "date" : "2022-01-10"
+}
+
+
+
+
+Search a meeting by meeting id:- 
+
+
+GET  http://localhost:8080/meetings/search_meeting/61db4d51c5e0913426c13aa7
+
+Payload:
+
+{
+    "id" : "61db95f7ab0b0df88a185d68"
+}
+
+
+
+
+show dbs
+use meeting_application
+show collections;
