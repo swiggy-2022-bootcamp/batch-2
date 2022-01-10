@@ -37,6 +37,7 @@ const createMeetingController = async (req, res) => {
     }
 }
 
+// By default returns today's and upcoming meeting
 const viewMeetingsController = async (req, res) => {
     const email = req.user.email;
     const time = req.params.time;
@@ -70,6 +71,7 @@ const viewMeetingsController = async (req, res) => {
     }
 }
 
+// Search meeting by Id, Title & Description
 const searchMeetingsController = async (req, res) => {
     const email = req.user.email;
     const meetingId = req.params.meetingId;

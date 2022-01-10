@@ -95,5 +95,5 @@ npm start
 | **src/routes**           | Contains all the routes in the application.                                    
 | **src/models**           | Contains all the sequelize schemas.
 | **src/service**           | Contains all the code to interact with the database.
-| app.ts        | Entry Point for the Node JS Application. Registers the routes and loads the configurations.                                                              
+| app.js        | Entry Point for the Node JS Application. Registers the routes and loads the configurations.                                                              
 | package.json             | Contains npm dependencies as well as start scripts

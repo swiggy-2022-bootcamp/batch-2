@@ -32,7 +32,134 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "User Creation Successful",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Rahul Panchal\",\r\n    \"email\": \"rahul@gmail.com\",\r\n    \"password\": \"rahul\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "58"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3a-ZvXkWrsAIH5diFYFS3/uPwWO4T0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:22:47 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"User Created Successfully. User ID: 1\"\n}"
+				},
+				{
+					"name": "User Email Already Exists",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Rahul Panchal\",\r\n    \"email\": \"rahul@gmail.com\",\r\n    \"password\": \"rahul\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "69"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"45-q1NkzFBstuxsXI1DcDncHgHRM5E\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:23:51 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User with email as rahul@gmail.com already exists.\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Login User",
@@ -61,7 +188,197 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid User Email",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rahul1@gmail.com\",\r\n    \"password\": \"rahul\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "70"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"46-jQykiADsSI57x3QlktRxrGyuj2Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:24:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User with email as rahul1@gmail.com doesn't exists.\"\n}"
+				},
+				{
+					"name": "Invalid Password",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rahul@gmail.com\",\r\n    \"password\": \"rahul1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"26-lGkFFzwTaRBTMbFOAo2tSuHtKRw\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:25:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Incorrect Password.\"\n}"
+				},
+				{
+					"name": "Login Successful",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rahul@gmail.com\",\r\n    \"password\": \"rahul\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "263"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"107-0ivJyQg1IyYPev9zt2q6MmFY0pA\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:25:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Logged in successfully\",\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJyYWh1bEBnbWFpbC5jb20iLCJuYW1lIjoiUmFodWwgUGFuY2hhbCIsImlhdCI6MTY0MTc3NzkyOSwiZXhwIjoxNjQxNzgxNTI5fQ.6tusmKuFqtIJ5P8Pw2M7oQ4B-cW_m5TSimPp6rZu3IY\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Create Meeting",
@@ -89,7 +406,70 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Meeting Creation Successful",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Meeting 1\",\r\n    \"date\": \"01-04-2022\",\r\n    \"startTime\": \"19:30\",\r\n    \"endTime\": \"20:00\",\r\n    \"description\": \"Meeting Description Test 1\",\r\n    \"attendees\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "64"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"40-Lci6ntePx0M56xGNu+3lW5af/p4\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:26:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meeting Created Successfully. Meeting ID: 1\"\n}"
+				}
+			]
 		},
 		{
 			"name": "View Meetings",
@@ -108,7 +488,61 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "View Meetings Successful",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1798"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"706-Zn4rgZHngtYZzh9qx8JZNy4EnE0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:30:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meetings fetched successfully\",\n    \"meetings\": [\n        {\n            \"id\": 3,\n            \"title\": \"Meeting 3\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 3\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 4,\n            \"title\": \"Meeting 4\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 4\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 5,\n            \"title\": \"Meeting 5\",\n            \"date\": \"2022-01-31\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 5\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 6,\n            \"title\": \"Meeting 6\",\n            \"date\": \"2022-01-30\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 6\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 7,\n            \"title\": \"Meeting Title Test\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 7\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 8,\n            \"title\": \"Meeting Title Test\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 8\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 9,\n            \"title\": \"Meeting 9\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Search Description\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 10,\n            \"title\": \"Meeting 10\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Search Description\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 11,\n            \"title\": \"Meeting 11\",\n            \"date\": \"2022-01-30\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 11\",\n            \"createdBy\": \"bhavin@gmail.com\",\n            \"attendees\": \"bhavin@gmail.com,rahul@gmail.com\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "View Past Meetings",
@@ -129,7 +563,63 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "View Past Meetings Successful",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/date/past",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"date",
+								"past"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "443"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1bb-j/bJnrCrrhSbhCa2IKaqiK+r2gg\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:31:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meetings fetched successfully\",\n    \"meetings\": [\n        {\n            \"id\": 1,\n            \"title\": \"Meeting 1\",\n            \"date\": \"2022-01-04\",\n            \"startTime\": \"19:30\",\n            \"endTime\": \"20:00\",\n            \"description\": \"Meeting Description Test 1\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 2,\n            \"title\": \"Meeting 2\",\n            \"date\": \"2022-01-07\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 2\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "View Today's Meetings",
@@ -150,7 +640,63 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "View Today's Meetings Successful",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/date/today",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"date",
+								"today"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1207"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4b7-zbJvCMzsqnvfGbeJzV0gnPthZp8\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:31:21 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meetings fetched successfully\",\n    \"meetings\": [\n        {\n            \"id\": 3,\n            \"title\": \"Meeting 3\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 3\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 4,\n            \"title\": \"Meeting 4\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 4\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 7,\n            \"title\": \"Meeting Title Test\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 7\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 8,\n            \"title\": \"Meeting Title Test\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 8\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 9,\n            \"title\": \"Meeting 9\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Search Description\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 10,\n            \"title\": \"Meeting 10\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Search Description\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "View Future Meetings",
@@ -171,7 +717,63 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "View Future Meetings Successful",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/date/future",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"date",
+								"future"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "654"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"28e-C7eBV3nXuhGcfYbZXdbmV+Ud9gs\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:31:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meetings fetched successfully\",\n    \"meetings\": [\n        {\n            \"id\": 5,\n            \"title\": \"Meeting 5\",\n            \"date\": \"2022-01-31\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 5\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 6,\n            \"title\": \"Meeting 6\",\n            \"date\": \"2022-01-30\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 6\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 11,\n            \"title\": \"Meeting 11\",\n            \"date\": \"2022-01-30\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 11\",\n            \"createdBy\": \"bhavin@gmail.com\",\n            \"attendees\": \"bhavin@gmail.com,rahul@gmail.com\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "Search Meeting by ID",
@@ -198,7 +800,124 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Search Meeting by ID Successful",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/meetings/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"10"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "247"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f7-DPYCu7lebOQzXQLGxj7TD77HYfo\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:32:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meetings fetched successfully\",\n    \"meetings\": [\n        {\n            \"id\": 10,\n            \"title\": \"Meeting 10\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Search Description\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Invalid Meeting ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/meetings/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"12"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-+b8nauzCBa28VL6yUKwXh5jYZUo\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:32:56 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Meeting with ID: 12 doesn't exists.\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Search Meeting by Title",
@@ -231,7 +950,136 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Search Meeting by Title Successful",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/meetings/search?title=Title Test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"search"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Title Test"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "461"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1cd-xG4Io36EiSGrYc9dPf1LRb5zoRc\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:33:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meetings fetched successfully\",\n    \"meetings\": [\n        {\n            \"id\": 7,\n            \"title\": \"Meeting Title Test\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 7\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 8,\n            \"title\": \"Meeting Title Test\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Meeting Description Test 8\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Invalid Title",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/meetings/search?title=x",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"search"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "x"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"26-rsaguOLsA1QbVopkOlOMBZOVMkM\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:33:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"No Results Found!!!\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Search Meeting by Desc",
@@ -264,7 +1112,136 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Search Meeting by Desc Successful",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/meetings/search?desc=Search Description",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"search"
+							],
+							"query": [
+								{
+									"key": "desc",
+									"value": "Search Description"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "429"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1ad-Zxj2PJY7IdByYlNDbXd9U2piBy0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:34:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meetings fetched successfully\",\n    \"meetings\": [\n        {\n            \"id\": 9,\n            \"title\": \"Meeting 9\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Search Description\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 10,\n            \"title\": \"Meeting 10\",\n            \"date\": \"2022-01-10\",\n            \"startTime\": \"20:00\",\n            \"endTime\": \"20:30\",\n            \"description\": \"Search Description\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"attendees\": \"rahul@gmail.com\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Invalid Description",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/meetings/search?desc=x",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"search"
+							],
+							"query": [
+								{
+									"key": "desc",
+									"value": "x"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"26-rsaguOLsA1QbVopkOlOMBZOVMkM\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:34:30 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"No Results Found!!!\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Leaving a Meeting by ID",
@@ -284,7 +1261,116 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid Meeting ID",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"12"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-+b8nauzCBa28VL6yUKwXh5jYZUo\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:35:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Meeting with ID: 12 doesn't exists.\"\n}"
+				},
+				{
+					"name": "Leave Meeting Successful",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"10"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "46"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2e-D9iJKhlDT5poln4VNi1hDzySOUU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:35:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Left Meeting Successfully\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Delete Meeting by ID",
@@ -304,7 +1390,170 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid Meeting ID",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"12"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35-MGj5hwO222RAUysERtWZyGRPyeU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:36:10 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Meeting with ID: 12 doesn't exist.\"\n}"
+				},
+				{
+					"name": "No Authority to Delete",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"11"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "66"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"42-9f9f8CEqR9y0NPXrH2YeUjt6Fak\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:36:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"You don't have authority to delete this meeting\"\n}"
+				},
+				{
+					"name": "Delete Meeting Successful",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"9"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "50"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"32-bvj9+s5SwJLjrsju0at5yh8qOsA\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:37:00 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Meeting Deleted Successfully.\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Adding User to Meeting",
@@ -312,7 +1561,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/meetings/8/user/2",
+					"raw": "http://localhost:3000/meetings/11/user/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -320,13 +1569,238 @@
 					"port": "3000",
 					"path": [
 						"meetings",
-						"8",
+						"11",
 						"user",
-						"2"
+						"3"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid Meeting ID",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/12/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"12",
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35-MGj5hwO222RAUysERtWZyGRPyeU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:37:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Meeting with ID: 12 doesn't exist.\"\n}"
+				},
+				{
+					"name": "Invalid User",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/8/user/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"8",
+								"user",
+								"4"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"26-GXA44GXsNFxjjaCyzAtnBi0LQkw\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:39:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User doesn't exists\"\n}"
+				},
+				{
+					"name": "User Already Added",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/11/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"11",
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "56"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"38-D4P/ywdXrPrkA3JaHazA15ZQQbU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:39:50 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User is already a part of the meeting\"\n}"
+				},
+				{
+					"name": "Add User to Meeting Successful",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/11/user/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"11",
+								"user",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "44"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2c-P4JSOaqHc39lHjNTwH38Zk/7J98\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:40:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"User added to a meeting\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Remove User From Meeting",
@@ -334,7 +1808,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/meetings/8/user/2",
+					"raw": "http://localhost:3000/meetings/11/user/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -342,13 +1816,182 @@
 					"port": "3000",
 					"path": [
 						"meetings",
-						"8",
+						"11",
 						"user",
-						"2"
+						"3"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid Meeting ID",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/12/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"12",
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35-MGj5hwO222RAUysERtWZyGRPyeU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:40:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Meeting with ID: 12 doesn't exist.\"\n}"
+				},
+				{
+					"name": "User Not in Meeting",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/8/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"8",
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"34-TSeIXJXBl48lI5prRNxQYQKwGfs\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:41:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User is not a part of the meeting\"\n}"
+				},
+				{
+					"name": "Remove User Successful",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/meetings/11/user/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"meetings",
+								"11",
+								"user",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-cZzMevf8Cc/KFnG/G0JbqO3Xsso\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:41:48 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"User was removed from the meeting\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Create Team",
@@ -376,7 +2019,70 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Create Team Successful",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 2\",\r\n    \"description\": \"Team Description 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "58"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3a-+qekcV7nadfPCXw0WLISNV6lYDM\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:42:32 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Team Created Successfully. Team ID: 1\"\n}"
+				}
+			]
 		},
 		{
 			"name": "View Teams",
@@ -407,7 +2113,132 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "No Teams Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-zOt8FXVgyYiSoCbdVhIYVj6ZvKI\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:43:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"No Teams Found!!!\"\n}"
+				},
+				{
+					"name": "View Teams Successful",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "302"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"12e-tO8H5RkHaF5KwwUqlWUZtzyMLsE\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:44:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Teams fetched successfully.\",\n    \"teams\": [\n        {\n            \"id\": 1,\n            \"teamName\": \"Team 1\",\n            \"description\": \"Team Description 1\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"members\": \"rahul@gmail.com\"\n        },\n        {\n            \"id\": 2,\n            \"teamName\": \"Team 2\",\n            \"description\": \"Team Description 2\",\n            \"createdBy\": \"rahul@gmail.com\",\n            \"members\": \"rahul@gmail.com\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "Add Member to Team",
@@ -424,7 +2255,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/teams/2/user/3",
+					"raw": "http://localhost:3000/teams/1/user/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -432,13 +2263,274 @@
 					"port": "3000",
 					"path": [
 						"teams",
-						"2",
+						"1",
 						"user",
-						"3"
+						"2"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid Team",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/3/user/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"3",
+								"user",
+								"3"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-mu1XhjxavKPdQEzNCO0XBRjsFH0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:45:11 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Team Not Found!!!\"\n}"
+				},
+				{
+					"name": "Invalid User",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1/user/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1",
+								"user",
+								"4"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-WTbCWpbMn399qTtsDO7GBvVBFRI\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:45:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User Not Found!!!\"\n}"
+				},
+				{
+					"name": "Already Added to Team",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1",
+								"user",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "55"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"37-KIVBZS0C8Hi/X3iovruf66jespU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:45:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User is already a member of the Team\"\n}"
+				},
+				{
+					"name": "Add Member to Team Successful",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1",
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"34-3v2Y5XGwAeaveNb0AIBnc506H8k\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:46:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"User added to Team Successfully\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Add Team to Meeting",
@@ -469,7 +2561,203 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid Team",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/3/meeting/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"3",
+								"meeting",
+								"3"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-mu1XhjxavKPdQEzNCO0XBRjsFH0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:46:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Team Not Found!!!\"\n}"
+				},
+				{
+					"name": "Invalid Meeting",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/2/meeting/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"2",
+								"meeting",
+								"12"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"27-knIua4Yy/eLK6ZkzJKfZR9RUJdk\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:47:00 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Meeting Not Found!!!\"\n}"
+				},
+				{
+					"name": "Add Team to Meeting Successful",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1/meeting/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1",
+								"meeting",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "55"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"37-U9gKKLuVgo6yMDh956l0AhH/E3E\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:47:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Team added to Meeting Successfully\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Remove Member from Team",
@@ -486,7 +2774,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/teams/2/user/3",
+					"raw": "http://localhost:3000/teams/1/user/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -494,13 +2782,339 @@
 					"port": "3000",
 					"path": [
 						"teams",
-						"2",
+						"1",
 						"user",
-						"3"
+						"2"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid Team",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/3/user/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"3",
+								"user",
+								"3"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-mu1XhjxavKPdQEzNCO0XBRjsFH0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:48:25 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Team Not Found!!!\"\n}"
+				},
+				{
+					"name": "No Authority to Remove",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1",
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "76"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4c-+34J5Hr4MzjKso5gEDf4NnR3I3Y\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:49:12 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"You don't have authority to remove a member from the Team\"\n}"
+				},
+				{
+					"name": "Invalid User",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1/user/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1",
+								"user",
+								"4"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-WTbCWpbMn399qTtsDO7GBvVBFRI\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:49:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User Not Found!!!\"\n}"
+				},
+				{
+					"name": "User Not a Part of Team",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1/user/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1",
+								"user",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "49"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"31-yYEv3n7qKHf7JVYbiAZREkPcA5E\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:49:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User is not a part of the Team\"\n}"
+				},
+				{
+					"name": "Remove Member from Team Successful",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1",
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-ajrPGvjPPPoZDa0W26df9yY/GtM\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:50:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"User has been removed from the Team\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Leaving a Team by ID",
@@ -517,7 +3131,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/teams/2",
+					"raw": "http://localhost:3000/teams/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -525,11 +3139,138 @@
 					"port": "3000",
 					"path": [
 						"teams",
-						"2"
+						"1"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid Team",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"3"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-mu1XhjxavKPdQEzNCO0XBRjsFH0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:50:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Team Not Found!!!\"\n}"
+				},
+				{
+					"name": "Leaving a Team Successful",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"Team 1\",\r\n    \"description\": \"Team Description 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/teams/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teams",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "47"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2f-M/cMoRDvx0VHjpIR7nyYPBhfiX8\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Jan 2022 01:51:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"successMessage\": \"Left the Team Successfully\"\n}"
+				}
+			]
 		}
 	],
 	"auth": {
@@ -537,7 +3278,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJyYWh1bEBnbWFpbC5jb20iLCJuYW1lIjoiUmFodWwgUGFuY2hhbCIsImlhdCI6MTY0MTc1MDE2NywiZXhwIjoxNjQxNzUzNzY3fQ.lGE8yxWUhH9aBuJBko05h7J6rEz4xcoj-v7Q0YCfra8",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJyYWh1bEBnbWFpbC5jb20iLCJuYW1lIjoiUmFodWwgUGFuY2hhbCIsImlhdCI6MTY0MTc3NzkyOSwiZXhwIjoxNjQxNzgxNTI5fQ.6tusmKuFqtIJ5P8Pw2M7oQ4B-cW_m5TSimPp6rZu3IY",
 				"type": "string"
 			}
 		]
