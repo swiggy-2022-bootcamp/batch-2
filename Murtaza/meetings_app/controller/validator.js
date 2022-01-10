@@ -1,6 +1,5 @@
 const MeetingModel = require("../models/Meeting");
 const UserModel = require("../models/User");
-const { createUserIfNotExists } = require("../services/userService");
 const userService = require("../services/userService");
 const createError = require('http-errors');
 
@@ -63,9 +62,13 @@ const validateMeetingTimeInfo = (req, res, next) => {
         }
 
         if (startTime < Date.now()) {
-            throw createError("cannot schedule a meeting in the past" );
+            throw createError(400, "cannot schedule a meeting in the past" );
         }
         next(); 
+    } else if (startTime || endTime) {
+        throw createError(400, "Need to provide both startTime and endTime");
+    } else {
+        next();
     }
 };
 
@@ -73,16 +76,14 @@ const validateAddParticipantRequest = async (req, res, next) => {
     let addParticipantEmailAddresses = req.body.participants.add;
     let existingParticipantEmailAddresses = [];
     if (req.params.meetingId) {
-    existingParticipantEmailAddresses = await MeetingModel.findOne({ meetingId: req.params.meetingId }, { participants: 1 })
-        .populate({ path: "participants", transform: (doc) => doc.emailAddress });
+        existingParticipantEmailAddresses = await MeetingModel.findOne({ meetingId: req.params.meetingId }, { participants: 1 })
+            .populate({ path: "participants", transform: (doc) => doc.emailAddress });
     }
 
     let invalidEmailAddresses = [];
     for await (participantEmailAddress of addParticipantEmailAddresses) {
         if (!(participantEmailAddress in existingParticipantEmailAddresses)) {
-            let user = await userService.findUserByEmailAddress(
-                participantEmailAddress
-            );
+            let user = await userService.findUserByEmailAddress(participantEmailAddress);
             if (!user) 
                 invalidEmailAddresses.push(participantEmailAddress);
         }

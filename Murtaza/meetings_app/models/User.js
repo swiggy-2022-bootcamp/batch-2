@@ -5,18 +5,18 @@ const config = require("config");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const UserSchema = new mongoose.Schema({
-	firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    emailAddress: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, "is invalid"], index: true},
-    username: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, "is invalid"], index: true},
-    bio: { type: String, required: false },
-    meetings: [{ type: Number, default: [] }],
-    hash: String,
-    salt: String,
-  },
-  {
-    timestamps: true,
-  }
+		firstName: { type: String, required: true },
+		lastName: { type: String, required: true },
+		emailAddress: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, "is invalid"], index: true},
+		username: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, "is invalid"], index: true},
+		bio: { type: String, required: false },
+		meetings: [{ type: Number, default: [] }],
+		hash: String,
+		salt: String,
+	},
+  	{
+    	timestamps: true,
+  	}
 );
 
 UserSchema.plugin(AutoIncrement, { inc_field: "id" });

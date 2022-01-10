@@ -5,13 +5,13 @@ const auth = require("../auth");
 const config = require('config');
 
 const {
-  validateMeetingTimeInfo,
-  validateSearchQuery,
-  validateAddParticipantRequest,
-  validateCreateMeetingRequest,
-  validateFindMeetingRequest,
-  validateRemoveParticipantRequest,
+	validateMeetingTimeInfo,
+	validateSearchQuery,
+	validateAddParticipantRequest,
+	validateCreateMeetingRequest,
+	validateFindMeetingRequest
 } = require("../validator");
+
 
 /**
  * GET /
@@ -25,6 +25,7 @@ router.get("/", auth, (req, res, next) => {
         next(err);
       });
 });
+
 
 /**
  * GET /search
@@ -47,6 +48,7 @@ router.get("/search", auth, validateSearchQuery, (req, res, next) => {
     });
 });
 
+
 /**
  * GET /:meetingId
  * Description: find meeting details for meetingId for logged in user
@@ -61,6 +63,7 @@ router.get("/:meetingId", auth, validateFindMeetingRequest, (req, res, next) => 
         next(err);
       });
 });
+
 
 /**
  * POST /
@@ -83,26 +86,29 @@ router.post("/", auth, validateCreateMeetingRequest, validateMeetingTimeInfo, va
 		});
 });
 
+
 /**
  * PATCH /
  * Description: update meeting details
  * 
  * 
  */
-router.patch("/:meetingId", auth, validateMeetingTimeInfo, (req, res, next) => {
+router.patch("/:meetingId", auth, validateMeetingTimeInfo, validateAddParticipantRequest, (req, res, next) => {
 	let userId = req.userId;
 	let meetingId = req.params.meetingId;
 	let startTime = req.body.startTime;
 	let endTime = req.body.endTime;
 	let description = req.body.description;
+	let participantEmailAddressesToBeAdded = req.body.participants.add;
 
-  	meetingService.updateMeeting(userId, meetingId, startTime, endTime, description).then(result => {
+  	meetingService.updateMeeting(userId, meetingId, startTime, endTime, description, participantEmailAddressesToBeAdded).then(result => {
 		res.status(200).json({ data: result.data, message: result.message });
 	}).catch(err=>{
 		console.log(err);
 		next(err);
 	});
 });
+
 
 /**
  * DELETE /:meetingId/drop
@@ -117,6 +123,7 @@ router.delete("/:meetingId/drop", auth, (req, res, next) => {
 		})
 	
 });
+
 
 /**
  * GET /:meetingId/join

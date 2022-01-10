@@ -4,9 +4,6 @@ const meetingsRouter = require("./meetings");
 const userService = require("../../services/userService");
 const { validateSignUpRequest, validateLoginRequest } = require("../validator");
 const auth = require("../auth");
-const createError = require("http-errors");
-const { createUserIfNotExists } = require("../../services/userService");
-const { collection } = require("../../models/Meeting");
 
 router.use("/meetings", meetingsRouter);
 
@@ -28,6 +25,7 @@ router.get("/", auth, async (req, res, next) => {
     });
 });
 
+
 /*
  * POST /signup
  * description: register new user
@@ -45,6 +43,7 @@ router.post("/signup", validateSignUpRequest, async (req, res, next) => {
         next(err);
       });
 });
+
 
 /*
  * POST /login

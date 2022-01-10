@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const { create } = require("../models/Meeting");
 
 const createMeeting = async (creatorUserId, startTime, endTime, description, participantEmailAddresses) => {
     const meeting = new MeetingModel();
@@ -19,28 +20,39 @@ const createMeeting = async (creatorUserId, startTime, endTime, description, par
 
     let response;
     await meeting.save().then((newMeeting) => {
-        response = { status: 200, data: newMeeting, message: "Meeting created succesfully" };
+        response = { data: newMeeting, message: "Meeting created succesfully" };
     }).catch((err) => {
         throw createError(500, "Unable to create new meeting");
     });
-
     await updateParticipantsWithMeetingId(response.data.participants, response.data.meetingId);
-
     return response;
 };
 
 const updateParticipantsWithMeetingId = async (participants, meetingIdToBeAdded) => {
     for await (let participant of participants) {
-        participant.meetings.push(meetingIdToBeAdded);
-        await participant.save();
+        if (!participant.meetings.includes(meetingIdToBeAdded))
+        {
+            participant.meetings.push(meetingIdToBeAdded);
+            await participant.save();
+        }
     }
 };
 
 const addParticipantsToMeeting = async (participantEmailAddresses, meetingWithParticipantInfo) => {
+    let duplicateEmailAddresses = [];
     for await (let participantEmailAddress of participantEmailAddresses) {
-        const participant = await UserModel.findOne({
-            emailAddress: participantEmailAddress,
-        });
+        let alreadyExistingParticipantEmailAddresses = meetingWithParticipantInfo.participants
+            .map(participant=>participant.emailAddress);
+            
+        if (alreadyExistingParticipantEmailAddresses.includes(participantEmailAddress))
+            duplicateEmailAddresses.push(participantEmailAddress);
+    }
+
+    if (duplicateEmailAddresses.length > 0)
+        throw createError(400, `[${duplicateEmailAddresses}] Participants already exists in the meeting`);
+
+    for await (let participantEmailAddress of participantEmailAddresses) {
+        const participant = await UserModel.findOne({emailAddress: participantEmailAddress});
         meetingWithParticipantInfo.participants.push(participant);
     }
 };
@@ -77,7 +89,7 @@ const findMeetingByMeetingId = async (userId, meetingId) => {
     return { status: 200, data: meetingInfo, message: "Meeting Details fetched succesfully" };
 };
 
-const updateMeeting = async (userId, meetingId, startTime, endTime, description) => {
+const updateMeeting = async (userId, meetingId, startTime, endTime, description, participantEmailAddressesToBeAdded) => {
     let user = await UserModel.findOne({ id: userId });
     let isMeetingIdValid = user.meetings.includes(meetingId);
     let meetingWithParticipantInfo = {};
@@ -100,8 +112,12 @@ const updateMeeting = async (userId, meetingId, startTime, endTime, description)
         meetingWithParticipantInfo.description = description;
     }
 
-    let data = await meetingWithParticipantInfo.save();
-    return { data: data, message: "Meeting updated successfully" };
+    await addParticipantsToMeeting(participantEmailAddressesToBeAdded, meetingWithParticipantInfo);
+    await meetingWithParticipantInfo.save().then();
+    let updatedMeeting = await MeetingModel.findOne({meetingId: meetingId}).populate('participants');
+    await updateParticipantsWithMeetingId(updatedMeeting.participants, updatedMeeting.meetingId);
+    
+    return { data: updatedMeeting, message: "Meeting updated successfully" };
 };
 
 const searchMeeting = async (userId, description, fromStartTime, toEndTime) => {
