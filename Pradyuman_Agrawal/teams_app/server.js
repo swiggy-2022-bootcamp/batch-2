@@ -23,10 +23,6 @@ app.use('/users', userRouter);
 app.use('/auth', authRouter);
 app.use('/meetings',auth,meetingRouter);
 
-app.get("/profile",auth,(req,res)=>{
-    res.status(200).send(`Welcome to user profile page ${req.userId} ${req.email}`)
-})
-
 app.use(middleware_utils.unknownEndpoint);
 app.use(middleware_utils.errorHandler);
 

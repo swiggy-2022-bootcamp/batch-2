@@ -94,14 +94,13 @@ const findMeetingById = async (req,res) => {
 }
 
 const findMeetingByCreatorId = async (req,res) => {
-    const creatorId = req.params.id;
+    const creatorId = req.params.userId;
     try{
         const data = await Meeting.findMeetingByCreatorId(creatorId);
         if(data.length==0){
             return res.send("No meeting made by this user");
         }
         const result = createMembersArray(data);
-        result.push(meetingObj);
         res.send(result);
     } catch(e){
         console.log(e);
@@ -112,9 +111,9 @@ const findMeetingByCreatorId = async (req,res) => {
 }
 
 const findMeetingByMemberId = async (req,res) => {
-    const meetingId = req.params.id;
+    const userId = req.params.userId;
     try{
-        const data = await Meeting.findMeetingByMemberId(meetingId);
+        const data = await Meeting.findMeetingByMemberId(userId);
         if(data.length==0){
             return res.send("No meeting made by this user");
         }

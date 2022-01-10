@@ -1,5 +1,6 @@
 const User = require("../models/users.js")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 //signup user
 const create = async (req,res) => {
@@ -27,6 +28,18 @@ const create = async (req,res) => {
             name:name
         })
         const result = await User.create(user);
+
+        //create token
+        const token = jwt.sign(
+            {userId:result.userId,email:email},
+            process.env.TOKEN_KEY,
+            {
+                expiresIn:"24h"
+            }
+        )
+        console.log("User successfully logged in")
+        result.token=token;
+
         res.status(201).send(result);
     } catch(e){
         res.status(500).send({
