@@ -18,10 +18,10 @@ router.use("/meetings", meetingsRouter);
  */
 router.get("/", auth, async (req, res, next) => {
     userService.findUserByUserId(req.userId).then(result => {
-      res.status(200).json({ status: 200, data: result.data, message: result.message });
+    	res.status(200).json({ status: 200, data: result.data, message: result.message });
     }).catch(err => {
-      console.log(err);
-      next(err);     
+		console.log(err);
+      	next(err);     
     });
 });
 
@@ -34,14 +34,14 @@ router.get("/", auth, async (req, res, next) => {
 router.post("/signup", validateSignUpRequest, async (req, res, next) => {
     const userDomainEntity = req.body;
     userService.createUserIfNotExists(userDomainEntity)
-      .then((result) => {
-        res.cookie("auth-token", result.cookie, { httpOnly: true });
-        res.status(201).json({data: result.data, message: result.message });
-      })
-      .catch((err) => {
-        console.log(err);
-        next(err);
-      });
+    	.then((result) => {
+        	res.cookie("auth-token", result.cookie, { httpOnly: true });
+        	res.status(201).json({data: result.data, message: result.message });
+      	})
+      	.catch((err) => {
+        	console.log(err);
+        	next(err);
+      	});
 });
 
 
@@ -51,17 +51,17 @@ router.post("/signup", validateSignUpRequest, async (req, res, next) => {
  *
  */
 router.post("/login", validateLoginRequest, async (req, res, next) => {
-    const username = req.body.username;
+	const username = req.body.username;
     const password = req.body.password;
     userService.authenticateUser(username, password)
-      .then((result) => {
-        res.cookie("auth-token", result.cookie, { httpOnly: true });
-        res.status(200).json({message: result.message });
-      })
-      .catch((err) => {
-        console.log(err);
-        next(err);
-      });
+		.then((result) => {
+        	res.cookie("auth-token", result.cookie, { httpOnly: true });
+        	res.status(200).json({message: result.message });
+      	})
+      	.catch((err) => {
+        	console.log("somehng");
+        	next(err);
+    	});
 });
 
 module.exports = router;

@@ -12,23 +12,21 @@ const validateSignUpRequest = (req, res, next) => {
         && "password" in signUpRequestPayload) {
         next();
     } else {
-      throw createError(400, "Mandatory fields are missing");
+        throw createError(400, "Mandatory fields are missing");
     }
 };
 
 const validateLoginRequest = async (req, res, next) => {
     let loginRequestPayload = req.body;
     if ("username" in loginRequestPayload && "password" in loginRequestPayload) {
-    let user = await UserModel.findOne({ username: loginRequestPayload.username });
-    
-    if (!user) {
-        throw createError(400, "Username doesn't exists");
-    }
-
-    next();
-  } else {
-        throw createError(400, "username / password field missing");
-  }
+        let user = await UserModel.findOne({ username: loginRequestPayload.username });
+        if (!user) {
+            next(createError("Username doesn't exists"));
+        }
+        next();
+    } else {
+        next(createError("username / password field missing"));
+    }   
 };
 
 const validateCreateMeetingRequest = async (req, res, next) => {
@@ -39,9 +37,9 @@ const validateCreateMeetingRequest = async (req, res, next) => {
         && "add" in requestPayload.participants 
         && "description" in requestPayload) {
         next();
-  } else {
-        throw createError(400, "Mandatory fields missing in request body");
-  }
+    } else {
+        next(createError(400, "Mandatory fields missing in request body"));
+    }
 };
 
 const validateFindMeetingRequest = async (req, res, next) => {
@@ -49,7 +47,7 @@ const validateFindMeetingRequest = async (req, res, next) => {
     if (requestParams.meetingId != undefined) {
         next();
     } else {
-        throw { status: 400, message: "Invalid Request" };
+        next(createError(400, "Invalid Request"));
     }
 };
 
@@ -58,41 +56,43 @@ const validateMeetingTimeInfo = (req, res, next) => {
     let endTime = req.body.endTime;
     if (startTime && endTime) {
         if (startTime > endTime) {
-            throw createError(400, "start date cannot be after the end date");
+            next(createError(400, "start date cannot be after the end date"));
         }
 
         if (startTime < Date.now()) {
-            throw createError(400, "cannot schedule a meeting in the past" );
+            next(createError(400, "cannot schedule a meeting in the past" ));
         }
         next(); 
     } else if (startTime || endTime) {
-        throw createError(400, "Need to provide both startTime and endTime");
+        next(createError(400, "Need to provide both startTime and endTime"));
     } else {
         next();
     }
 };
 
 const validateAddParticipantRequest = async (req, res, next) => {
-    let addParticipantEmailAddresses = req.body.participants.add;
-    let existingParticipantEmailAddresses = [];
-    if (req.params.meetingId) {
-        existingParticipantEmailAddresses = await MeetingModel.findOne({ meetingId: req.params.meetingId }, { participants: 1 })
-            .populate({ path: "participants", transform: (doc) => doc.emailAddress });
-    }
+    
+    if (req.body.participants) {
+        let addParticipantEmailAddresses = req.body.participants.add;
+        let existingParticipantEmailAddresses = [];
+        if (req.params.meetingId) {
+            existingParticipantEmailAddresses = await MeetingModel.findOne({ meetingId: req.params.meetingId }, { participants: 1 })
+                .populate({ path: "participants", transform: (doc) => doc.emailAddress });
+        }
 
-    let invalidEmailAddresses = [];
-    for await (participantEmailAddress of addParticipantEmailAddresses) {
-        if (!(participantEmailAddress in existingParticipantEmailAddresses)) {
-            let user = await userService.findUserByEmailAddress(participantEmailAddress);
-            if (!user) 
-                invalidEmailAddresses.push(participantEmailAddress);
+        let invalidEmailAddresses = [];
+        for await (participantEmailAddress of addParticipantEmailAddresses) {
+            if (!(participantEmailAddress in existingParticipantEmailAddresses)) {
+                let user = await userService.findUserByEmailAddress(participantEmailAddress);
+                if (!user) 
+                    invalidEmailAddresses.push(participantEmailAddress);
+            }
+        }
+
+        if (invalidEmailAddresses.length > 0) {
+        next(createError(400, `Some of the provided Email Address [${invalidEmailAddresses}] doesn't exists in the system`));
         }
     }
-
-    if (invalidEmailAddresses.length > 0) {
-       throw createError(400, {data: invalidEmailAddresses, reason: "Some of the provided Email Address doesn't exists in the system"});
-    }
-
     next();
 };
 
@@ -100,12 +100,12 @@ const validateSearchQuery = (req, res, next) => {
     if ("description" in req.query || ("from" in req.query && "to" in req.query)) {
         if ("from" in req.query && "to" in req.query) {
             if (Date.parse(req.query.from) > Date.parse(req.query.to)) {
-                throw createError(400, "'from' cannot be later in time than 'to'");
+                next(createError(400, "'from' cannot be later in time than 'to'"));
             }
         }
         next();
     } else {
-        throw createError(400, "please provide either 'description' or 'from/to' timestamps in search query");
+        next(createError(400, "please provide either 'description' or 'from/to' timestamps in search query"));
     }
 };
 

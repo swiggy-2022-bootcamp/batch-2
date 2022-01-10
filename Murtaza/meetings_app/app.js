@@ -49,26 +49,22 @@ app.use((req, res, next) => {
 
 //Error Handler
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.send({
-    error: {
-      status: err.status || 500,
-      message: err.message,
-    },
-  });
+	res.status(err.status || 500);
+	res.send({
+    	error: {
+      		status: err.status || 500,
+      		message: err.message,
+    	},
+  	});
 });
 
-mongoose
-  .connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("MongoDB Connected");
-    app.listen(config.get("app.port"), function () {
-      console.log(`App listening on ${config.get("app.port")}`);
-    });
-  })
-  .catch((err) => console.log(err));
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
+	.then(() => {
+    	console.log("MongoDB Connected");
+    	app.listen(config.get("app.port"), function () {
+      		console.log(`App listening on ${config.get("app.port")}`);
+		});
+  	})
+  	.catch((err) => console.log(err));
 
 module.exports = app;

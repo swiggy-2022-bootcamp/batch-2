@@ -99,7 +99,9 @@ router.patch("/:meetingId", auth, validateMeetingTimeInfo, validateAddParticipan
 	let startTime = req.body.startTime;
 	let endTime = req.body.endTime;
 	let description = req.body.description;
-	let participantEmailAddressesToBeAdded = req.body.participants.add;
+	let participantEmailAddressesToBeAdded = [];
+	if (req.body.participants)
+		participantEmailAddressesToBeAdded = req.body.participants.add;
 
   	meetingService.updateMeeting(userId, meetingId, startTime, endTime, description, participantEmailAddressesToBeAdded).then(result => {
 		res.status(200).json({ data: result.data, message: result.message });

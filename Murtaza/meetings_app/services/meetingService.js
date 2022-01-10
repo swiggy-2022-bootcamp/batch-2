@@ -112,10 +112,15 @@ const updateMeeting = async (userId, meetingId, startTime, endTime, description,
         meetingWithParticipantInfo.description = description;
     }
 
-    await addParticipantsToMeeting(participantEmailAddressesToBeAdded, meetingWithParticipantInfo);
-    await meetingWithParticipantInfo.save().then();
-    let updatedMeeting = await MeetingModel.findOne({meetingId: meetingId}).populate('participants');
-    await updateParticipantsWithMeetingId(updatedMeeting.participants, updatedMeeting.meetingId);
+    if (participantEmailAddressesToBeAdded)
+        await addParticipantsToMeeting(participantEmailAddressesToBeAdded, meetingWithParticipantInfo);
+    
+    let updatedMeeting = await meetingWithParticipantInfo.save();
+
+    if (participantEmailAddressesToBeAdded) {
+        updatedMeeting = await MeetingModel.findOne({meetingId: meetingId}).populate('participants');
+        await updateParticipantsWithMeetingId(updatedMeeting.participants, updatedMeeting.meetingId);
+    }
     
     return { data: updatedMeeting, message: "Meeting updated successfully" };
 };
