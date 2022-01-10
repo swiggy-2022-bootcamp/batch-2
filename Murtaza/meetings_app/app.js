@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const usersRouter = require("./controller/routes/users");
 const createError = require("http-errors");
+const ejs = require('ejs');
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(bodyParser.raw());
 
+app.set('view engine', 'ejs');
 app.use("/api/user", usersRouter);
 
 //middleware: 404 handler and pass to error handler

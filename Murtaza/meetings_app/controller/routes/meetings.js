@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const meetingService = require("../../services/meetingService");
-const { createUserIfNotExists } = require("../../services/userService");
 const auth = require("../auth");
+const config = require('config');
+
 const {
   validateMeetingTimeInfo,
   validateSearchQuery,
@@ -114,6 +115,24 @@ router.delete("/:meetingId/drop", auth, (req, res, next) => {
 			console.log(err);
 			next(err);
 		})
+	
+});
+
+/**
+ * GET /:meetingId/join
+ * route for joining in the meeting
+ * 
+ */
+router.get("/:meetingId/join", auth, (req, res, next) => {
+	let meetingId = req.params.meetingId;
+	meetingService.joinMeeting(req.userId, meetingId)
+		.then((jwt)=> {
+			res.render('meeting.ejs', {meetingRoom: meetingId, jwt: jwt, jitsiAppId: config.get('app.jitsi.appId')})
+		})
+		.catch(err => {
+			console.log(err);
+			next(err);
+		});
 	
 });
 

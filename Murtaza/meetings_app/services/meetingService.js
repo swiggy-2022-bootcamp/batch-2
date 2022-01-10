@@ -1,7 +1,10 @@
 const MeetingModel = require("../models/Meeting");
 const UserModel = require("../models/User");
-const userService = require("./userService");
 const createError = require("http-errors");
+const path = require('path');
+const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const createMeeting = async (creatorUserId, startTime, endTime, description, participantEmailAddresses) => {
     const meeting = new MeetingModel();
@@ -162,6 +165,44 @@ const dropMeeting = async (userId, meetingIdToBeRemoved) => {
     console.log(meetingWithParticipantIds);
 };
 
+const joinMeeting = async(userId, meetingId) => {
+    let user = await UserModel.findOne({id: userId});
+    let meeting = await MeetingModel
+        .findOne({meetingId: meetingId}, {username: 1, emailAddress: 1, participants: 1, startTime: 1, endTime: 1})
+        .populate({path: 'participants', transform: (doc)=>doc.id});
+    
+    if (!meeting.participants.includes(userId)) {
+        throw createError(403, "User is not a participant")
+    }
+
+    return generateMeetingToken(user, meeting.startTime, meeting.endTime);
+}
+
+const generateMeetingToken = (user, startTime, endTime) => {
+    try {
+        const pkPath = path.join(__dirname, '..', 'config', 'jitsi.pk');
+        const privateKey = fs.readFileSync(pkPath, 'utf8');
+        const token = jwt.sign({ 
+            aud: "jitsi",
+            exp: Math.floor(endTime/1000),
+            nbf: Math.floor(startTime/1000),
+            iss: "chat",
+            room: "*",
+            sub: `${config.get("app.jitsi.appId")}`,
+            context: {
+                user: {
+                    name: user.username,
+                    email: user.emailAddress
+                }
+            }
+        }, privateKey, {algorithm: "RS256", header: { kid: `${config.get("app.jitsi.kId")}`} });
+        return token;
+    } catch (err) {
+        console.log(err);
+        throw createError(500, "something went wrong in generating meeting token");
+    }
+}
+
 module.exports = {
     createMeeting: createMeeting,
     findAllMeetingsForUser: findAllMeetingsForUser,
@@ -169,4 +210,5 @@ module.exports = {
     searchMeeting: searchMeeting,
     updateMeeting: updateMeeting,
     dropMeeting: dropMeeting,
+    joinMeeting: joinMeeting
 };

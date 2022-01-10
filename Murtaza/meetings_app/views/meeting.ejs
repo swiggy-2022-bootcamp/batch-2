@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meetings App</title>
+
+  <script src='https://8x8.vc/external_api.js'></script>
+  <script type="text/javascript">
+    let api;
+
+    const initIframeAPI = () => {
+      const domain = '8x8.vc';
+      
+      const meetingRoom = "<%= meetingRoom %>";
+      const jitsiAppId = "<%= jitsiAppId %>";
+      const jwt = "<%= jwt %>";
+
+      const options = {
+        roomName: `${jitsiAppId}/${meetingRoom}`,
+        jwt: `${jwt}`,
+        parentNode: document.querySelector('#meet')
+      };
+      api = new JitsiMeetExternalAPI(domain, options);
+    }
+
+    window.onload = () => {
+      initIframeAPI();
+    }
+  </script>
+  <style>
+    html {
+      height: 100%;
+    }
+    body {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1127%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(244%2c 124%2c 23%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c363.45C77.619%2c374.498%2c161.257%2c395.472%2c230.387%2c358.489C300.775%2c320.834%2c336.253%2c241.25%2c366.509%2c167.379C395.86%2c95.719%2c404.05%2c19.742%2c400.82%2c-57.629C397.287%2c-142.242%2c403.912%2c-237.966%2c346.968%2c-300.65C290.165%2c-363.18%2c194.883%2c-369.984%2c110.697%2c-377C38.304%2c-383.033%2c-29.902%2c-359.636%2c-99.196%2c-337.831C-167.134%2c-316.453%2c-241.897%2c-303.823%2c-289.681%2c-251.01C-337.835%2c-197.788%2c-338.954%2c-120.638%2c-358.254%2c-51.509C-380.744%2c29.049%2c-448.264%2c112.779%2c-412.33%2c188.305C-376.297%2c264.039%2c-268.966%2c265.613%2c-191.772%2c298.403C-128.359%2c325.339%2c-68.21%2c353.742%2c0%2c363.45' fill='%23cc620a'%3e%3c/path%3e%3cpath d='M1440 885.245C1502.982 877.981 1563.312 867.7570000000001 1621.277 842.073 1688.105 812.461 1763.843 787.744 1801.47 725.078 1840.243 660.504 1830.213 579.866 1823.777 504.821 1817.005 425.858 1824.776 329.872 1763.289 279.868 1700.784 229.036 1606.825 274.81 1527.056 263.515 1462.408 254.361 1402.504 200.57299999999998 1340.154 219.95499999999998 1277.886 239.312 1256.894 315.23 1211.164 361.71299999999997 1161.325 412.373 1084.195 438.668 1059.446 505.28499999999997 1033.18 575.986 1044.981 657.487 1075.688 726.376 1106.536 795.58 1160.247 856.9490000000001 1229.699 887.235 1295.287 915.837 1368.9180000000001 893.443 1440 885.245' fill='%23f6994a'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1127'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #meet {
+      height: 85vh;
+      width: 90vw;
+    }
+  </style>
+</head>
+<body>
+  <div id="meet" />
+</body>
+</html>
+
+

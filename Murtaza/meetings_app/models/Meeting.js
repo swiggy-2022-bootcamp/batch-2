@@ -4,10 +4,10 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 const MeetingSchema = new mongoose.Schema({
     meetingId: { type: Number, required: false },
     description: { type: String, required: true },
-    startTime: { type: Date, required: true },
-    endTime: { type: Date, required: true },
+    startTime: { type: Number, required: true },
+    endTime: { type: Number, required: true },
     duration: { type: String, required: false },
-    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
   },
   {
     timestamps: true,

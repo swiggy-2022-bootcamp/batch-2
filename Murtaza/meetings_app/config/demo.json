@@ -1,11 +1,15 @@
 {
-  "app": {
-    "host": "localhost",
-    "port": 8080,
-    "db": {
-      "username": "murtaza-ipp",
-      "password": "meetingsApp123"
-    },
-    "secret": "Gringotts"
+	"app": {
+		"host": "localhost",
+    	"port": 8080,
+		"db": {
+      		"username": "murtaza-ipp",
+      		"password": "meetingsApp123"
+	    },
+    	"secret": "Gringotts",
+    	"jitsi": {
+      		"appId": "vpaas-magic-cookie-901789e058e84e2f9dffe858bd73e94c",
+			"kId": "vpaas-magic-cookie-901789e058e84e2f9dffe858bd73e94c/a4a5fe"
+    	}
   }
 }
