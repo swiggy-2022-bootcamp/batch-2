@@ -1,3 +1,4 @@
+require('dotenv').config();
 const db = require("../models")
 var moment = require('moment');
 const User = db.users;
@@ -7,15 +8,12 @@ const Meeting = db.meetings;
 exports.createMeeting = async (req,res) => {
     const meeting = new Meeting({
         start_date: req.body.meeting.start_date,
-        // end_date: req.body.meeting.end_date,
         start_time: req.body.meeting.start_time,
         end_time: req.body.meeting.end_time,
         description: req.body.meeting.description,
         invitee: req.body.user.id,
         members: req.body.meeting.members
     })
-
-   // authenticate user
 
    meeting.members.push(req.body.user.id);
 
@@ -47,9 +45,12 @@ exports.createMeeting = async (req,res) => {
 
 // view meetings by date
 exports.viewMeetings = async (req, res) => {
+
+    
+    console.log("at top");
     const userId = req.params.id;
     const queryDate = req.body.date;
-    let queryUser = await User.findOne({ id: userId});
+    let queryUser = await User.findOne({ _id: userId});
     let meetingIds = queryUser.meeting;
 
     let matchingMeetings = [];
@@ -65,7 +66,7 @@ exports.viewMeetings = async (req, res) => {
 
 // search meeting by id
 exports.findMeetingById = (req,res) => {
-    const Userid = req.params.id;
+    const userId = req.params.id;
     const meetingId = req.body.id;
     
     Meeting.findById(meetingId).then(
