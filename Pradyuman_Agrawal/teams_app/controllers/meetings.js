@@ -130,18 +130,18 @@ const findMeetingByMemberId = async (req,res) => {
 const updateMeetingById = (req,res) => {
     const meetingId = req.params.id;
     const updateInfo = new Meeting({
-        email:req.body.email||"",
-        password:req.body.password||"",
-        name:req.body.name||""
+        startTime :req.body.startTime,
+        endTime :req.body.endTime,
+        description:req.bodydescription
     })
-    Meeting.updateMeetingById(meetingId,updateInfo,(err,data) =>{
-        if(err)
-            res.status(500).send({
-                message:"internal error"
-            })
-        else
-          res.send(data);
-    });
+    try{
+        const data = await User.updateMeetingById(meetingId,updateInfo,);
+        res.status(200).send(data);
+    } catch(e){
+        res.status(500).send({
+            message:"internal error"
+        })
+    }
 }
 
 //delete meeting by meetingId

@@ -89,29 +89,37 @@ Meeting.findMeetingByMemberId = async (userId) => {
 };
 
 
-Meeting.updateMeetingById = (meetingId,updateInfo,cb) => {
+Meeting.updateMeetingById = (meetingId,updateInfo) => {
     var sql=`UPDATE meetings SET `;
-        var arg=[]
-        if(updateInfo.name){
-            sql+=`name=? ,`;
-            arg.push(updateInfo.name);
+        var args=[]
+        if(updateInfo.startTime){
+            sql+=`startTime=? ,`;
+            args.push(updateInfo.startTime);
         }
-        if(updateInfo.password){
-            sql+=`password=? `;
-            arg.push(updateInfo.password);
+        if(updateInfo.endTime){
+            sql+=`endTime=? `;
+            args.push(updateInfo.endTime);
+        }
+        if(updateInfo.description){
+            sql+=`description=? `;
+            args.push(updateInfo.description);
+        }
+        if(updateInfo.inviteLinkAccess){
+            sql+=`inviteLinkAccess=? `;
+            args.push(updateInfo.inviteLinkAccess);
         }
         sql+= `WHERE meetingId=?`;
-        arg.push(meetingId);
+        args.push(meetingId);
 
-        pool.query(sql,arg,(err,res) => {
-        if(err){
-            console.log("error: ",err)
-            cb(err,null);
-            return;
+        try{
+            const res = await pool.promise(sql,args);
+            return {user:res}
         }
-        console.log("meeting info update where meetingId is",meetingId);
-        cb(null,{meeting:res});
-    });
+        catch(err){
+            console.log("error: ",err);
+            throw err;
+        }
+    
 };
 
 Meeting.deleteMeetingById = async (meetingId) => {
