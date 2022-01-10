@@ -6,60 +6,67 @@ const User = function(user){
     this.name=user.name;
 }
 
-User.create = (newUser,cb) => {
-    pool.query("INSERT INTO users SET ?",newUser,(err,res) => {
-        if(err){
-            console.log("error: ",err);
-            cb(err,null);
-            return;
-        }
+User.create = async (newUser) => {
+    try{
+        const res = await pool.promise("INSERT INTO users SET ?",newUser);
         console.log("user created",{...newUser});
-        cb(null,{id:res.insertId,...newUser});
-    });
+        const resultObj={id:res.insertId,...newUser};
+        return resultObj;
+    }
+    catch(err){
+        console.log("error: ",err);
+        throw err;
+    }
+
 };
 
-User.getAllUser = (cb) => {
-    pool.query("Select * from users ",(err,res) => {
-        if(err){
-            console.log("error: ",err);
-            cb(err,null);
-            return;
-        }
+User.getAllUser =async () => {
+    try{
+        const res = await pool.promise("Select * from users ",[]);
         console.log("All users info sent");
-        cb(null,{users:res});
-    });
+        return {users:res};
+    }
+    catch(err){
+        console.log("error: ",err);
+        throw err;
+    }
 };
 
-User.findUserById = (userId,cb) => {
-    pool.query("Select * from users where userId = ?",userId,(err,res) => {
-        if(err){
-            console.log("error: ",err);
-            cb(err,null);
-            return;
-        }
-        console.log("User found with userId",userId);
-        cb(null,{user:res[0]});
-    });
-};
-
-User.findUserByEmailId = (email,cb) => {
-    pool.query("Select * from users where email = ?",email,(err,res) => {
-        if(err){
-            console.log("error: ",err);
-            cb(err,null);
-            return;
-        }
+User.findUserById = async(userId) => {
+    try{
+        const res = await pool.promise("Select * from users where userId = ?",userId);
         if(res.length){
-            console.log("user found with email",email);
-            cb(null,{user:res[0]});
+            console.log("user found with userID",userId);
+            return {user:res[0]};
         }
         else{
-            cb(null,{user:[]});
+            return {user:[]};
         }
-    });
+    }
+    catch(err){
+        console.log("error: ",err);
+        throw err;
+    }
 };
 
-User.updateUserById = (userId,updateInfo,cb) => {
+User.findUserByEmailId =async (email) => {
+    try{
+        const res = await pool.promise("Select * from users where email = ?",email);
+        if(res.length){
+            console.log("user found with email",email);
+            return {user:res[0]};
+        }
+        else{
+            return {user:[]};
+        }
+    }
+    catch(err){
+        console.log("error: ",err);
+        throw err;
+    }
+};
+
+User.updateUserById =async (userId,updateInfo,) => {
     var sql=`UPDATE users SET `;
         var arg=[]
         if(updateInfo.name){
@@ -73,27 +80,27 @@ User.updateUserById = (userId,updateInfo,cb) => {
         sql+= `WHERE userId=?`;
         arg.push(userId);
 
-        pool.query(sql,arg,(err,res) => {
-        if(err){
-            console.log("error: ",err)
-            cb(err,null);
-            return;
+        try{
+            const res = await pool.promise(sql,arg);
+            console.log("user info update where userId is",userId);
+            return {user:res}
         }
-        console.log("user info update where userId is",userId);
-        cb(null,{user:res});
-    });
+        catch(err){
+            console.log("error: ",err);
+            throw err;
+        }
 };
 
-User.deleteUserById = (userId,cb) => {
-    pool.query("Delete from users where userId = ?",userId,(err,res) => {
-        if(err){
-            console.log("error: ",err)
-            cb(err,null);
-            return;
-        }
+User.deleteUserById = async (userId) => {
+    try{
+        const res = await pool.promise("Delete from users where userId = ?",userId);
         console.log("user deleted with userId",userId);
-        cb(null,{user:res});
-    });
+        return {user:res}
+    }
+    catch(err){
+        console.log("error: ",err);
+        throw err;
+    }
 };
 
 module.exports = User;

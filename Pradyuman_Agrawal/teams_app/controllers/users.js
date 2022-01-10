@@ -11,92 +11,88 @@ const create = async (req,res) => {
     if(!(email&&password&&name)){
        return res.status(400).send("All user inputs are required");
     }
+    
+    try{
+        //check if user exists with same emailId
+        const data = await User.findUserByEmailId(email);
+        if(data.user.length>0){
+            return res.status(400).send(`Sorry user with email ${email} already exists, Trying logging instead`);
+        }       
+        //encrpyt user password
+        encryptedPassword =await bcrypt.hash(password,10)
 
-    //check if user exists with same emailId
-    User.findUserByEmailId(email, async (err, data) => {
-        if (err){
-            res.status(500).send({
-                message: "internal error"
-            });
-        }
-        else if(data.user.length){
-            res.status(400).send(`Sorry user with email ${email} already exists, Trying logging instead`);
-        }
-        else{        
-            //encrpyt user password
-            encryptedPassword =await bcrypt.hash(password,10)
-
-            const user = new User({
-                email:req.body.email,
-                password:encryptedPassword,
-                name:req.body.name
-            })
-            User.create(user,(err,data) =>{
-                if(err)
-                    res.status(500).send({
-                        message:"internal error"
-                    })
-                else
-                  res.send(data);
-            });
-        }
-    })
+        const user = new User({
+            email:email,
+            password:encryptedPassword,
+            name:name
+        })
+        const result = await User.create(user);
+        res.status(201).send(result);
+    } catch(e){
+        res.status(500).send({
+            message:"internal error"
+        })
+    }
 }
 
 //get all user
-const getAllUser = (req,res) => {
-    User.getAllUser((err,data) =>{
-        if(err)
-            res.status(500).send({
-                message:"internal error"
-            })
-        else
-          res.send(data);
-    });
+const getAllUser = async (req,res) => {
+    try{
+        const data = await User.getAllUser();
+        res.status(200).send(data);
+    } catch(e){
+        res.status(500).send({
+            message:"internal error"
+        })
+    }
 }
 
 //find user by userId
-const findUserById = (req,res) => {
+const findUserById = async (req,res) => {
     const userId = req.params.id;
-    User.findUserById(userId,(err,data) =>{
-        if(err)
-            res.status(500).send({
-                message:"internal error"
-            })
-        else
-          res.send(data);
-    });
+    try{
+        const data = await User.findUserById(userId);
+        console.log(data)
+        return res.status(200).send(data);
+    } catch(e){
+        res.status(500).send({
+            message:"internal error"
+        })
+    }
 }
 
 //update user by userId
-const updateUserById = (req,res) => {
+const updateUserById = async (req,res) => {
     const userId = req.params.id;
     const updateInfo = new User({
         email:req.body.email||"",
         password:req.body.password||"",
         name:req.body.name||""
     })
-    User.updateUserById(userId,updateInfo,(err,data) =>{
-        if(err)
-            res.status(500).send({
-                message:"internal error"
-            })
-        else
-          res.send(data);
-    });
+    if(updateInfo.password){
+        updateInfo.password=await bcrypt.hash(updateInfo.password,10)
+    }
+    try{
+        const data = await User.updateUserById(userId,updateInfo);
+        res.status(200).send(data);
+    } catch(e){
+        res.status(500).send({
+            message:"internal error"
+        })
+    }
 }
 
 //delete user by userId
-const deleteUserById = (req,res) => {
+const deleteUserById = async (req,res) => {
     const userId = req.params.id;
-    User.deleteUserById(userId,(err,data) =>{
-        if(err)
-            res.status(500).send({
-                message:"internal error"
-            })
-        else
-          res.send(data);
-    });
+    try{
+        const data = await User.deleteUserById(userId);
+        res.status(200).send(data);
+    } catch(e){
+        res.status(500).send({
+            message:"internal error"
+        })
+    }
 }
 
 module.exports = {
