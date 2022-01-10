@@ -9,7 +9,6 @@ Features:
 - Schedule a Meeting
 - Edit a Meeting
 - Drop off a user from a meeting
-
 ## Docker Deployment
 
 To run the project in Docker
@@ -49,57 +48,171 @@ Start the server
 
 ## API Reference
 
-* ## User Registration
+## User Registration
 
-```http
-  POST /api/user/signup
-```
-#### Paylaoad
-```json
-{
-    "firstName": "Murtaza",
-    "lastName": "Sadriwala",
-    "emailAddress": "murtz27@gmail.com",
-    "username": "murtz27",
-    "password": "abc@123"
-}
-```
+  - registration route
 
-| Field | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `firstName` | `string` | **Required**.  |
-| `lastName` | `string` | **Required**.  |
-| `emailAddress` | `string` | **Required**. |
-| `username` | `string` | **Required**. |
-| `password` | `string` | **Required**. |
+  ```http
+    POST /api/user/signup
+  ```
 
+  #### Paylaoad
+  ```json
+  {
+      "firstName": "Murtaza",
+      "lastName": "Sadriwala",
+      "emailAddress": "murtz27@gmail.com",
+      "username": "murtz27",
+      "password": "abc@123"
+  }
+  ```
 
-* ## User Login
-
-```http
-  POST /api/user/login
-```
-#### Paylaoad
-```json
-{
-    "username": "murtz27",
-    "password": "abc@123"
-}
-```
-
-| Field | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `username` | `string` | **Required**. |
-| `password` | `string` | **Required**. |
+  | Field | Type     | Description                |
+  | :-------- | :------- | :------------------------- |
+  | `firstName` | `string` | **Required**.  |
+  | `lastName` | `string` | **Required**.  |
+  | `emailAddress` | `string` | **Required**. |
+  | `username` | `string` | **Required**. |
+  | `password` | `string` | **Required**. |
 
 
-* ## User details
+## User Login
 
-```http
-  GET /api/user
-```
+  - authentication route
 
-#### Cookies
-```
-  auth-token: ""
-```
+  ```http
+    POST /api/user/login
+  ```
+  #### Paylaoad
+  ```json
+  {
+      "username": "murtz27",
+      "password": "abc@123"
+  }
+  ```
+
+  | Field | Type     | Description                |
+  | :-------- | :------- | :------------------------- |
+  | `username` | `string` | **Required**. |
+  | `password` | `string` | **Required**. |
+
+
+## User details
+
+  - fetch all details of the authenticated user
+
+  ```http
+    GET /api/user
+  ```
+
+  #### Cookies
+  ```
+    auth-token: jwt-token
+  ```
+
+## Create meeting
+
+  - schedules a meeting for participants
+  - creator is by default a participant
+
+  ```http
+    POST /api/user/meetings
+  ```
+
+  #### Paylaoad
+  ```json
+  {
+      "startTime": "1675890030032",
+      "endTime": "1675990030032",
+      "description": "My first ever meeting"
+      "participant":{
+        "add": ["murtz27@gmail.com", "murtz88@gmail.com"]
+      },
+  }
+  ```
+
+  | Field | Type     | Description                |
+  | :-------- | :------- | :------------------------- |
+  | `startTime` | `timestamp` | **Required** in ms  |
+  | `endTime` | `timestamp` | **Required**. in ms |
+  | `description` | `string` | **Required**. |
+  | `participant.add` | `Array(string)` | **Required**. valid user's email address |
+
+
+## Get all meetings
+
+  ```http
+    GET /api/user/meetings
+  ```
+  | Field | Type     | Description                |
+  | :-------- | :------- | :------------------------- |
+  | `auth-token` | `jwt` | **Required** in cookies  |
+
+
+## Get deatils of meeting by id
+
+  - fetch all details of a meeting by meeting id
+
+  ```http
+    GET /api/user/meetings/:meetingId
+  ```
+  | Field | Type     | Description                |
+  | :-------- | :------- | :------------------------- |
+  | `auth-token` | `jwt` | **Required** in cookies  |
+  | `meetingId` | `int` | **Required**  |
+
+
+## Update deatils of meeting by id
+
+  - update meeting details
+
+  ```http
+    PATCH /api/user/meetings/:meetingId
+  ```
+
+  #### Paylaoad
+  ```json
+  {
+      "startTime": "1675890030032",
+      "endTime": "1675990030032",
+      "description": "My updated meeting"
+  }
+  ```
+
+  | Field | Type     | Description                |
+  | :-------- | :------- | :------------------------- |
+  | `startTime` | `timestamp` | **Required** in ms  |
+  | `endTime` | `timestamp` | **Required**. in ms |
+  | `description` | `string` | **Required**. |
+
+## Drop user from meeting
+
+  - deletes a user from a meeting
+  - deletes a meeting if no more participants are left
+
+  ```http
+    DELETE /api/user/meetings/:meetingId/drop
+  ```
+
+  | Field | Type     | Description                |
+  | :-------- | :------- | :------------------------- |
+  | `meetingId` | `int` | **Required** |
+
+
+
+
+## Appendix
+
+#### major **npm** libraries used:
+- express
+- mongoose
+- http-errors
+- jsonwebtoken
+- swagger-ui-express
+
+#### Techstack:
+- Node.js 17.3.0
+- mongoDB
+- Docker
+
+
