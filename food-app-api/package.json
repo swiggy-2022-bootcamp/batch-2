@@ -1,0 +1,20 @@
+{
+    "name": "food-app-api",
+    "version": "1.0.0",
+    "description": "A food app that facilitates users to order food online from different restaurants using the web-app to cater their needs",
+    "main": "index.js",
+    "scripts": {
+        "start": "npx nodemon index.js"
+    },
+    "author": "Shriyadita Roy",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.19.1",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.2",
+        "mongoose": "^6.1.5",
+        "node": "^17.3.0",
+        "nodemon": "^2.0.15",
+        "validator": "^13.7.0"
+    }
+}
