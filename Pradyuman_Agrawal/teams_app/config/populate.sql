@@ -35,8 +35,3 @@ CREATE TABLE meetingMembers(
     FOREIGN KEY (userId) REFERENCES users(userId), 
     FOREIGN KEY (meetingId) REFERENCES meetings(meetingId) 
 );
-
-SELECT * FROM Customers
-WHERE City IN ('Paris','London');
-
-        

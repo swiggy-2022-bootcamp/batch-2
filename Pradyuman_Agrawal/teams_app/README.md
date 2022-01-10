@@ -4,6 +4,8 @@
 
 Features:
 - User Registration
+- Get all user info
+- Update user info
 - Login
 - Schedule a Meeting
 - Edit a Meeting

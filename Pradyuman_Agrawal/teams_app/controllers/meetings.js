@@ -55,7 +55,7 @@ const create = async (req,res) => {
 
     try{
         const data = await Meeting.create(meeting);
-        res.send(data);
+        res.status(201).send(data);
     } catch(e){
         res.status(500).send({
             message:"internal error"
@@ -68,7 +68,7 @@ const getAllMeeting = async (req,res) => {
     try{
         const data = await Meeting.getAllMeeting();
         const result = createMembersArray(data);
-        res.send(result);
+        res.status(200).send(result);
     } catch(e){
         res.status(500).send({
             message:"internal error"
@@ -85,7 +85,7 @@ const findMeetingById = async (req,res) => {
             return res.send("meeting with Id Doesnt exist");
         }
         const result = createMembersArray(data);
-        res.send(result[0]);
+        res.status(200).send(result[0]);
     } catch(e){
         res.status(500).send({
             message:"internal error"
@@ -101,7 +101,7 @@ const findMeetingByCreatorId = async (req,res) => {
             return res.send("No meeting made by this user");
         }
         const result = createMembersArray(data);
-        res.send(result);
+        res.status(200).send(result);
     } catch(e){
         console.log(e);
         res.status(500).send({
@@ -115,10 +115,10 @@ const findMeetingByMemberId = async (req,res) => {
     try{
         const data = await Meeting.findMeetingByMemberId(userId);
         if(data.length==0){
-            return res.send("No meeting made by this user");
+            return res.status(200).send("No meeting made by this user");
         }
         const result = createMembersArray(data);
-        res.send(result);
+        res.status(200).send(result);
     } catch(e){
         res.status(500).send({
             message:"internal error"
@@ -154,7 +154,7 @@ const deleteMeetingById = async (req,res) => {
         else if(result[0].creatorId!==req.userId)
             return res.status(403).send("user Is not authorised to delete this Meeting");
         const data = await Meeting.deleteMeetingById(meetingId);
-        res.send(data);
+        res.status(200).send(data);
     } catch(e){
         console.log(e)
         res.status(500).send({
@@ -171,7 +171,7 @@ const dropOffMeetingById = async (req,res) => {
         if(data.length==0){
             return res.send("meeting with Id Doesnt exist");
         }
-        res.send(data);
+        res.status(200).send(data);
     } catch(e){
         console.log(e)
         res.status(500).send({
@@ -216,7 +216,7 @@ const joinMeetingbyId = async (req,res) => {
         if(data.length==0){
             return res.send("meeting with Id Doesnt exist");
         }
-        res.send(data);
+        res.status(200).send(data);
     } catch(e){
         console.log(e)
         res.status(500).send({
