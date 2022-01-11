@@ -27,3 +27,13 @@ exports.getAllAnswers = async (req, res, next) => {
     }
     next();
 };
+
+exports.removeAnswer = async (req, res, next) => {
+    try {
+        const { id, qid } = req.query;
+        const question = await Question.findById(id);
+        res.json(question);
+    } catch (error) {
+        next(error);
+    }
+};

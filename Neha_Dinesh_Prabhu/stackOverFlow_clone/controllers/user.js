@@ -34,7 +34,7 @@ exports.createUser = async (req, res) => {
         );
         user.token = token;
         data = { "message": "user registered successfully", "details": user };
-        res.status(201).json(data);
+        res.status(200).json(data);
     } catch (err) {
         res.status(500).send({
             message: err.message || "error while creating the User."
@@ -44,17 +44,16 @@ exports.createUser = async (req, res) => {
 }
 
 
-exports.signIn = async (req, res) => {
+exports.signIn = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-
         // Validate user input
         if (!(email && password)) {
             res.status(400).send("All input is required");
         }
         // Validate if user exists in our database
         const user = await User.findOne({ email });
-
+        console.log(user);
         if (user && (await bcrypt.compare(password, user.password))) {
             // Create token
             const token = jwt.sign(
@@ -65,6 +64,7 @@ exports.signIn = async (req, res) => {
                 }
             );
             user.token = token;
+            console.log(user);
             data = { "message": "user login successfully", "details": user };
             res.status(200).json(data);
         }
@@ -73,3 +73,13 @@ exports.signIn = async (req, res) => {
         console.log(err);
     }
 }
+
+exports.listUsers = async (req, res, next) => {
+    try {
+        const { sortType = '-created' } = req.body;
+        const users = await User.find().sort(sortType);
+        res.json(users);
+    } catch (error) {
+        next(error);
+    }
+};

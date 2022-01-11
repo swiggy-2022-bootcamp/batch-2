@@ -34,6 +34,7 @@ questionSchema.methods = {
 
     removeAnswer: function (id) {
         const answer = this.answers.id(id);
+        console.log(answer);
         if (!answer) throw new Error('Answer not found');
         answer.remove();
         return this.save();

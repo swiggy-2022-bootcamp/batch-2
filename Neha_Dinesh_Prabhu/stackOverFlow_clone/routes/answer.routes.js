@@ -5,6 +5,6 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post('/', [auth], answers.createAnswer);
-    router.get('/all-answers/:id', [auth], answers.getAllAnswers);
+    router.delete('/delete', [auth], answers.removeAnswer);
     app.use('/answers', router);
 }
