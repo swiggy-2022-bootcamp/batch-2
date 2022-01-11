@@ -9,6 +9,8 @@ Features:
 - Schedule a Meeting
 - Edit a Meeting
 - Drop off a user from a meeting
+- Join a meeting
+
 ## Docker Deployment
 
 To run the project in Docker
