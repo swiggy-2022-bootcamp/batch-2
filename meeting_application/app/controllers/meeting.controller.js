@@ -29,7 +29,6 @@ exports.createMeeting = async (req,res) => {
                     function(err, res) {
                         if (err) {
                           res.send(err);
-                          log.info("here")
                         } 
                       }
                 )
@@ -46,8 +45,6 @@ exports.createMeeting = async (req,res) => {
 // view meetings by date
 exports.viewMeetings = async (req, res) => {
 
-    
-    console.log("at top");
     const userId = req.params.id;
     const queryDate = req.body.date;
     let queryUser = await User.findOne({ _id: userId});
@@ -81,4 +78,27 @@ exports.findMeetingById = (req,res) => {
             message:err.message ||"error while retrieving meeting with id " + id
         })
     })
+}
+
+//drop from meeting
+exports.dropFromMeetingById = (req,res) => {
+    const userId = req.params.id;
+    const meetingId = req.body.id;
+
+    User.updateOne({_id:userId}, { $pull: { meeting: meetingId } }, 
+        function(err, res) {
+            if (err) {
+              res.send(err);
+            } 
+        }
+    )
+
+    Meeting.updateOne({_id:meetingId}, { $pull: { members: userId } }, 
+        function(err, res) {
+            if (err) {
+              res.send(err);
+            } 
+        }
+    )
+    res.status(201).send({message: "Dropped from meeting successfully"}); 
 }

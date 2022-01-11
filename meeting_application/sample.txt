@@ -71,6 +71,17 @@ Payload:
 
 
 
+Drop from a meeting by id:-
+
+PUT  http://localhost:8080/meetings/drop_from_meeting/userid
+
+Payload:
+{
+    "id" : "61db95f7ab0b0df88a185d68"
+}
+
+
+
 show dbs
 use meeting_application
 show collections;

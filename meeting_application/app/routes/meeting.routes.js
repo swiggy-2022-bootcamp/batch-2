@@ -8,6 +8,7 @@ module.exports = app => {
     router.post("/create_meeting/:id",authenticateToken, meetings.createMeeting);
     router.get("/view_meetings/:id", authenticateToken, meetings.viewMeetings);
     router.get("/search_meeting/:id", authenticateToken, meetings.findMeetingById);
+    router.put("/drop_from_meeting/:id", authenticateToken, meetings.dropFromMeetingById);
 
     app.use("/meetings",router)
 }

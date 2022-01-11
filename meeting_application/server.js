@@ -26,7 +26,7 @@ app.get("/test",(req,res) => {
 
 require("./app/routes/user.routes")(app);
 require("./app/routes/meeting.routes")(app);
-// add for meeting and teams here
+// add for teams here
 
 const PORT = 8080;
 app.listen(PORT,() => {
