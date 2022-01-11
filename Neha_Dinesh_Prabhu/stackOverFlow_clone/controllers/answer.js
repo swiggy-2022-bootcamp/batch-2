@@ -12,7 +12,8 @@ exports.createAnswer = async (req, res, next) => {
         //console.log(quest);
         res.status(201).json(question);
     } catch (error) {
-        next(error);
+        if (error.name === 'CastError') return res.status(400).json({ message: 'Invalid answer id.' });
+        return next(error);
     }
 };
 exports.getAllAnswers = async (req, res, next) => {
@@ -22,7 +23,7 @@ exports.getAllAnswers = async (req, res, next) => {
         if (!question.answers) return res.json({ message: 'Answer not found.' });
         data = { "msg": "answers found", "details": question.answers }
     } catch (error) {
-        if (error.name === 'CastError') return res.status(400).json({ message: 'Invalid question id.' });
+        if (error.name === 'CastError') return res.status(400).json({ message: 'Invalid answer id.' });
         return next(error);
     }
     next();
@@ -34,6 +35,7 @@ exports.removeAnswer = async (req, res, next) => {
         const question = await Question.findById(id);
         res.json(question);
     } catch (error) {
-        next(error);
+        if (error.name === 'CastError') return res.status(400).json({ message: 'Invalid answer id.' });
+        return next(error);
     }
 };

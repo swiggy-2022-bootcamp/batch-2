@@ -6,7 +6,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     //votes
-    router.get('/upvote/:question/:answer?', auth, vote.upvote);
+    router.get('/upvote', auth, vote.upvote);
     router.get('/downvote', auth, vote.downvote);
     router.get('/unvote', auth, vote.unvote);
 
