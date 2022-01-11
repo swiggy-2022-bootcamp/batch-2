@@ -16,7 +16,7 @@ const create = async (req,res) => {
     try{
         //check if user exists with same emailId
         const data = await User.findUserByEmailId(email);
-        if(data.user.length>0){
+        if(data.user.userId){
             return res.status(400).send(`Sorry user with email ${email} already exists, Trying logging instead`);
         }       
         //encrpyt user password
@@ -28,10 +28,9 @@ const create = async (req,res) => {
             name:name
         })
         const result = await User.create(user);
-
         //create token
         const token = jwt.sign(
-            {userId:result.userId,email:email},
+            {userId:result.id,email:email},
             process.env.TOKEN_KEY,
             {
                 expiresIn:"24h"

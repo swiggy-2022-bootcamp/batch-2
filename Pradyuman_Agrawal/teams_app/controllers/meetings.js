@@ -66,10 +66,11 @@ const create = async (req,res) => {
 //get all meeting
 const getAllMeeting = async (req,res) => {
     try{
-        const data = await Meeting.getAllMeeting();
+        const data = await Meeting.getAllMeeting(req.query);
         const result = createMembersArray(data);
         res.status(200).send(result);
     } catch(e){
+        console.log(e)
         res.status(500).send({
             message:"internal error"
         })
@@ -127,7 +128,7 @@ const findMeetingByMemberId = async (req,res) => {
 }
 
 //update meeting by meetingId
-const updateMeetingById = (req,res) => {
+const updateMeetingById = async (req,res) => {
     const meetingId = req.params.id;
     const updateInfo = new Meeting({
         startTime :req.body.startTime,

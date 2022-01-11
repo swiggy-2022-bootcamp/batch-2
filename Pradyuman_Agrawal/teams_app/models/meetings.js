@@ -13,8 +13,7 @@ const Meeting = function(meeting){
 Meeting.create = async (newMeeting) => {
     //console.log(newMeeting);
     const resultObj ={...newMeeting};
-    const {creatorId,startTime,endTime,description,members,inviteLinkAccess}=newMeeting;
-    console.log(inviteLinkAccess);  
+    const {creatorId,startTime,endTime,description,members,inviteLinkAccess}=newMeeting; 
     try{
         const res = await pool.promise("INSERT INTO meetings SET ?; ", { creatorId: creatorId, startTime: startTime,endTime:endTime,description:description,inviteLinkAccess:inviteLinkAccess});
         console.log("meeting created",{...newMeeting});
@@ -33,9 +32,26 @@ Meeting.create = async (newMeeting) => {
     }
 };
 
-Meeting.getAllMeeting = async () => {
+// Meeting.getAllMeeting = async () => {
+//     try{
+//         const res = await pool.promise("Select * from meetings natural join meetingMembers ORDER BY meetings.meetingId",[]);
+//         return res;
+//     }
+//     catch(err){
+//         console.log("error: ",err);
+//         throw err;
+//     }
+// };
+
+Meeting.getAllMeeting = async (queryArgs) => {
+    let sqlQuery="SELECT * FROM meetings NATURAL JOIN meetingMembers"
+    if(queryArgs.sortBy){
+        sqlQuery+=" ORDER BY " + queryArgs.sortBy
+        if(queryArgs.order&&queryArgs.order.toUpperCase().localeCompare("DESC")==0)
+            sqlQuery+=" DESC"
+    }
     try{
-        const res = await pool.promise("Select * from meetings natural join meetingMembers ORDER BY meetings.meetingId",[]);
+        const res = await pool.promise(sqlQuery);
         return res;
     }
     catch(err){
@@ -79,7 +95,7 @@ Meeting.findMeetingByCreatorId = async (creatorId) => {
 
 Meeting.findMeetingByMemberId = async (userId) => {
     try{
-        const res = await pool.promise("Select * from meetings m natural join meetingMembers where m.meetingId in (select meetingId from meetingMembers where userId = ?) ORDER BY m.meetingId",[userId]);
+        const res = await pool.promise("Select * from meetings m natural join meetingMembers where m.meetingId in (select meetingId from meetingMembers where userId = ?) ORDER BY startTime",[userId]);
         return res;
     }
     catch(err){
@@ -89,7 +105,7 @@ Meeting.findMeetingByMemberId = async (userId) => {
 };
 
 
-Meeting.updateMeetingById = (meetingId,updateInfo) => {
+Meeting.updateMeetingById = async (meetingId,updateInfo) => {
     var sql=`UPDATE meetings SET `;
         var args=[]
         if(updateInfo.startTime){
