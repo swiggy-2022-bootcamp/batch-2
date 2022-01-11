@@ -78,9 +78,11 @@ exports.listByUser = async (req, res, next) => {
         console.log(req.body);
 
         const questions = await Question.find({ author: id }).sort({ created: -1 }).limit(10);
+        if (!questions) return res.status(404).json("No questions found");
         res.json(questions);
     } catch (error) {
-        next(error);
+        if (error.name === 'CastError') return res.status(400).json({ message: 'Invalid user id.' });
+        return next(error);
     }
 };
 
