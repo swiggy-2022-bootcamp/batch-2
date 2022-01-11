@@ -12,6 +12,7 @@ const questionSchema = new Schema({
     },
     title: { type: String, required: true },
     text: { type: String, required: true },
+    tags: [{ type: String, required: true }],
     votes: [voteSchema],
     answers: [answerSchema],
     created: { type: Date, default: Date.now }
@@ -27,6 +28,28 @@ questionSchema.options.toJSON.transform = (doc, ret) => {
 };
 
 questionSchema.methods = {
+    vote: function (user, vote) {
+        const existingVote = this.votes.find((v) => v.user._id.equals(user));
+
+        if (existingVote) {
+            // reset score
+            this.score -= existingVote.vote;
+            if (vote == 0) {
+                // remove vote
+                this.votes.pull(existingVote);
+            } else {
+                //change vote
+                this.score += vote;
+                existingVote.vote = vote;
+            }
+        } else if (vote !== 0) {
+            // new vote
+            this.score += vote;
+            this.votes.push({ user, vote });
+        }
+
+        return this.save();
+    },
     addAnswer: function (author, text) {
         this.answers.push({ author, text });
         return this.save();

@@ -34,6 +34,7 @@ mongoose.connect(config.db.url).then(() => {
 require("./routes/user.routes")(app);
 require("./routes/question.routes")(app);
 require("./routes/answer.routes")(app);
+require("./routes/votes.routes")(app);
 
 //testing server
 app.get("/test", auth, (req, res) => {
